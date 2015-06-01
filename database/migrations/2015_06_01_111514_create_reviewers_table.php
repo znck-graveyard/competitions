@@ -16,12 +16,12 @@ class CreateReviewersTable extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('contest_id')->unsigned();
-			$table->foreign('contest_id')->references('id')->on('contests')->onDelete('cascade');
 			$table->integer('user_id')->nullable();
 			$table->timestamp('voted_at');
 			$table->integer('entry_id')->unsigned();
-			$table->foreign('entry_id')->references('id')->on('entries')->onDelete('cascade');
 
+			$table->foreign('contest_id')->references('id')->on('contests')->onDelete('cascade');
+			$table->foreign('entry_id')->references('id')->on('entries')->onDelete('cascade');
 		});
 	}
 
@@ -32,8 +32,10 @@ class CreateReviewersTable extends Migration {
 	 */
 	public function down()
 	{	
-		$table->dropForeign('reviewers_user_id_foreign');
-		$table->dropForeign('reviewers_contest_id_foreign');
+		Schema::table('reviewers', function(Blueprint $table) {
+			$table->dropForeign('reviewers_user_id_foreign');
+			$table->dropForeign('reviewers_contest_id_foreign');
+		});
 		Schema::drop('reviewers');
 	}
 
