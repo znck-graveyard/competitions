@@ -19,9 +19,9 @@ class CreateUsersTable extends Migration {
 			$table->string('email')->unique();
 			$table->string('first_name');
 			$table->string('last_name')->nullable();
-			$table->enum('gender',array('MALE','FEMALE'));
+			$table->enum('gender',array('MALE','FEMALE'))->default('MALE');
 			$table->string('password', 60);
-			$table->integer('age');
+			$table->timestamp('DOB')->nullable();
 			$table->boolean('is_maintainer')->default(false);
 			$table->timestamp('created_at');
 			$table->timestamp('updated_at');
