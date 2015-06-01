@@ -32,4 +32,21 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	protected $hidden = ['password'];
 	protected $guarded = ['id'];
 
+    /**
+     * User can participate in many contest
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function contests(){
+        return $this->belongsToMany(Contest::class, "contestants");
+    }
+
+    /**
+     * Polymorphic relation
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function entries()
+    {
+        return $this->morphMany('Entry', 'entryable');
+    }
+
 }
