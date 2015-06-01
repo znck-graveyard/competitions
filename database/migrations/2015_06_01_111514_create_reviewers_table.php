@@ -17,13 +17,10 @@ class CreateReviewersTable extends Migration {
 			$table->increments('id');
 			$table->integer('contest_id')->unsigned();
 			$table->foreign('contest_id')->references('id')->on('contests')->onDelete('cascade');
-			$table->string('name');
-			$table->string('email');
-			$table->integer('user_id')->unsigned();
-			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-			$table->date('voted_at');
-			$table->integer('voted_for_entry')->unsigned();
-			$table->foreign('voted_for_entry')->references('id')->on('entries')->onDelete('cascade');
+			$table->integer('user_id')->nullable();
+			$table->timestamp('voted_at');
+			$table->integer('entry_id')->unsigned();
+			$table->foreign('entry_id')->references('id')->on('entries')->onDelete('cascade');
 
 		});
 	}
