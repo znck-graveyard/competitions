@@ -22,7 +22,7 @@ class CreateConstraintsTable extends Migration
             $table->boolean('optional')->default(false);
             $table->timestamps();
             $table->foreign('contest_id')
-                ->refrences('id')
+                ->references('id')
                 ->on('contests')
                 ->onDelete('cascade');
         });

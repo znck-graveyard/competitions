@@ -35,7 +35,7 @@ class CreateContestsTable extends Migration
             $table->integer('team_size');
             $table->timestamps();
             $table->foreign('maintainer_id')
-                ->refrences('id')
+                ->references('id')
                 ->on('users');
         });
     }

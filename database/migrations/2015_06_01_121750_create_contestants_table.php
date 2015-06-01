@@ -19,11 +19,11 @@ class CreateContestantsTable extends Migration
             $table->integer('contest_id')->unsigned()->index();
             $table->timestamps();
             $table->foreign('user_id')
-                ->refrences('id')
+                ->references('id')
                 ->on('users')
                 ->onUpdate('cascade');
             $table->foreign('contest_id')
-                ->refrences('id')
+                ->references('id')
                 ->on('contests')
                 ->onDelete('cascade')->onUpdate('cascade');
         });
