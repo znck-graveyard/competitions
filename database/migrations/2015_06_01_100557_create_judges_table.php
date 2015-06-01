@@ -17,7 +17,7 @@ class CreateJudgesTables extends Migration {
 			$table->increments('id');
 			$table->integer('contest_id')->unsigned();
 			$table->foreign('contest_id')->references('id')->on('contests')->onDelete('cascade');
-			$table->string('name')->default('');
+			$table->string('name');
 			$table->string('email');
 			$table->integer('user_id')->unsigned();
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
