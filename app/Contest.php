@@ -9,9 +9,22 @@ class Contest extends Model
      *
      * @var array
      */
-    protected $fillable = ['type', 'name', 'description', 'submission_type', 'rules', 'peer_review_enabled', 'peer_review_weightage',
-        'manual_review_enabled', 'manual_review_weightage', 'max_entries', 'max_iteration',
-        'team_entry_enabled', 'team_size'];
+    protected $fillable =
+        [
+            'type',
+            'name',
+            'description',
+            'submission_type',
+            'rules',
+            'peer_review_enabled',
+            'peer_review_weightage',
+            'manual_review_enabled',
+            'manual_review_weightage',
+            'max_entries',
+            'max_iteration',
+            'team_entry_enabled',
+            'team_size'
+        ];
 
     /**
      * A contest has many Constraints
@@ -31,7 +44,7 @@ class Contest extends Model
      */
     public function contestants()
     {
-        return $this->belongsToMany('App\User',"contestants");
+        return $this->belongsToMany('App\User', "contestants");
     }
 
 
