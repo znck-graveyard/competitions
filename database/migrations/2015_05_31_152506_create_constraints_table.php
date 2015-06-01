@@ -16,10 +16,10 @@ class CreateConstraintsTable extends Migration
         Schema::create('constraints', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('contest_id')->unsigned();
-            $table->string('key');
+            $table->string('key')->index();
             $table->string('condition');
             $table->string('value');
-            $table->boolean('optional')->default(0);
+            $table->boolean('optional')->default(false);
             $table->timestamps();
             $table->foreign('contest_id')
                 ->refrences('id')
@@ -35,6 +35,11 @@ class CreateConstraintsTable extends Migration
      */
     public function down()
     {
+        Schema::table('constraints', function ($table) {
+            $table->dropForeign('constraints_contest_id_foreign');
+
+            $table->dropIndex('constraints_key_index');
+        });
         Schema::drop('constraints');
     }
 

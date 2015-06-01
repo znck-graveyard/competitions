@@ -19,19 +19,19 @@ class CreateContestsTable extends Migration
             $table->string('name');
             $table->text('description');
             $table->string("submission_type");
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->text('rules');
             $table->timestamp('start_date');
             $table->timestamp('end_date');
             $table->string("prize");
             $table->boolean('peer_review_enabled');
-            $table->decimal('peer_review_weightage');
+            $table->decimal('peer_review_weightage')->nullable();
             $table->boolean('manual_review_enabled');
-            $table->decimal('manual_review_weightage');
+            $table->decimal('manual_review_weightage')->nullable();
             $table->integer('maintainer_id')->unsigned();
             $table->integer('max_entries');
             $table->integer('max_iteration');
-            $table->boolean('team_entry_enabled');
+            $table->boolean('team_entry_enabled')->default(false);
             $table->integer('team_size');
             $table->timestamps();
             $table->foreign('maintainer_id')
