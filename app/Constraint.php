@@ -12,7 +12,7 @@ class Constraint extends Model {
     protected $fillable = ['key','condition','value','optional'];
 
     public function contest(){
-        return $this->belongsTo("App\Contest");
+        return $this->belongsTo(Contest::class);
     }
 
 

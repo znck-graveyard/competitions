@@ -32,7 +32,7 @@ class Contest extends Model
      */
     public function constraints()
     {
-        return $this->hasMany('App\Constraint');
+        return $this->hasMany(Constraint::class);
 
     }
 
@@ -44,7 +44,7 @@ class Contest extends Model
      */
     public function contestants()
     {
-        return $this->belongsToMany('App\User', "contestants");
+        return $this->belongsToMany(User::class, "contestants");
     }
 
 
