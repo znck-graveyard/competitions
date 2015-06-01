@@ -47,5 +47,13 @@ class Contest extends Model
         return $this->belongsToMany(User::class, "contestants");
     }
 
+    /**
+     * Many submissions will be made for a contest
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function submissions()
+    {
+        return $this->hasMany(Entry::class);
+    }
 
 }
