@@ -23,9 +23,9 @@ class CreateUsersTable extends Migration {
 			$table->string('password', 60);
 			$table->timestamp('date_of_birth')->nullable();
 			$table->boolean('is_maintainer');
-			$table->timestamp('created_at');
-			$table->timestamp('updated_at');
-			$table->timestamp('deleted_at')->nullable();
+			$table->date('created_at');
+			$table->date('updated_at');
+			$table->date('deleted_at')->nullable();
 		});
 	}
 

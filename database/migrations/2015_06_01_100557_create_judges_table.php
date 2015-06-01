@@ -18,7 +18,7 @@ class CreateJudgesTables extends Migration {
 			$table->integer('contest_id')->unsigned();
 			$table->foreign('contest_id')->references('id')->on('contests')->onDelete('cascade');
 			$table->string('name')->default('');
-			$table->string('email')->unique()->	default('');
+			$table->string('email');
 			$table->integer('user_id')->unsigned();
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 			$table->timestamps();
@@ -31,7 +31,9 @@ class CreateJudgesTables extends Migration {
 	 * @return void
 	 */
 	public function down()
-	{
+	{	
+		$table->dropForeign('judges_user_id_foreign');
+		$table->dropForeign('judges_contest_id_foreign');
 		Schema::drop('judges');
 	}
 
