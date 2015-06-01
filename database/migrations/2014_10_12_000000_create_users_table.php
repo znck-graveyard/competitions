@@ -18,14 +18,14 @@ class CreateUsersTable extends Migration {
 			$table->string('username');
 			$table->string('email')->unique();
 			$table->string('first_name');
-			$table->string('last_name');
-			$table->enum('gender',array('Male','Female'));
+			$table->string('last_name')->nullable();
+			$table->enum('gender',array('MALE','FEMALE'));
 			$table->string('password', 60);
 			$table->integer('age');
-			$table->boolean('is_maintainer');
+			$table->boolean('is_maintainer')->default(false);
 			$table->timestamp('created_at');
 			$table->timestamp('updated_at');
-			$table->timestamp('deleted_at');
+			$table->timestamp('deleted_at')->nullable();
 		});
 	}
 
