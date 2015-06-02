@@ -20,13 +20,11 @@ class CreateEntriesTable extends Migration
             $table->string('file_type');
             $table->decimal('file_size');
             $table->integer('contest_id')->unsigned()->index();
-            //$table->integer('user_id')->unsigned()->index();
             $table->boolean('is_team_entry')->default(false);
             $table->integer('entryable_id')->unsigned();
             $table->string('entryable_type')->unsigned();
-            //$table->integer('team_id')->unsigned();
             $table->timestamps();
-            $table->foreign('contest_id')->refrences('id')->on('contests')->onUpdate('cascade');
+            $table->foreign('contest_id')->references('id')->on('contests')->onUpdate('cascade');
         });
     }
 
@@ -37,11 +35,9 @@ class CreateEntriesTable extends Migration
      */
     public function down()
     {
-        Schema::table('contestants', function ($table) {
+        Schema::table('entries', function ($table) {
             $table->dropIndex('entries_contest_id_index');
             $table->dropForeign('entries_contest_id_foreign');
-            $table->dropIndex('entries_user_id_index');
-            //$table->dropForeign('entries_user_id_foreign');
         });
         Schema::drop('entries');
     }

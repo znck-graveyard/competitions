@@ -9,9 +9,9 @@ class Entry extends Model
      *
      * @var array
      */
-    protected $fillable =['abstract','file_type','file_size','contest_id','user_id','is_team_entry','team_id'];
+    protected $fillable = ['abstract', 'file_type', 'file_size', 'contest_id', 'is_team_entry','entryable_id','entryable_type'];
 
-	protected $table="entries";
+    protected $table = "entries";
 
     /**
      * A entry can be team entry or an individual entry
