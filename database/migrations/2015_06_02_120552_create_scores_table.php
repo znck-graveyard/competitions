@@ -38,7 +38,7 @@ class CreateScoresTable extends Migration {
 			$table->dropForeign('judges_contest_id_foreign');
 			$table->dropForeign('judges_entry_id_foreign');
 		});
-		Schema::drop('reviewers');
+		Schema::drop('judges');
 	}
 
 }
