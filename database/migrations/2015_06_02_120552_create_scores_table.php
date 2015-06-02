@@ -33,12 +33,12 @@ class CreateScoresTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::table('judges', function(Blueprint $table) {
-			$table->dropForeign('judges_judge_id_foreign');
-			$table->dropForeign('judges_contest_id_foreign');
-			$table->dropForeign('judges_entry_id_foreign');
+		Schema::table('scores', function(Blueprint $table) {
+			$table->dropForeign(['judge_id']);
+			$table->dropForeign(['contest_id']);
+			$table->dropForeign(['entry_id']);
 		});
-		Schema::drop('judges');
+		Schema::drop('scores');
 	}
 
 }
