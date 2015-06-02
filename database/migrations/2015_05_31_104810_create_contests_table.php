@@ -32,7 +32,7 @@ class CreateContestsTable extends Migration
             $table->integer('max_entries');
             $table->integer('max_iteration');
             $table->boolean('team_entry_enabled')->default(false);
-            $table->integer('team_size');
+            $table->integer('team_size')->nullable();
             $table->timestamps();
             $table->foreign('maintainer_id')
                 ->references('id')
