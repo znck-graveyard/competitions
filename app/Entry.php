@@ -36,7 +36,7 @@ class Entry extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function moderator(){
-        return $this->hasOne(Moderator_Contestant::class);
+        return $this->belongsToMany(Moderator::class,'moderator_contestant');
     }
 
     /**
