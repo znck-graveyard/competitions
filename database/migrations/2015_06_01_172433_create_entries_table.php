@@ -23,6 +23,8 @@ class CreateEntriesTable extends Migration
             $table->boolean('is_team_entry')->default(false);
             $table->integer('entryable_id')->unsigned();
             $table->string('entryable_type')->unsigned();
+            $table->boolean('moderated')->default(0);
+            $table->text('moderation_comment');
             $table->timestamps();
             $table->foreign('contest_id')->references('id')->on('contests')->onUpdate('cascade');
         });
