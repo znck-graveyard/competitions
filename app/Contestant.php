@@ -11,6 +11,16 @@ class Contestant extends Model {
      */
     protected $fillable = ['user_id','contest_id'];
 
+    /**
+     * Contestant has submitted entries for a contest
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function contestantEntries(){
+        return $this->belongsToMany(Entry::class,"contestant_entry");
+    }
+
+
+
 
 
 }
