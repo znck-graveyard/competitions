@@ -15,6 +15,6 @@ class Moderator extends Model
      */
     public function verificationEntries()
     {
-        return $this->hasMany(Moderator_Contestant::class);
+        return $this->belongsToMany(Entry::class,"moderator_contestant");
     }
 }
