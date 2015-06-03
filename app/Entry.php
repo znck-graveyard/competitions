@@ -32,4 +32,19 @@ class Entry extends Model
         return $this->belongsTo(Contest::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function moderator(){
+        return $this->belongsToMany(Moderator::class,'moderator_contestant');
+    }
+
+    /**
+     * Many contestants can own an entry
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function owners(){
+        return $this->belongsToMany(Contestant::class,'contestant_entry');
+    }
+
 }
