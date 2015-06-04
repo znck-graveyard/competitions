@@ -10,7 +10,7 @@ class Reviewer extends Model {
 
 	public function contestants()
     {
-        return $this->belongsToMany(Contestant::class);
+        return $this->belongsToMany(Contest::class);
     }
 
 }
