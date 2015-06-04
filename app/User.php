@@ -39,7 +39,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
 
-    public function contests()
+    public function participatedContests()
     {
         return $this->belongsToMany(Contest::class, "contestants");
     }
@@ -64,4 +64,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->belongsToMany(Team::class, 'team_user');
     }
 
+
+    /**
+     * A user can have any no. of attributes
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function attributes()
+    {
+        return $this->hasMany(UserAttribute::class);
+    }
 }
