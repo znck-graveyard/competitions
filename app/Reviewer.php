@@ -8,9 +8,9 @@ class Reviewer extends Model {
 	protected $fillable = ['voted_at'];
 	protected $guarded = ['id'];
 
-	public function contestants()
+	public function contests()
     {
-        return $this->belongsToMany(Contestant::class);
+        return $this->belongsToMany(Contest::class);
     }
 
 }
