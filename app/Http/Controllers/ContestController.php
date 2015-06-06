@@ -17,7 +17,7 @@ class ContestController extends Controller
     public function index($type)
     {
         $contests = Contest::where('type', $type)->paginate(16);
-        return view('contest.indexCategory', comapact('contests'));
+        return view('contest.indexCategory', compact('contests'));
     }
 
     /**
