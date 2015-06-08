@@ -80,9 +80,33 @@ class EntriesController extends Controller {
 	public function destroy($id)
 	{
 		$entry = DB::table('entries')->where('id',$id)->first();
-		flash('Entry Deleted:'.$entry->filename);
 		$entry->delete();
 		return redirect()->home();
 	}
 
+	private function createOrUpdateEntry(Requests\CreateEntryRequest $request, $entry = null)
+    {
+        if (is_null($entry)) {
+            $entry = new Entry;
+        }
+        $entry->abstract = ucfirst($request->get('abstract'));
+        $file = $request->get('filename');
+        $attrs = explode('.',$file,2);
+        $entry->filename = $attrs[0];
+        $entry->filetype = $attrs[1];
+        $entry->file_size = filesize($file);
+        $entry->contest_id = $request->get('contest_id');
+        $entry->is_team_entry = $request->get('is_team_entry');
+        $entry->entryable_id = $request->get('entryable_id');
+        $entry->entryable_type = $request->get('entryable_type');
+        $entry->moderated = $request->get('moderated');
+        $entry->moderation_comment = $request->get('comment');
+
+        $entry->save();
+
+        
+    }
+
 }
+
+
