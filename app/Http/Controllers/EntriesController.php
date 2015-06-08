@@ -79,8 +79,7 @@ class EntriesController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		$entry = DB::table('entries')->where('id',$id)->first();
-		$entry->delete();
+		Entry::destroy(id);
 		return redirect()->home();
 	}
 
@@ -90,18 +89,16 @@ class EntriesController extends Controller {
             $entry = new Entry;
         }
         $entry->abstract = ucfirst($request->get('abstract'));
-        $file = $request->get('filename');
-        $attrs = explode('.',$file,2);
-        $entry->filename = $attrs[0];
-        $entry->filetype = $attrs[1];
-        $entry->file_size = filesize($file);
+        $file = $request->file('filename');
+        $entry->filename = $file->getClientOriginalName();
+        $entry->filetype = $file->getExtension();	
+        $entry->file_size = $file->getMaxFilesize();
         $entry->contest_id = $request->get('contest_id');
         $entry->is_team_entry = $request->get('is_team_entry');
         $entry->entryable_id = $request->get('entryable_id');
         $entry->entryable_type = $request->get('entryable_type');
         $entry->moderated = $request->get('moderated');
         $entry->moderation_comment = $request->get('comment');
-
         $entry->save();
 
         
