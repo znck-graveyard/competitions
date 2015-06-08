@@ -19,6 +19,8 @@ Route::controllers([
     'auth' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
 ]);
-Route::get('contest/{$type}', 'ContestController@index');
+Route::get('contest/{type}', 'ContestController@contestCategoryHome');
+
+Route::post('contest/createFirstTime', 'ContestController@storeFirstTime');
 
 Route::resource('contest', 'ContestController', ['except' => ['index']]);
