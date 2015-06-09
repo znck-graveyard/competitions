@@ -33,9 +33,21 @@ class EntriesController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store(Requests\CreateEntryRequest $request)
 	{
-		//
+		\DB::beginTransaction();
+        try {
+            $entry = $this->createOrUpdateEntry($request);
+            flash('Your entry has been added and waiting for approval.');
+       
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            throw $e;
+        }
+
+        \DB::commit();
+
+        return redirect()->back();
 	}
 
 	/**
@@ -66,9 +78,20 @@ class EntriesController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update(Requests\CreateEntryRequest $request, Entry $entry)
 	{
-		//
+		\DB::beginTransaction();
+        try {
+            $this->createOrUpdateEntry($request, $entry);
+            if (!$entry->abstract) flash('Your entry has been added and waiting for approval.');
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            throw $e;
+        }
+
+        \DB::commit();
+
+        return redirect()->back();
 	}
 
 	/**
@@ -101,7 +124,7 @@ class EntriesController extends Controller {
         $entry->moderation_comment = $request->get('comment');
         $entry->save();
 
-        
+        return [$entry];
     }
 
 }
