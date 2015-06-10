@@ -2,6 +2,8 @@
 
 use App\Contest;
 use App\Http\Requests;
+use App\User;
+use App\UserAttribute;
 use Illuminate\Contracts\Auth\Guard;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Auth;
@@ -47,8 +49,7 @@ class ContestController extends Controller
                 return view('contest.create');
             else
                 return view('contest.create_first_time');
-        }
-        else
+        } else
             return redirect('login');
     }
 
@@ -58,7 +59,21 @@ class ContestController extends Controller
      */
     public function storeFirstTime(Requests\UserDetailsRequest $request)
     {
-        //yet to do
+        
+        $id = $this->user->id();
+        $moderator = User::find($id);
+        $moderator->first_name = ucfirst($request->get('first_name'));
+        $moderator->last_name = ucfirst($request->get('last_name'));
+        $moderator->email = $request->get('email');
+        $moderator->date_of_birth = $request->get('date_of_birth');
+        $moderator->gender = $request->get('gender');
+        $short_bio = $request->get('short_bio');
+        $user_attribute = [
+            'user_id' => $id,
+            'key' => 'short_bio',
+            'value' => $short_bio
+        ];
+        UserAttribute::create($user_attribute);
 
         return view('contest.create');
     }
@@ -81,29 +96,31 @@ class ContestController extends Controller
         $e_time = $request->get('end_contest_time');//end time from form
         $e_timestamp = \Carbon::createFromTimestamp($e_date . $e_time);
         $contest->end_date = $e_timestamp;
-        $contest->name=$request->get('name');
-        $contest->description=$request->get('description');
-        $contest->rules=$request->get('rules');
-        $contest->type=$request->get('type');
-        $contest->submission_type=$request->get('submission_type');
-        $contest->max_entries=$request->get('max_entries');
-        $contest->max_iteration=$request->get('max_iteration');
-        $contest->peer_review_enabled=$request->get('peer_review_enabled');
-        if($contest->peer_review_enabled)
-            $contest->peer_review_weightage=$request->get('peer_review_weightage');
+        $contest->name = $request->get('name');
+        $contest->description = $request->get('description');
+        $contest->rules = $request->get('rules');
+        $contest->type = $request->get('type');
+        $contest->submission_type = $request->get('submission_type');
+        $contest->max_entries = $request->get('max_entries');
+        $contest->max_iteration = $request->get('max_iteration');
+        $contest->peer_review_enabled = $request->get('peer_review_enabled');
+        if ($contest->peer_review_enabled)
+            $contest->peer_review_weightage = $request->get('peer_review_weightage');
         else
-            $contest->peer_review_weightage=NULL;
-        $contest->manual_review_enabled=$request->get('manual_review_enabled');
-        if($contest->manual_review_enabled)
-            $contest->manual_review_weightage=$request->get('manual_review_weightage');
-        else
-            $contest->manual_review_weightage=NULL;
+            $contest->peer_review_weightage = NULL;
 
-        $contest->team_entry_enabled=$request->get('team_entry_enabled');
-        $contest->maintainer_id=$this->user->id();
+        $contest->manual_review_enabled = $request->get('manual_review_enabled');
+
+        if ($contest->manual_review_enabled)
+            $contest->manual_review_weightage = $request->get('manual_review_weightage');
+        else
+            $contest->manual_review_weightage = NULL;
+
+        $contest->team_entry_enabled = $request->get('team_entry_enabled');
+        $contest->maintainer_id = $this->user->id();
 
         $contest->save();
-        $this->user->is_maintainer=true;
+        $this->user->is_maintainer = true;
 
         return redirect('contest/{type}');//not sure about return
 
