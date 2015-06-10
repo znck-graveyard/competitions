@@ -17,7 +17,7 @@ class CreateUserAttributesTable extends Migration
             $table->bigIncrements('id');
             $table->integer('user_id')->unsigned()->index();
             $table->string('key');
-            $table->string('value');
+            $table->text('value');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
