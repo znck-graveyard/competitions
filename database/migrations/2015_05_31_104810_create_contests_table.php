@@ -19,7 +19,7 @@ class CreateContestsTable extends Migration
             $table->string('name');
             $table->text('description');
             $table->string("submission_type");
-            $table->string('image')->nullable();
+            $table->string('image');
             $table->text('rules');
             $table->timestamp('start_date');
             $table->timestamp('end_date');
