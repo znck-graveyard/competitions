@@ -12,7 +12,9 @@ class CreateContestRequest extends Request
      */
     public function authorize()
     {
-        //TODO
+        if (Auth::user()) {
+            return true;
+        }
         return false;
     }
 
@@ -35,10 +37,19 @@ class CreateContestRequest extends Request
             'max_entries' => 'required|integer',
             'max_iteration' => 'required|integer',
             'team_size' => 'required_if:team_entry_enabled|true',
-            'prize' => 'required'
-
+            'prize' => 'required',
+            'contest_banner' => 'required|image',
+            'judges' => 'required_if:manual_review_enabled,true'
 
         ];
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function forbiddenResponse()
+    {
+        return $this->redirector->route('login');
     }
 
 }
