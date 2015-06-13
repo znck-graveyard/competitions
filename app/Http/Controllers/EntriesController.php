@@ -39,7 +39,7 @@ class EntriesController extends Controller {
         try {
             $entry = $this->createOrUpdateEntry($request);
             flash('Your entry has been added and waiting for approval.');
-       
+         
         } catch (\Exception $e) {
             \DB::rollBack();
             throw $e;
@@ -56,9 +56,9 @@ class EntriesController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show(Requests\CreateEntryRequest $request, Entry $entry)
 	{
-		//
+		return $request->sendResponse($entry);
 	}
 
 	/**
@@ -69,7 +69,7 @@ class EntriesController extends Controller {
 	 */
 	public function edit($id)
 	{
-		//
+		return view('entries.edit', compact('entries'));
 	}
 
 	/**
