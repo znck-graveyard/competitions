@@ -16,8 +16,8 @@ class CreateUserAttributesTable extends Migration
         Schema::create('user_attributes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('user_id')->unsigned()->index();
-            $table->string('key')->index();
-            $table->string('value');
+            $table->string('key');
+            $table->text('value');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
