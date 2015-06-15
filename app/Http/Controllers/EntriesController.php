@@ -23,11 +23,102 @@ class EntriesController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function create()
+	public function create(Requests\UserDetailsRequest $request)
 	{
-		return view('entries.create');
+		$id = $this->user->id();
+		$contestant = User::find($id);
+		$entries = $contestant->contestantEntries;
+		if(is_null($entries)){
+			$this->firstTimeEntry($request)
+		}
+		else
+			return view('entries.create');
 	}
 
+	public function firstTimeEntry(Requests\UserDetailsRequest $request)
+	{
+		$id = $this->user->id();
+		$contestant = User::find($id);
+		$contestant->first_name = ucfirst($request->get('first_name'));
+		$contestant->last_name = $request->get('last_name');
+		$contestant->username = $request->get('username');
+	 	$contestant->email = $request->get('email');
+      	$contestant->date_of_birth = $request->get('date_of_birth');
+     	$contestant->gender = $request->get('gender');
+     	$this->userAttributes($request, $id);
+     	return view('entries.create');
+
+	}
+
+    public function userAttributes(Requests\UserDetailsRequest $request, $id)
+    {
+        $user_attribute = [];
+        $short_bio = $request->get('short_bio');
+
+        $user_attribute_short_bio = [
+             'user_id' => $id,
+             'key' => 'short_bio',
+             'value' => $short_bio
+         ];
+
+        $user_attributes[] = $user_attribute_short_bio;
+ 
+        if ($request->hasFile('profile_pic')) {
+            $file = $request->file('profile_pic');
+            $extension = $file->getClientOriginalExtension();
+            $filename = $file->getFilename() . '.' . $extension;
+            Storage::disk('local')->put($filename, File::get($file));
+            $user_attribute_profile_pic = [
+                'user_id' => $id,
+                'key' => 'profile_pic',
+                'value' => $filename
+            ];
+            $user_attributes[] = $user_attribute_profile_pic;
+        }
+        if ($request->hasFile('cover_image')) {
+            $file = $request->file('cover_image');
+            $extension = $file->getClientOriginalExtension();
+            $filename = $file->getFilename() . '.' . $extension;
+            Storage::disk('local')->put($filename, File::get($file));
+            $user_attribute_cover_image = [
+                'user_id' => $id,
+                'key' => 'cover_image',
+                'value' => $filename
+            ];
+            $user_attributes[] = $user_attribute_profile_pic;
+        }
+
+        if ($request->has('facebook_username')) {
+            $user_attribute_facebook = [
+                'user_id' => $id,
+                'key' => 'facebook_username',
+                'value' => $request->get('facebook_username')
+            ];
+            $user_attributes[] = $user_attribute_facebook;
+
+        }
+        if ($request->has('twitter_username')) {
+            $user_attribute_twitter = [
+                'user_id' => $id,
+                'key' => 'twitter_username',
+                'value' => $request->get('twitter_username')
+            ];
+            $user_attributes[] = $user_attribute_twitter;
+        }
+        if ($request->has('instagram_username')) {
+            $user_attribute_instagram = [
+                'user_id' => $id,
+                'key' => 'instagram_username',
+                'value' => $request->get('instagram_username')
+            ];
+            $user_attributes[] = $user_attribute_instagram;
+
+        }
+        foreach ($user_attributes as $attribute) {
+            UserAttribute::create($attribute);
+        }
+        return;
+     }
 	/**
 	 * Store a newly created resource in storage.
 	 *
@@ -38,7 +129,7 @@ class EntriesController extends Controller {
 		\DB::beginTransaction();
         try {
             $entry = $this->createOrUpdateEntry($request);
-            flash('Your entry has been added and waiting for approval.');
+            flash('Your entry has been added.');
          
         } catch (\Exception $e) {
             \DB::rollBack();
@@ -83,7 +174,7 @@ class EntriesController extends Controller {
 		\DB::beginTransaction();
         try {
             $this->createOrUpdateEntry($request, $entry);
-            if (!$entry->abstract) flash('Your entry has been added and waiting for approval.');
+            if (!$entry->abstract) flash('Your entry has been added.');
         } catch (\Exception $e) {
             \DB::rollBack();
             throw $e;
