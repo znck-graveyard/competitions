@@ -218,9 +218,12 @@ class EntriesController extends Controller {
 
         return [$entry];
     }
-    public function voteEntry()
+    public function voteEntry(Entry $entry)
     {
+        $entry_id = $entry->id;
+        DB::table('contestant_entry')->where('entry_id',$entry_id)->increment('votes_count');
         
+
     }
 
 }
