@@ -3,6 +3,7 @@
 use App\Http\Requests\Request;
 
 
+
 class UserDetailsRequest extends Request
 {
 
@@ -49,6 +50,7 @@ class UserDetailsRequest extends Request
 
 }
 
+
 class UserDetailsRequest extends Request {
 
 	/**
@@ -80,5 +82,8 @@ class UserDetailsRequest extends Request {
 		];
 	}
 
+
 }
 
+
+}
