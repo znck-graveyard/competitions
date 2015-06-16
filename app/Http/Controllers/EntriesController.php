@@ -197,11 +197,12 @@ class EntriesController extends Controller {
 		return redirect()->home();
 	}
 
-	private function createOrUpdateEntry(Requests\CreateEntryRequest $request, $entry = null)
+	public function createOrUpdateEntry(Requests\CreateEntryRequest $request, $entry = null)
     {
         if (is_null($entry)) {
             $entry = new Entry;
         }
+        
         $entry->abstract = ucfirst($request->get('abstract'));
         $file = $request->file('filename');
         $entry->filename = $file->getClientOriginalName();
@@ -216,6 +217,10 @@ class EntriesController extends Controller {
         $entry->save();
 
         return [$entry];
+    }
+    public function voteEntry()
+    {
+        
     }
 
 }
