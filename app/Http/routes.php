@@ -19,8 +19,13 @@ Route::controllers([
     'auth' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
 ]);
+Route::get('contest/{id}/{judge_string}','JudgementController@checkLink');
+
+Route::get('contest/administration/judge/{user_id}','JudgementController@contestJudge');
+
 Route::get('contest/{type}', 'ContestController@contestCategoryHome');
 
 Route::post('contest/createFirstTime', 'ContestController@storeFirstTime');
 
 Route::resource('contest', 'ContestController', ['except' => ['index']]);
+
