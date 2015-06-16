@@ -2,6 +2,7 @@
 
 use App\Contest;
 use App\Http\Requests;
+use App\Judge;
 use App\User;
 use App\UserAttribute;
 use Illuminate\Contracts\Auth\Guard;
@@ -310,17 +311,33 @@ class ContestController extends Controller
         }
         $contest->save();
 
+        $website = '';
         foreach ($request->judges as $judge) {
-
+            $judge_string = str_random(128);
+            $contest_id=$contest->id;
+            if((isset($judge['user_id']))){
+                $user_id=$judge['user_id'];
+            }
+            else{
+                $user_id=null;
+            }
             DB::table('judges')->insert(
                 array(
                     'contest_id' => $contest->id,
-                    'user_id' => $judge['user_id'],
+                    'user_id' =>$user_id,
                     'link' => $judge['link'],
-                    'email' => $judge['email']
-
+                    'email' => $judge['email'],
+                    'judge_string' => $judge_string
                 )
             );
+
+            $whole_judge_link = 'contest/'.$contest_id.'/'.$judge_string;
+            \Mail::queue('emails.judge', ['whole_judge_link' => $whole_judge_link, 'contest' => $contest->name], function ($message)
+            use ($judge)
+            {
+                $email = $judge['email'];
+                $message->to($email)->subject('Judgement Link');
+            });
         }
 
 
