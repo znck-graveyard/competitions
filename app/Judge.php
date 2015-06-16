@@ -8,9 +8,9 @@ class Judge extends Model {
 	protected $fillable = ['name', 'email'];
 	protected $guarded = ['id'];
 
-	public function contests()
+	public function contest()
     {
-        return $this->belongsToMany(Contest::class);
+        return $this->belongsTo(Contest::class);
     }
 
 }
