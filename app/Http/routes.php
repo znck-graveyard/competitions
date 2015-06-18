@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -25,3 +25,5 @@ Route::get('contest/{type}', 'ContestController@contestCategoryHome');
 Route::post('contest/createFirstTime', 'ContestController@storeFirstTime');
 
 Route::resource('contest', 'ContestController', ['except' => ['index']]);
+
+Route::get('entries/vote/{entry}','EntriesController@voteEntry',['middleware' => 'votelimit']);
