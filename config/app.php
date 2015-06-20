@@ -150,7 +150,7 @@ return [
 		'App\Providers\ConfigServiceProvider',
 		'App\Providers\EventServiceProvider',
 		'App\Providers\RouteServiceProvider',
-      //  'Laracasts\Flash\FlashServiceProvider'
+                'Laracasts\Flash\FlashServiceProvider'
 
 	],
 
@@ -201,8 +201,8 @@ return [
 		'View'      => 'Illuminate\Support\Facades\View',
 
 
-        //'Flash'     => 'Laracasts\Flash\Flash',
-        'Throttle' => 'GrahamCampbell\Throttle\Facades\Throttle'
+                'Flash'     => 'Laracasts\Flash\Flash',
+                'Throttle' => 'GrahamCampbell\Throttle\Facades\Throttle'
 
 
 
