@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration {
 			$table->enum('gender',array('MALE','FEMALE'))->default('MALE');
 			$table->string('password', 60);
 			$table->date('date_of_birth')->nullable();
-			$table->boolean('is_maintainer');
+			$table->boolean('is_maintainer')->default(false);
 			$table->timestamp('created_at');
 			$table->timestamp('updated_at');
 			$table->timestamp('deleted_at')->nullable();

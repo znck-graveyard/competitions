@@ -46,15 +46,14 @@ class ContestController extends Controller
      */
     public function create()
     {
+        $user=User::find($this->user->id);
 
-        if ($this->user->check()) {
-            $maintainer_bool = $this->user->is_maintainer;
+            $maintainer_bool = $user->is_maintainer;
             if ($maintainer_bool)
                 return view('contest.create');
             else
                 return view('contest.create_first_time');
-        } else
-            return redirect('login');
+
     }
 
     /**
@@ -64,7 +63,7 @@ class ContestController extends Controller
     public function storeFirstTime(Requests\UserDetailsRequest $request)
     {
 
-        $id = $this->user->id();
+        $id = $this->user->id;
         $moderator = User::find($id);
         $moderator->first_name = ucfirst($request->get('first_name'));
         $moderator->last_name = ucfirst($request->get('last_name'));
