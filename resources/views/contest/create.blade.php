@@ -1,12 +1,34 @@
 @extends('app')
 @section('head')
-    <link rel="stylesheet" type="text/css" href="{{ asset('/clockpickers/dist/bootstrap-clockpicker.min.css') }}">
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css" />
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
 
-    <script type="text/javascript" src="{{ asset('/clockpickers/dist/bootstrap-clockpicker.min.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="E:\competitions\public\datepicker\css\datepicker.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.0/jquery.timepicker.min.css">
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.0/jquery.timepicker.min.js"></script>
+    <script type="text/javascript" src="E:\competitions\public\datepicker\js\bootstrap-datepicker.js" ></script>
 
-    <script type="text/javascript">
-        $('.clockpicker').clockpicker();
+    <script>
+        $(document).ready(function() {
+            $("#startdatepicker").datepicker({
+                autoclose: true,
+                todayHighlight: true
+            }).datepicker('update', new Date());
+
+        });
+        $(document).ready(function() {
+            $("#enddatepicker").datepicker({
+                autoclose: true,
+                todayHighlight: true
+            }).datepicker('update', new Date());
+
+        });
     </script>
+
+
+
 @endsection
 @section('content')
 
@@ -62,29 +84,22 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="datepicker">Start Date*</label>
+                            <label for="start_date">Start Date*</label>
 
-                            <div class=" date">
-                                <input class="form-control datepicker"
-                                       placeholder="Select start date"/>
+                            <div id="startdatepicker" class="input-group date" data-date-format="mm-dd-yyyy">
+                                <input class="form-control" type="text" readonly placeholder="Select Start Date" name="start_date"/>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Time*</label>
+                            <label for="start_time">Time*</label>
 
-                            <div class="input-group clockpicker">
-
-                                <input type="text" class="form-control" value="00:00">
-                                <span class="input-group-addon">
-
-                                <span class="glyphicon glyphicon-time"></span>
-
-                                </span>
-
+                            <div>
+                                <input type="text" class="form-control time" name="start_time"
+                                       placeholder="hrs:min:sec"/>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -93,28 +108,18 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="datepicker">End Date*</label>
+                            <label for="end_date">End Date*</label>
 
-                            <div class=" date">
-                                <input class="form-control datepicker" id="datepicker"
-                                       placeholder="Select End date"/>
+                            <div id="enddatepicker" class="input-group date" data-date-format="mm-dd-yyyy">
+                                <input class="form-control" type="text" readonly placeholder="Select End Date" name="end_date"/>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Time*</label>
-
-                            <div class="input-group clockpicker">
-
-                                <input type="text" class="form-control" value="00:00">
-                                <span class="input-group-addon">
-
-                                <span class="glyphicon glyphicon-time"></span>
-
-                                </span>
-
-                            </div>
+                            <label for="end_time">Time*</label>
+                            <input type="text" class="form-control time" name="end_time" placeholder="hrs:min:sec"/>
 
                         </div>
                     </div>
