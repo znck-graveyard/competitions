@@ -18,6 +18,7 @@ class ContestantEntry extends Migration {
             $table->bigInteger('entry_id')->unsigned()->index();
             $table->bigInteger('contestant_id')->unsigned()->index();
             $table->integer('votes_count')->unsigned()->default(0);
+            $table->decimal('total_score');
 			$table->timestamps();
             $table->foreign('entry_id')->references('id')->on('entries')->onUpdate('cascade');
             $table->foreign('contestant_id')->references('id')->on('contestants')->onUpdate('cascade');

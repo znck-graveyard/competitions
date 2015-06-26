@@ -11,17 +11,19 @@
 |
 */
 
-Route::get('/', 'WelcomeController@index');
+Route::get('/', 'HomeController@index');
+Route::get('faq','HomeController@faq');
 
-Route::get('home', 'HomeController@index');
 
-Route::resource('entries','EntriesController');
+
 Route::controllers([
     'auth' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
 ]);
-Route::get('contest/{type}', 'ContestController@contestCategoryHome');
-
+Route::get('contest/create',array('uses' => 'ContestController@create', 'as' => 'contest.create'));
 Route::post('contest/createFirstTime', 'ContestController@storeFirstTime');
-
+Route::get('contest/administration/judge/{user_id}','JudgementController@contestJudge');
+Route::get('contest/category/{type}', 'ContestController@contestCategoryHome');
+Route::get('contest/{id}/{judge_string}','JudgementController@checkLink');
 Route::resource('contest', 'ContestController', ['except' => ['index']]);
+
