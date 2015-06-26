@@ -1,5 +1,8 @@
 <?php namespace App\Http\Controllers;
 
+use App\Entry;
+use Carbon\Carbon;
+
 class HomeController extends Controller {
 
 	/*
@@ -30,6 +33,10 @@ class HomeController extends Controller {
 	 */
 	public function index()
 	{
+        $days=8;
+        $fromDate=Carbon::now()->subDays($days)->format('Y-m-d');
+        $tillDate=Carbon::now()->format('Y-m-d');
+
 		return view('home');
 	}
 

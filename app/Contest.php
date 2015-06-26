@@ -26,6 +26,7 @@ class Contest extends Model
             'team_size'
         ];
 
+
     /**
      * A contest has many Constraints
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -66,5 +67,33 @@ class Contest extends Model
 
         return $this->hasMany(Team::class);
 
+    }
+
+    protected $submission_type = ['pdf', 'mp3', 'mp4', 'png', 'jpeg', 'jpg'];
+    public $type = [
+        'PHOTOGRAPHY',
+        'ART',
+        'SINGING',
+        'DANCE',
+        'MUSIC',
+        'SHORT FILMS',
+        'CONTENT WRITING',
+        'BUSINESS IDEA'];
+
+
+    /**
+     * @return array
+     */
+    public function getTypes()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSubmissionTypes()
+    {
+        return $this->submission_type;
     }
 }
