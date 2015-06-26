@@ -147,6 +147,57 @@
 #image-signup{
     background-image: url('../image/login.jpg');
     background-repeat: no-repeat;
-margin: 0px;
+    margin: 0px;
     padding: 0px;
+}
+
+
+.prize_label
+{
+
+
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+    box-sizing:border-box;
+    width:2em;
+
+
+    margin-top:5px;
+    padding:4px;
+    border-top:2px solid #666;
+    color:#fff;
+    background:#666;
+    font-weight:bold;
+    font-family:"Helvetica Neue", Arial, sans-serif;
+    text-align:center;
+    -webkit-border-radius: 8px 8px 8px 8px;
+    -moz-border-radius: 8px 8px 8px 8px;
+    -o-border-radius: 8px 8px 8px 8px;
+    border-radius: 8px 8px 8px 8px;
+}
+.borderless tr td,.borderless tbody tr,.borderless thead tr th{
+    border-top:none !important;
+}
+.table{
+    border:none !important;
+    border-top:none !important;
+
+}
+table td {
+    border-top: none !important;
+}
+
+.table th, .table td {
+    border-top: none !important;
+}
+
+.margin_right{
+    margin-right: 15px;
+}
+.margin_top{
+    margin-top: 50px;
+}
+
+.margin_bottom{
+    margin-bottom: 20px;
 }
