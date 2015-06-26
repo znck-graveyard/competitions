@@ -1,5 +1,8 @@
 <?php namespace App\Http\Controllers;
 
+use App\Entry;
+use Carbon\Carbon;
+
 class HomeController extends Controller {
 
 	/*
@@ -20,7 +23,7 @@ class HomeController extends Controller {
 	 */
 	public function __construct()
 	{
-		$this->middleware('auth');
+		//$this->middleware('auth');
 	}
 
 	/**
@@ -30,7 +33,20 @@ class HomeController extends Controller {
 	 */
 	public function index()
 	{
+        $days=8;
+        $fromDate=Carbon::now()->subDays($days)->format('Y-m-d');
+        $tillDate=Carbon::now()->format('Y-m-d');
+
 		return view('home');
 	}
+
+    public function faq(){
+        return view('faq');
+    }
+    public function about(){
+        return view('about');
+    }
+
+
 
 }

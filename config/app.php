@@ -135,7 +135,9 @@ return [
 		'Illuminate\Translation\TranslationServiceProvider',
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
-		'Znck\Flash\FlashServiceProvider', #Flash notifications
+        'Illuminate\Html\HtmlServiceProvider',
+
+
 		/*
 		 * Application Service Providers...
 		 */
@@ -144,7 +146,9 @@ return [
 		'App\Providers\ConfigServiceProvider',
 		'App\Providers\EventServiceProvider',
 		'App\Providers\RouteServiceProvider',
-        'Laracasts\Flash\FlashServiceProvider'
+
+        'Laracasts\Flash\FlashServiceProvider',
+        'Zizaco\Entrust\EntrustServiceProvider'
 
 	],
 
@@ -193,7 +197,10 @@ return [
 		'URL'       => 'Illuminate\Support\Facades\URL',
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
-		'Flash' => 'Znck\Flash\Flash',
+        'Flash'     => 'Laracasts\Flash\Flash',
+        'Entrust'   => 'Zizaco\Entrust\EntrustFacade',
+        'Form'      => 'Illuminate\Html\FormFacade',
+        'Html'      => 'Illuminate\Html\HtmlFacade',
 
 	],
 

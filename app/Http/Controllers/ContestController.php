@@ -2,6 +2,7 @@
 
 use App\Contest;
 use App\Http\Requests;
+use App\Judge;
 use App\User;
 use App\UserAttribute;
 use Illuminate\Contracts\Auth\Guard;
@@ -22,7 +23,7 @@ class ContestController extends Controller
     function __construct(Guard $auth)
     {
         $this->user = $auth->user();
-        $this->middleware('auth', ['only' => ['create', 'update', 'edit']]);
+        $this->middleware('auth', ['only' => ['create', 'update', 'edit','storeFirstTime']]);
     }
 
     /**
@@ -45,15 +46,17 @@ class ContestController extends Controller
      */
     public function create()
     {
+        $user = User::find($this->user->id);
 
-        if ($this->user->check()) {
-            $maintainer_bool = $this->user->is_maintainer;
-            if ($maintainer_bool)
-                return view('contest.create');
-            else
-                return view('contest.create_first_time');
-        } else
-            return redirect('login');
+        $maintainer_bool = $user->is_maintainer;
+        $contest=new Contest();
+        $types = $contest->getTypes();
+        $submission_types = $contest->getSubmissionTypes();
+        if ($maintainer_bool)
+            return view('contest.create')->with(['types' => $types, 'submission_types' => $submission_types]);
+        else
+            return view('contest.create_first_time');
+
     }
 
     /**
@@ -63,7 +66,7 @@ class ContestController extends Controller
     public function storeFirstTime(Requests\UserDetailsRequest $request)
     {
 
-        $id = $this->user->id();
+        $id = $this->user->id;
         $moderator = User::find($id);
         $moderator->first_name = ucfirst($request->get('first_name'));
         $moderator->last_name = ucfirst($request->get('last_name'));
@@ -72,7 +75,12 @@ class ContestController extends Controller
         $moderator->gender = $request->get('gender');
 
         $this->userAttributes($request, $id);
-        return view('contest.create');
+        $moderator->save();
+
+        $contest=new Contest();
+        $types = $contest->getTypes();
+        $submission_types = $contest->getSubmissionTypes();
+        return view('contest.create')->with(['types' => $types, 'submission_types' => $submission_types]);
     }
 
 
@@ -146,7 +154,7 @@ class ContestController extends Controller
         foreach ($user_attributes as $attribute) {
             UserAttribute::create($attribute);
         }
-        return;
+
     }
 
     /**
@@ -310,17 +318,31 @@ class ContestController extends Controller
         }
         $contest->save();
 
+        $website = '';
         foreach ($request->judges as $judge) {
-
+            $judge_string = str_random(128);
+            $contest_id = $contest->id;
+            if ((isset($judge['user_id']))) {
+                $user_id = $judge['user_id'];
+            } else {
+                $user_id = null;
+            }
             DB::table('judges')->insert(
                 array(
                     'contest_id' => $contest->id,
-                    'user_id' => $judge['user_id'],
-                    'link' => $judge['link'],
-                    'email' => $judge['email']
-
+                    'user_id' => $user_id,
+                    'name' => $judge['name'],
+                    'email' => $judge['email'],
+                    'judge_string' => $judge_string
                 )
             );
+
+            $whole_judge_link = 'contest/' . $contest_id . '/' . $judge_string;
+            \Mail::queue('emails.judge', ['whole_judge_link' => $whole_judge_link, 'contest' => $contest->name], function ($message)
+            use ($judge) {
+                $email = $judge['email'];
+                $message->to($email)->subject('Judgement Link');
+            });
         }
 
 

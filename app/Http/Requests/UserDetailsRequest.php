@@ -1,6 +1,5 @@
 <?php namespace App\Http\Requests;
 
-use App\Http\Requests\Request;
 
 
 
@@ -14,10 +13,9 @@ class UserDetailsRequest extends Request
      */
     public function authorize()
     {
-        if (Auth::user()) {
+
             return true;
-        }
-        return false;
+
 
     }
 
@@ -31,7 +29,7 @@ class UserDetailsRequest extends Request
         return [
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required|email|unique',
+            'email' => 'required|email|unique:users',
             'date_of_birth' => 'required|date',
             'gender' => 'required',
             'short_bio' => 'required',
