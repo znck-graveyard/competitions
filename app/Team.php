@@ -2,6 +2,23 @@
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Team
+ *
+ * @property-read Contest $contestName
+ * @property-read \Illuminate\Database\Eloquent\Collection|Entry[] $entriesSubmitted
+ * @property-read \Illuminate\Database\Eloquent\Collection|User[] $teamMembers
+ * @property integer $id 
+ * @property string $name 
+ * @property integer $contest_id 
+ * @property \Carbon\Carbon $created_at 
+ * @property \Carbon\Carbon $updated_at 
+ * @method static \Illuminate\Database\Query\Builder|\App\Team whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Team whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Team whereContestId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Team whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Team whereUpdatedAt($value)
+ */
 class Team extends Model
 {
 

@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <title>{{ $title or 'Blah Blah Blah' }}</title>
+
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -12,20 +14,10 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-
 
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
-    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="{{ asset('/javascript/app.js') }}"></script>
-
-
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     @yield('head')
 </head>
 <body>
@@ -64,7 +56,8 @@
                         </li>
                     @endif
                     <li>
-                        <button class="btn btn-default" name="contest_create" id="contest_create">CREATE CONTEST</button>
+                        <button class="btn btn-default" name="contest_create" id="contest_create">CREATE CONTEST
+                        </button>
                     </li>
                 </ul>
 
@@ -77,21 +70,16 @@
 <nav class="navbar navbar-default " role="navigation" id="secondary-nav">
     <div class="container">
         <div class="navbar-inner" id="contest-category">
-        <ul class="nav navbar-nav ">
-            <li><a href="{{ URL::to('contest/ART') }}">ART</a></li>
-            <li><a href="{{ URL::to('contest/MUSIC') }}">MUSIC</a></li>
-            <li><a href="{{ URL::to('contest/DANCE') }}">DANCE</a></li>
-            <li><a href="#">SINGING</a></li>
-            <li><a href="#">PHOTOGRAPHY</a></li>
-            <li><a href="#">SHORT FILMS</a></li>
-            <li><a href="#">CONTENT WRITING</a></li>
-            <li><a href="#">BUSINESS IDEA</a></li>
-        </ul>
+            <ul class="nav navbar-nav ">
+
+            </ul>
         </div>
     </div>
 </nav>
 
 @yield('content')
+
+<script type="text/javascript" src="{{ asset('/javascript/app.js') }}"></script>
 
 </body>
 </html>
