@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <title>{{ $title or 'Blah Blah Blah' }}</title>
+
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -64,7 +66,8 @@
                         </li>
                     @endif
                     <li>
-                        <button class="btn btn-default" name="contest_create" id="contest_create">CREATE CONTEST</button>
+                        <button class="btn btn-default" name="contest_create" id="contest_create">CREATE CONTEST
+                        </button>
                     </li>
                 </ul>
 
@@ -77,21 +80,16 @@
 <nav class="navbar navbar-default " role="navigation" id="secondary-nav">
     <div class="container">
         <div class="navbar-inner" id="contest-category">
-        <ul class="nav navbar-nav ">
-            <li><a href="{{ URL::to('contest/ART') }}">ART</a></li>
-            <li><a href="{{ URL::to('contest/MUSIC') }}">MUSIC</a></li>
-            <li><a href="{{ URL::to('contest/DANCE') }}">DANCE</a></li>
-            <li><a href="#">SINGING</a></li>
-            <li><a href="#">PHOTOGRAPHY</a></li>
-            <li><a href="#">SHORT FILMS</a></li>
-            <li><a href="#">CONTENT WRITING</a></li>
-            <li><a href="#">BUSINESS IDEA</a></li>
-        </ul>
+            <ul class="nav navbar-nav ">
+
+            </ul>
         </div>
     </div>
 </nav>
 
 @yield('content')
+
+<script type="text/javascript" src="{{ asset('/javascript/app.js') }}"></script>
 
 </body>
 </html>

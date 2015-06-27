@@ -2,6 +2,40 @@
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Entry
+ *
+ * @property-read \ $entryable
+ * @property-read Contest $contest
+ * @property-read \Illuminate\Database\Eloquent\Collection|Moderator[] $moderator
+ * @property-read \Illuminate\Database\Eloquent\Collection|Contestant[] $owners
+ * @property integer $id 
+ * @property string $abstract 
+ * @property string $filename 
+ * @property string $file_type 
+ * @property float $file_size 
+ * @property integer $contest_id 
+ * @property boolean $is_team_entry 
+ * @property integer $entryable_id 
+ * @property string $entryable_type 
+ * @property boolean $moderated 
+ * @property string $moderation_comment 
+ * @property \Carbon\Carbon $created_at 
+ * @property \Carbon\Carbon $updated_at 
+ * @method static \Illuminate\Database\Query\Builder|\App\Entry whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entry whereAbstract($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entry whereFilename($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entry whereFileType($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entry whereFileSize($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entry whereContestId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entry whereIsTeamEntry($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entry whereEntryableId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entry whereEntryableType($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entry whereModerated($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entry whereModerationComment($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entry whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entry whereUpdatedAt($value)
+ */
 class Entry extends Model
 {
     /**
