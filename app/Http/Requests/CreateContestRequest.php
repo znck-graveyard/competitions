@@ -12,10 +12,9 @@ class CreateContestRequest extends Request
      */
     public function authorize()
     {
-        if (Auth::user()) {
+
             return true;
-        }
-        return false;
+
     }
 
     /**
@@ -26,7 +25,7 @@ class CreateContestRequest extends Request
     public function rules()
     {
         return [
-            'name' => 'required|string|unique',
+            'name' => 'required|string|unique:contests',
             'type' => 'required|string',
             'start_date' => 'required|date',
             'end_date' => 'required|date',
@@ -36,7 +35,7 @@ class CreateContestRequest extends Request
             'manual_review_weightage' => 'required_if:manual_review_enabled,true',
             'max_entries' => 'required|integer',
             'max_iteration' => 'required|integer',
-            'team_size' => 'required_if:team_entry_enabled|true',
+            'team_size' => 'required_if:team_entry_enabled,true',
             'prize' => 'required',
             'contest_banner' => 'required|image',
             'judges' => 'required_if:manual_review_enabled,true'

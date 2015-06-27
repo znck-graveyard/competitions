@@ -23,7 +23,7 @@ class ContestController extends Controller
     function __construct(Guard $auth)
     {
         $this->user = $auth->user();
-        $this->middleware('auth', ['only' => ['create', 'update', 'edit','storeFirstTime']]);
+        $this->middleware('auth', ['only' => ['create', 'update', 'edit','storeFirstTime','store']]);
     }
 
     /**
