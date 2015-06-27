@@ -6,7 +6,7 @@
 @endsection
 @section('content')
 
-    <div class="jumbotron">
+    <div class="jumbotron picCheer darken">
         <hgroup style="text-align: center">
             <h1>Create a Contest</h1>
 
