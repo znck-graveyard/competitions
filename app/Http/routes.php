@@ -22,8 +22,9 @@ Route::controllers([
 ]);
 Route::get('contest/create',array('uses' => 'ContestController@create', 'as' => 'contest.create'));
 Route::post('contest/createFirstTime', 'ContestController@storeFirstTime');
+Route::post('contest/create', 'ContestController@store');
 Route::get('contest/administration/judge/{user_id}','JudgementController@contestJudge');
 Route::get('contest/category/{type}', 'ContestController@contestCategoryHome');
 Route::get('contest/{id}/{judge_string}','JudgementController@checkLink');
-Route::resource('contest', 'ContestController', ['except' => ['index']]);
+Route::resource('contest', 'ContestController', ['except' => ['index','store']]);
 
