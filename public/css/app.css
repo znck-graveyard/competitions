@@ -6390,4 +6390,14 @@ table td {
   margin-bottom: 20px;
 }
 
-/*# sourceMappingURL=app.css.map */
+.margin_bottom{
+    margin-bottom: 20px;
+}
+#datepicker {
+    width: 180px;
+    margin: 0 20px 20px 20px;
+}
+
+#datepicker > span:hover {
+    cursor: pointer;
+}
