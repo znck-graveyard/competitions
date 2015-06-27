@@ -1,8 +1,6 @@
 <?php namespace App\Http\Requests;
 
 
-
-
 class UserDetailsRequest extends Request
 {
 
@@ -14,7 +12,7 @@ class UserDetailsRequest extends Request
     public function authorize()
     {
 
-            return true;
+        return true;
 
 
     }
@@ -27,14 +25,14 @@ class UserDetailsRequest extends Request
     public function rules()
     {
         return [
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required|email|unique:users',
+            'first_name'    => 'required',
+            'last_name'     => 'required',
+            'email'         => 'required|email|unique:users',
             'date_of_birth' => 'required|date',
-            'gender' => 'required',
-            'short_bio' => 'required',
-            'profile_pic' => 'image',
-            'cover_image' => 'image'
+            'gender'        => 'required',
+            'short_bio'     => 'required',
+            'profile_pic'   => 'image',
+            'cover_image'   => 'image'
         ];
     }
 
@@ -45,43 +43,5 @@ class UserDetailsRequest extends Request
     {
         return $this->redirector->route('login');
     }
-
-}
-
-
-class UserDetailsRequest extends Request {
-
-	/**
-	 * Determine if the user is authorized to make this request.
-	 *
-	 * @return bool
-	 */
-	public function authorize()
-	{
-        //TODO
-		return false;
-	}
-
-	/**
-	 * Get the validation rules that apply to the request.
-	 *
-	 * @return array
-	 */
-	public function rules()
-	{
-		return [
-			'first_name'=>'required',
-            'last_name'=>'required',
-            'username' => 'required|string|unique',
-            'email'=>'required|email|unique',
-            'date_of_birth'=>'required|date',
-            'gender'=>'required',
-            'short_bio'=>'required'
-		];
-	}
-
-
-}
-
 
 }
