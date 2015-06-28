@@ -6224,8 +6224,11 @@ button.close {
     display: none !important;
   }
 }
-.text-white {
-  color: #fff;
+body,
+label,
+.checkbox label {
+  font-weight: 300;
+>>>>>>> d73fa586149862f2a7bf71ee1b8eb9578297fdf7
 }
 .flex-center-middle {
   display: -webkit-flex;
