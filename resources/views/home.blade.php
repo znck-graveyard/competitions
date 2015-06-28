@@ -3,7 +3,7 @@
 @section('content')
     <div class="carousel fade-carousel slide" data-ride="carousel" data-interval="4000" id="bs-carousel">
 
-        <div class="overlay"></div>
+
         <div class="carousel-inner">
             <div class="item slides active">
                 <div class="banner"></div>
@@ -22,6 +22,9 @@
             </div>
 
         </div>
+
+        @include('trending.contests')
+
     </div>
     </div>
 
