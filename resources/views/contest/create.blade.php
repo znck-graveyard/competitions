@@ -3,12 +3,10 @@
     <link href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css" />
     <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="E:\competitions\public\datepicker\css\datepicker.css">
     <link rel="stylesheet" type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.0/jquery.timepicker.min.css">
     <script type="text/javascript"
             src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.0/jquery.timepicker.min.js"></script>
-    <script type="text/javascript" src="E:\competitions\public\datepicker\js\bootstrap-datepicker.js" ></script>
 
     <script>
         $(document).ready(function() {
@@ -32,7 +30,7 @@
 @endsection
 @section('content')
 
-    <div class="jumbotron">
+    <div class="jumbotron picCheer darken">
         <hgroup style="text-align: center">
             <h1>Create a Contest</h1>
 
