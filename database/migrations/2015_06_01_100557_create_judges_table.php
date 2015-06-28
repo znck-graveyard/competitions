@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateJudgesTable extends Migration
 {
@@ -16,11 +16,12 @@ class CreateJudgesTable extends Migration
         Schema::create('judges', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('contest_id')->unsigned();
+            $table->integer('user_id')->unsigned()->nullable();
+
             $table->string('name');
             $table->string('email');
-            $table->integer('user_id')->unsigned()->nullable();
-            $table->string('link');
-            $table->string('judge_string')->nullable();
+            $table->string('token', 36);
+
             $table->timestamps();
 
             $table->foreign('contest_id')->references('id')->on('contests')->onDelete('cascade');
