@@ -26,4 +26,12 @@
             </div>
         </div>
     </div>
+    <br/>
+    <div class="container">
+        @include('trending.contests')
+    </div>
+    <br/>
+    <div class="container">
+        @include('trending.categories')
+    </div>
 @endsection

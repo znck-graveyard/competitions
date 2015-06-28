@@ -14,8 +14,8 @@
  * @property string                                                     $submission_type
  * @property string                                                     $image
  * @property string                                                     $rules
- * @property string                                                     $start_date
- * @property string                                                     $end_date
+ * @property \Carbon\Carbon                                             $start_date
+ * @property \Carbon\Carbon                                             $end_date
  * @property string                                                     $prize
  * @property boolean                                                    $peer_review_enabled
  * @property float                                                      $peer_review_weightage
@@ -75,6 +75,7 @@ class Contest extends \Eloquent
         'team_size'
     ];
 
+    protected $dates = ['start_date', 'end_date'];
 
     /**
      * A contest has many Constraints
@@ -95,6 +96,11 @@ class Contest extends \Eloquent
     public function contestants()
     {
         return $this->belongsToMany(User::class, "contestants");
+    }
+
+    public function entries()
+    {
+        return $this->hasMany(Entry::class);
     }
 
     /**

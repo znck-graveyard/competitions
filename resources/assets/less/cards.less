@@ -1,0 +1,42 @@
+.single-child-box {
+  position: relative;
+  &.square:before {
+    content: '';
+    display: block;
+    padding-top: 100%;
+  }
+  > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+}
+
+.card {
+  margin: 8px;
+  display: inline-block;
+  position: relative;
+  width: 248px;
+  height: 248px;
+  .caption {
+    padding: 8px 10px;
+    > div {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  &.overlay-caption {
+    .caption {
+      background-color: #000;
+      opacity: 0.8;
+      color: #fff;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+  }
+}

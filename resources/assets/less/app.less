@@ -9,6 +9,17 @@
   .button-variant(#000, #fff, #fff);
 }
 
+.panel-contests {
+  .panel-variant(transparent, #fff, transparent, transparent);
+  border: none;
+  .panel-heading {
+    .background-banner(url(../image/bg-header.png));
+    .panel-title {
+      padding: 8px 10px;
+    }
+  }
+}
+
 body, label, .checkbox label {
   font-weight: 300;
 }
@@ -22,6 +33,10 @@ body, label, .checkbox label {
 .navbar-default {
   background-image: url("../image/bg-header.png");
   background-repeat: no-repeat;
+}
+
+body {
+  background-color: #e7e7e7;
 }
 
 // Banner on homepage.
@@ -55,4 +70,5 @@ body, label, .checkbox label {
   }
 }
 
+@import 'cards';
 @import 'stats';
