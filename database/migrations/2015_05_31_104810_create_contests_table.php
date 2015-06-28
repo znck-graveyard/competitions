@@ -21,11 +21,6 @@ class CreateContestsTable extends Migration
             $table->text('description');
 
             $table->string('image')->nullable();
-            /*
-             * Color for overlay on
-             */
-            $table->string('bg_color', 10)->default('000000');
-            $table->string('color', 10)->nullable('ffffff');
 
             $table->boolean('public')->default(false);
 

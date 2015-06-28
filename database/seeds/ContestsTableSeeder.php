@@ -34,7 +34,6 @@ class ContestsTableSeeder extends Seeder
             $contest->submission_type = $fake->randomElement($allowed);
             $contest->image = null;
             $contest->bg_color = $fake->hexColor;
-            $contest->color = $fake->randomElement(['#000', '#fff']);
             $contest->rules = $fake->paragraph(15);
             $contest->start_date = $fake->dateTime;
             $contest->end_date = $fake->dateTimeBetween($contest->start_date, '2 years');
