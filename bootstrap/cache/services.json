@@ -28,6 +28,7 @@
         "App\\Providers\\ConfigServiceProvider",
         "App\\Providers\\EventServiceProvider",
         "App\\Providers\\RouteServiceProvider",
+        "App\\Providers\\ViewServiceProvider",
         "Laracasts\\Flash\\FlashServiceProvider",
         "Zizaco\\Entrust\\EntrustServiceProvider",
         "Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider"
@@ -49,6 +50,7 @@
         "App\\Providers\\ConfigServiceProvider",
         "App\\Providers\\EventServiceProvider",
         "App\\Providers\\RouteServiceProvider",
+        "App\\Providers\\ViewServiceProvider",
         "Laracasts\\Flash\\FlashServiceProvider",
         "Zizaco\\Entrust\\EntrustServiceProvider"
     ],
