@@ -16,15 +16,24 @@ class CreateContestsTable extends Migration
         Schema::create('contests', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->string('type');
+            $table->string('contest_type');
             $table->string('name');
-            $table->string('image');
             $table->text('description');
+
+            $table->string('image')->nullable();
+            /*
+             * Color for overlay on
+             */
+            $table->string('bg_color', 10)->default('000000');
+            $table->string('color', 10)->nullable('ffffff');
+
+            $table->boolean('public')->default(false);
 
             $table->string("submission_type");
             $table->text('rules');
 
-            $table->string("prize");
+            $table->double("prize");
+            $table->string('prize_description')->nullable();
 
             $table->boolean('peer_review_enabled');
             $table->decimal('peer_review_weightage')->nullable();

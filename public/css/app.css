@@ -6286,6 +6286,35 @@ fieldset[disabled] .btn-white.active {
   color: #ffffff;
   background-color: #000000;
 }
+.panel-contests {
+  border-color: transparent;
+  border: none;
+}
+.panel-contests > .panel-heading {
+  color: #ffffff;
+  background-color: transparent;
+  border-color: transparent;
+}
+.panel-contests > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: transparent;
+}
+.panel-contests > .panel-heading .badge {
+  color: transparent;
+  background-color: #ffffff;
+}
+.panel-contests > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: transparent;
+}
+.panel-contests .panel-heading {
+  background-position: center center;
+  background-image: url(../image/bg-header.png);
+  background-repeat: no-repeat no-repeat;
+  background-size: 100%;
+  background-size: cover;
+}
+.panel-contests .panel-heading .panel-title {
+  padding: 8px 10px;
+}
 body,
 label,
 .checkbox label {
@@ -6298,6 +6327,9 @@ label,
 .navbar-default {
   background-image: url("../image/bg-header.png");
   background-repeat: no-repeat;
+}
+body {
+  background-color: #e7e7e7;
 }
 #home-banner {
   background-position: center center;
@@ -6347,6 +6379,45 @@ label,
   -webkit-flex: 0 0 160px;
   -ms-flex: 0 0 160px;
   flex: 0 0 160px;
+}
+.single-child-box {
+  position: relative;
+}
+.single-child-box.square:before {
+  content: '';
+  display: block;
+  padding-top: 100%;
+}
+.single-child-box > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+.card {
+  margin: 8px;
+  display: inline-block;
+  position: relative;
+  width: 248px;
+  height: 248px;
+}
+.card .caption {
+  padding: 8px 10px;
+}
+.card .caption > div {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card.overlay-caption .caption {
+  background-color: #000;
+  opacity: 0.8;
+  color: #fff;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 .stat-number {
   font-size: 1.2em;
