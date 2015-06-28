@@ -36,7 +36,7 @@ class CreateReviewersTable extends Migration
     public function down()
     {
         Schema::table('reviewers', function (Blueprint $table) {
-            $table->dropForeign('reviewers_user_id_foreign');
+            // $table->dropForeign('reviewers_user_id_foreign');
             $table->dropForeign('reviewers_contest_id_foreign');
         });
         Schema::drop('reviewers');

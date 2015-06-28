@@ -15,18 +15,18 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
  * @property-read \Illuminate\Database\Eloquent\Collection|Team[] $teams
  * @property-read \Illuminate\Database\Eloquent\Collection|UserAttribute[] $attributes
  * @property-read \Illuminate\Database\Eloquent\Collection|\Config::get('entrust.role[] $roles
- * @property integer $id 
- * @property string $username 
- * @property string $email 
- * @property string $first_name 
- * @property string $last_name 
- * @property string $gender 
- * @property string $password 
- * @property string $date_of_birth 
- * @property boolean $is_maintainer 
- * @property \Carbon\Carbon $created_at 
- * @property \Carbon\Carbon $updated_at 
- * @property string $deleted_at 
+ * @property integer $id
+ * @property string $username
+ * @property string $email
+ * @property string $first_name
+ * @property string $last_name
+ * @property string $gender
+ * @property string $password
+ * @property string $date_of_birth
+ * @property boolean $is_maintainer
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property string $deleted_at
  * @method static \Illuminate\Database\Query\Builder|\App\User whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\User whereUsername($value)
  * @method static \Illuminate\Database\Query\Builder|\App\User whereEmail($value)

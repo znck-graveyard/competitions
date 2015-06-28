@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
  * App\Reviewer
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|Contest[] $contests
- * @property integer $id 
- * @property integer $contest_id 
- * @property integer $user_id 
- * @property string $voted_at 
- * @property integer $entry_id 
+ * @property integer $id
+ * @property integer $contest_id
+ * @property integer $user_id
+ * @property string $voted_at
+ * @property integer $entry_id
  * @method static \Illuminate\Database\Query\Builder|\App\Reviewer whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Reviewer whereContestId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Reviewer whereUserId($value)

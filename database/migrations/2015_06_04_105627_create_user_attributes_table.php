@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateUserAttributesTable extends Migration
 {
@@ -15,7 +15,7 @@ class CreateUserAttributesTable extends Migration
     {
         Schema::create('user_attributes', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('user_id')->unsigned()->index();
+            $table->unsignedInteger('user_id')->index();
             $table->string('key');
             $table->text('value');
             $table->timestamps();
@@ -33,7 +33,6 @@ class CreateUserAttributesTable extends Migration
         Schema::table('user_attributes', function ($table) {
             $table->dropForeign(['user_id']);
             $table->dropIndex(['user_id']);
-            $table->dropIndex(['key']);
         });
         Schema::drop('user_attributes');
     }
