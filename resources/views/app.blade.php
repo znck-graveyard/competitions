@@ -14,74 +14,49 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-
-
-    <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
-    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
-
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="{{ asset('/javascript/app.js') }}"></script>
-
 
     @yield('head')
 </head>
 <body>
 
-
-<nav class="navbar navbar-default" role="navigation" id="navbar-head">
-    <div class="navbar-inner">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                        data-target="#navbar-collapse">
-                    <span class="sr-only">Toggle Navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">XYZ.com</a>
-            </div>
-
-
-            <div class="collapse navbar-collapse" id="navbar-collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{{ url('/') }}">About</a></li>
-                    <li><a href="{{ url('/faq') }}">FAQ</a></li>
-                    @if (Auth::guest())
-                        <li><a href="{{ url('/auth/register') }}">Login/SignUp</a></li>
-
-                    @else
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-expanded="false">{{ Auth::user()->first_name }} <span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ url('/auth/profile') }}">Profile</a></li>
-                                <li><a href="{{ url('/auth/logout') }}">Logout</a></li>
-                            </ul>
-                        </li>
-                    @endif
-                    <li>
-                        <button class="btn btn-default" name="contest_create" id="contest_create">CREATE CONTEST
-                        </button>
-                    </li>
-                </ul>
-
-
-            </div>
-
-        </div>
-    </div>
-</nav>
-<nav class="navbar navbar-default " role="navigation" id="secondary-nav">
+<nav class="navbar navbar-default">
     <div class="container">
-        <div class="navbar-inner" id="contest-category">
-            <ul class="nav navbar-nav ">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#navbar-collapse">
+                <span class="sr-only">Toggle Navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">XYZ.com</a>
+        </div>
 
+        <div class="collapse navbar-collapse clearfix" id="navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{ url('/') }}">About</a></li>
+                <li><a href="{{ url('/faq') }}">FAQ</a></li>
+                @if (Auth::guest())
+                    <li><a href="{{ url('/auth/register') }}">Login/SignUp</a></li>
+                @else
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-expanded="false">{{ Auth::user()->first_name }} <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="{{ url('/auth/profile') }}">Profile</a></li>
+                            <li><a href="{{ url('/auth/logout') }}">Logout</a></li>
+                        </ul>
+                    </li>
+                @endif
+                <li>
+                    <p class="navbar-btn">
+                        <a class="btn btn-white text-uppercase" href="#">create contest</a>
+                    </p>
+                </li>
             </ul>
         </div>
     </div>
@@ -90,6 +65,20 @@
 @yield('content')
 
 <script type="text/javascript" src="{{ asset('/javascript/app.js') }}"></script>
+<script>
+    var $buoop = {c: 2};
+    function $buo_f() {
+        var e = document.createElement("script");
+        e.src = "//browser-update.org/update.min.js";
+        document.body.appendChild(e);
+    }
 
+    try {
+        document.addEventListener("DOMContentLoaded", $buo_f, false)
+    }
+    catch (e) {
+        window.attachEvent("onload", $buo_f)
+    }
+</script>
 </body>
 </html>

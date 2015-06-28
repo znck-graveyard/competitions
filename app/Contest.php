@@ -26,6 +26,7 @@
  * @property integer                                                    $max_iteration
  * @property boolean                                                    $team_entry_enabled
  * @property integer                                                    $team_size
+ * @property integer                                                    $page_view
  * @property \Carbon\Carbon                                             $created_at
  * @property \Carbon\Carbon                                             $updated_at
  * @method static \Illuminate\Database\Query\Builder|\App\Contest whereId($value)
@@ -49,6 +50,7 @@
  * @method static \Illuminate\Database\Query\Builder|\App\Contest whereTeamSize($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Contest whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Contest whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Contest wherePageView($value)
  */
 class Contest extends \Eloquent
 {
@@ -57,22 +59,21 @@ class Contest extends \Eloquent
      *
      * @var array
      */
-    protected $fillable =
-        [
-            'type',
-            'name',
-            'description',
-            'submission_type',
-            'rules',
-            'peer_review_enabled',
-            'peer_review_weightage',
-            'manual_review_enabled',
-            'manual_review_weightage',
-            'max_entries',
-            'max_iteration',
-            'team_entry_enabled',
-            'team_size'
-        ];
+    protected $fillable = [
+        'type',
+        'name',
+        'description',
+        'submission_type',
+        'rules',
+        'peer_review_enabled',
+        'peer_review_weightage',
+        'manual_review_enabled',
+        'manual_review_weightage',
+        'max_entries',
+        'max_iteration',
+        'team_entry_enabled',
+        'team_size'
+    ];
 
 
     /**
@@ -83,7 +84,6 @@ class Contest extends \Eloquent
     public function constraints()
     {
         return $this->hasMany(Constraint::class);
-
     }
 
 
