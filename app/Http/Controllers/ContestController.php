@@ -1,15 +1,11 @@
 <?php namespace App\Http\Controllers;
 
 use App\Contest;
+use App\Http\Controllers\Auth;
 use App\Http\Requests;
-use App\Judge;
 use App\User;
 use App\UserAttribute;
 use Illuminate\Contracts\Auth\Guard;
-use App\Http\Controllers\Controller;
-use App\Http\Controllers\Auth;
-
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -23,18 +19,20 @@ class ContestController extends Controller
     function __construct(Guard $auth)
     {
         $this->user = $auth->user();
-        $this->middleware('auth', ['only' => ['create', 'update', 'edit','storeFirstTime','store']]);
+        $this->middleware('auth', ['only' => ['create', 'update', 'edit', 'storeFirstTime', 'store']]);
     }
 
     /**
      * Display a listing of the resource.
      *
      * @param $type
+     *
      * @return Response
      */
     public function contestCategoryHome($type)
     {
         $contests = Contest::where('type', $type)->paginate(16);
+
         return view('contest.indexCategory', compact('contests'));
     }
 
@@ -49,18 +47,20 @@ class ContestController extends Controller
         $user = User::find($this->user->id);
 
         $maintainer_bool = $user->is_maintainer;
-        $contest=new Contest();
+        $contest = new Contest();
         $types = $contest->getTypes();
         $submission_types = $contest->getSubmissionTypes();
-        if ($maintainer_bool)
+        if ($maintainer_bool) {
             return view('contest.create')->with(['types' => $types, 'submission_types' => $submission_types]);
-        else
+        } else {
             return view('contest.create_first_time');
+        }
 
     }
 
     /**
      * @param Requests\UserDetailsRequest $request
+     *
      * @return \Illuminate\View\View
      */
     public function storeFirstTime(Requests\UserDetailsRequest $request)
@@ -77,17 +77,19 @@ class ContestController extends Controller
         $this->userAttributes($request, $id);
         $moderator->save();
 
-        $contest=new Contest();
+        $contest = new Contest();
         $types = $contest->getTypes();
         $submission_types = $contest->getSubmissionTypes();
+
         return view('contest.create')->with(['types' => $types, 'submission_types' => $submission_types]);
     }
 
 
     /**
      * Entering User Attributes
+     *
      * @param Requests\UserDetailsRequest $request
-     * @param $id
+     * @param                             $id
      */
     public function userAttributes(Requests\UserDetailsRequest $request, $id)
     {
@@ -95,8 +97,8 @@ class ContestController extends Controller
         $short_bio = $request->get('short_bio');
         $user_attribute_short_bio = [
             'user_id' => $id,
-            'key' => 'short_bio',
-            'value' => $short_bio
+            'key'     => 'short_bio',
+            'value'   => $short_bio
         ];
         $user_attributes[] = $user_attribute_short_bio;
 
@@ -107,8 +109,8 @@ class ContestController extends Controller
             Storage::disk('local')->put($filename, File::get($file));
             $user_attribute_profile_pic = [
                 'user_id' => $id,
-                'key' => 'profile_pic',
-                'value' => $filename
+                'key'     => 'profile_pic',
+                'value'   => $filename
             ];
             $user_attributes[] = $user_attribute_profile_pic;
         }
@@ -119,8 +121,8 @@ class ContestController extends Controller
             Storage::disk('local')->put($filename, File::get($file));
             $user_attribute_cover_image = [
                 'user_id' => $id,
-                'key' => 'cover_image',
-                'value' => $filename
+                'key'     => 'cover_image',
+                'value'   => $filename
             ];
             $user_attributes[] = $user_attribute_profile_pic;
         }
@@ -128,8 +130,8 @@ class ContestController extends Controller
         if ($request->has('facebook_username')) {
             $user_attribute_facebook = [
                 'user_id' => $id,
-                'key' => 'facebook_username',
-                'value' => $request->get('facebook_username')
+                'key'     => 'facebook_username',
+                'value'   => $request->get('facebook_username')
             ];
             $user_attributes[] = $user_attribute_facebook;
 
@@ -137,16 +139,16 @@ class ContestController extends Controller
         if ($request->has('twitter_username')) {
             $user_attribute_twitter = [
                 'user_id' => $id,
-                'key' => 'twitter_username',
-                'value' => $request->get('twitter_username')
+                'key'     => 'twitter_username',
+                'value'   => $request->get('twitter_username')
             ];
             $user_attributes[] = $user_attribute_twitter;
         }
         if ($request->has('instagram_username')) {
             $user_attribute_instagram = [
                 'user_id' => $id,
-                'key' => 'instagram_username',
-                'value' => $request->get('instagram_username')
+                'key'     => 'instagram_username',
+                'value'   => $request->get('instagram_username')
             ];
             $user_attributes[] = $user_attribute_instagram;
 
@@ -161,6 +163,7 @@ class ContestController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Requests\CreateContestRequest $request
+     *
      * @return Response
      * @throws \Exception
      */
@@ -181,6 +184,7 @@ class ContestController extends Controller
         }
 
         \DB::commit();
+
         return redirect('contest/{type}');//not sure about return
 
     }
@@ -188,12 +192,12 @@ class ContestController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int $id
-     * @return Response
+     * @param \App\Contest $contest
+     *
+     * @return \App\Http\Controllers\Response
      */
-    public function show($id)
+    public function show(Contest $contest)
     {
-        $contest = Contest::findOrFail($id);
         return view('contest.show', compact('contest'));
     }
 
@@ -201,6 +205,7 @@ class ContestController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int $id
+     *
      * @return Response
      */
     public function edit($id)
@@ -212,6 +217,7 @@ class ContestController extends Controller
             return view('contest.create', compact('contest'));
         } else {
             flash()->warning("Access Denied");
+
             return redirect()->back();
 
         }
@@ -222,8 +228,9 @@ class ContestController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $id
+     * @param  int                          $id
      * @param Requests\CreateContestRequest $request
+     *
      * @return Response
      * @throws \Exception
      */
@@ -244,6 +251,7 @@ class ContestController extends Controller
             \DB::commit();
         } else {
             flash()->warning("Access Denied");
+
             return redirect()->back();
 
         }
@@ -255,6 +263,7 @@ class ContestController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int $id
+     *
      * @return Response
      */
     public function destroy($id)
@@ -265,9 +274,11 @@ class ContestController extends Controller
         if ($user_id == $maintainer_id) {
             $contest = Contest::find($id);
             $contest->delete();
+
             return redirect()->home();
         } else {
             flash()->warning("Access Denied");
+
             return redirect()->back();
         }
 
@@ -295,17 +306,19 @@ class ContestController extends Controller
         $contest->max_entries = $request->get('max_entries');
         $contest->max_iteration = $request->get('max_iteration');
         $contest->peer_review_enabled = $request->get('peer_review_enabled');
-        if ($contest->peer_review_enabled)
+        if ($contest->peer_review_enabled) {
             $contest->peer_review_weightage = $request->get('peer_review_weightage');
-        else
-            $contest->peer_review_weightage = NULL;
+        } else {
+            $contest->peer_review_weightage = null;
+        }
 
         $contest->manual_review_enabled = $request->get('manual_review_enabled');
 
-        if ($contest->manual_review_enabled)
+        if ($contest->manual_review_enabled) {
             $contest->manual_review_weightage = $request->get('manual_review_weightage');
-        else
-            $contest->manual_review_weightage = NULL;
+        } else {
+            $contest->manual_review_weightage = null;
+        }
 
         $contest->team_entry_enabled = $request->get('team_entry_enabled');
         $contest->maintainer_id = $this->user->id();
@@ -328,21 +341,22 @@ class ContestController extends Controller
                 $user_id = null;
             }
             DB::table('judges')->insert(
-                array(
-                    'contest_id' => $contest->id,
-                    'user_id' => $user_id,
-                    'name' => $judge['name'],
-                    'email' => $judge['email'],
+                [
+                    'contest_id'   => $contest->id,
+                    'user_id'      => $user_id,
+                    'name'         => $judge['name'],
+                    'email'        => $judge['email'],
                     'judge_string' => $judge_string
-                )
+                ]
             );
 
             $whole_judge_link = 'contest/' . $contest_id . '/' . $judge_string;
-            \Mail::queue('emails.judge', ['whole_judge_link' => $whole_judge_link, 'contest' => $contest->name], function ($message)
-            use ($judge) {
-                $email = $judge['email'];
-                $message->to($email)->subject('Judgement Link');
-            });
+            \Mail::queue('emails.judge', ['whole_judge_link' => $whole_judge_link, 'contest' => $contest->name],
+                function ($message)
+                use ($judge) {
+                    $email = $judge['email'];
+                    $message->to($email)->subject('Judgement Link');
+                });
         }
 
 

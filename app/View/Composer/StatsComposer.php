@@ -1,6 +1,7 @@
 <?php namespace App\View\Composer;
 
 use App\Contest;
+use App\Entry;
 use Illuminate\Contracts\View\View;
 
 /**
@@ -17,13 +18,20 @@ class StatsComposer
     protected $contests;
 
     /**
+     * @type \App\Entry
+     */
+    protected $entries;
+
+    /**
      * @param \App\Contest $contests
+     * @param \App\Entry   $entries
      *
      * @internal param \App\Entry $entries
      */
-    public function __construct(Contest $contests)
+    public function __construct(Contest $contests, Entry $entries)
     {
         $this->contests = $contests;
+        $this->entries = $entries;
     }
 
     /**
@@ -49,7 +57,7 @@ class StatsComposer
             return (object)[
                 'contests' => number_format($self->contests->count()),
                 'views'    => number_format($self->contests->sum('page_view')),
-                'entries'  => number_format($self->contests->entries()->count()),
+                'entries'  => number_format($self->entries->count()),
                 'prize'    => number_format($self->contests->sum('prize')),
             ];
         });

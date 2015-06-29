@@ -29,5 +29,8 @@ Route::group(['prefix' => 'contest'], function () {
     Route::post('createFirstTime', 'ContestController@storeFirstTime');
     Route::post('create', 'ContestController@store');
 });
-Route::resource('contest', 'ContestController', ['except' => ['index', 'store']]);
 
+Route::resource('contest', 'ContestController', ['except' => ['index', 'store']]);
+Route::bind('contest', function ($slug) {
+    return \App\Contest::whereSlug($slug)->firstOrFail();
+});
