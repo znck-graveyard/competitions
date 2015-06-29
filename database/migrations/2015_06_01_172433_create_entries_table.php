@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateEntriesTable extends Migration
 {
@@ -15,16 +15,21 @@ class CreateEntriesTable extends Migration
     {
         Schema::create('entries', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('title');
             $table->text('abstract');
-            $table->string('filename');
-            $table->string('file_type');
-            $table->decimal('file_size');
-            $table->integer('contest_id')->unsigned()->index();
+            $table->string('filename')->nullable();
+            $table->string('file_type')->nullable();
+            $table->decimal('file_size')->nullable();
+
             $table->boolean('is_team_entry')->default(false);
+
+            $table->integer('contest_id')->unsigned()->index();
             $table->integer('entryable_id')->unsigned();
             $table->string('entryable_type')->unsigned();
-            $table->boolean('moderated')->default(0);
-            $table->text('moderation_comment');
+
+            $table->boolean('moderated')->default(false);
+            $table->text('moderation_comment')->nullable();
+
             $table->timestamps();
             $table->foreign('contest_id')->references('id')->on('contests')->onUpdate('cascade');
         });

@@ -14,8 +14,8 @@
  * @property string                                                     $submission_type
  * @property string                                                     $image
  * @property string                                                     $rules
- * @property string                                                     $start_date
- * @property string                                                     $end_date
+ * @property \Carbon\Carbon                                             $start_date
+ * @property \Carbon\Carbon                                             $end_date
  * @property string                                                     $prize
  * @property boolean                                                    $peer_review_enabled
  * @property float                                                      $peer_review_weightage
@@ -26,6 +26,7 @@
  * @property integer                                                    $max_iteration
  * @property boolean                                                    $team_entry_enabled
  * @property integer                                                    $team_size
+ * @property integer                                                    $page_view
  * @property \Carbon\Carbon                                             $created_at
  * @property \Carbon\Carbon                                             $updated_at
  * @method static \Illuminate\Database\Query\Builder|\App\Contest whereId($value)
@@ -49,6 +50,16 @@
  * @method static \Illuminate\Database\Query\Builder|\App\Contest whereTeamSize($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Contest whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Contest whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Contest wherePageView($value)
+ * @property string $contest_type 
+ * @property string $slug 
+ * @property boolean $public 
+ * @property string $prize_description 
+ * @property-read \Illuminate\Database\Eloquent\Collection|Entry[] $entries 
+ * @method static \Illuminate\Database\Query\Builder|\App\Contest whereContestType($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Contest whereSlug($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Contest wherePublic($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Contest wherePrizeDescription($value)
  */
 class Contest extends \Eloquent
 {
@@ -57,23 +68,23 @@ class Contest extends \Eloquent
      *
      * @var array
      */
-    protected $fillable =
-        [
-            'type',
-            'name',
-            'description',
-            'submission_type',
-            'rules',
-            'peer_review_enabled',
-            'peer_review_weightage',
-            'manual_review_enabled',
-            'manual_review_weightage',
-            'max_entries',
-            'max_iteration',
-            'team_entry_enabled',
-            'team_size'
-        ];
+    protected $fillable = [
+        'type',
+        'name',
+        'description',
+        'submission_type',
+        'rules',
+        'peer_review_enabled',
+        'peer_review_weightage',
+        'manual_review_enabled',
+        'manual_review_weightage',
+        'max_entries',
+        'max_iteration',
+        'team_entry_enabled',
+        'team_size'
+    ];
 
+    protected $dates = ['start_date', 'end_date'];
 
     /**
      * A contest has many Constraints
@@ -83,7 +94,6 @@ class Contest extends \Eloquent
     public function constraints()
     {
         return $this->hasMany(Constraint::class);
-
     }
 
 
@@ -95,6 +105,11 @@ class Contest extends \Eloquent
     public function contestants()
     {
         return $this->belongsToMany(User::class, "contestants");
+    }
+
+    public function entries()
+    {
+        return $this->hasMany(Entry::class);
     }
 
     /**

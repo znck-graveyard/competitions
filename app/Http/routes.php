@@ -12,19 +12,25 @@
 */
 
 Route::get('/', 'HomeController@index');
-Route::get('faq','HomeController@faq');
-
+Route::get('faq', 'HomeController@faq');
 
 
 Route::controllers([
-    'auth' => 'Auth\AuthController',
+    'auth'     => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
 ]);
-Route::get('contest/create',array('uses' => 'ContestController@create', 'as' => 'contest.create'));
-Route::post('contest/createFirstTime', 'ContestController@storeFirstTime');
-Route::post('contest/create', 'ContestController@store');
-Route::get('contest/administration/judge/{user_id}','JudgementController@contestJudge');
-Route::get('contest/category/{type}', 'ContestController@contestCategoryHome');
-Route::get('contest/{id}/{judge_string}','JudgementController@checkLink');
-Route::resource('contest', 'ContestController', ['except' => ['index','store']]);
 
+Route::group(['prefix' => 'contest'], function () {
+    Route::get('create', ['uses' => 'ContestController@create', 'as' => 'contest.create']);
+    Route::get('administration/judge/{id}', 'JudgementController@contestJudge');
+    Route::get('category/{type}', 'ContestController@contestCategoryHome');
+    Route::get('judge/{uid}', 'JudgementController@checkLink');
+
+    Route::post('createFirstTime', 'ContestController@storeFirstTime');
+    Route::post('create', 'ContestController@store');
+});
+
+Route::resource('contest', 'ContestController', ['except' => ['index', 'store']]);
+Route::bind('contest', function ($slug) {
+    return \App\Contest::whereSlug($slug)->firstOrFail();
+});

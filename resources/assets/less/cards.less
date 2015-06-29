@@ -1,0 +1,89 @@
+.single-child-box {
+  position: relative;
+  &.square:before {
+    content: '';
+    display: block;
+    padding-top: 100%;
+  }
+  > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+}
+
+.card {
+  width: 150px;
+  height: 150px;
+
+  @media (min-width: @screen-sm-min) {
+    width: 248px;
+    height: 248px;
+  }
+
+  margin: 8px auto 0;
+  display: inline-block;
+  position: relative;
+  background-position: top left;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  .caption {
+    padding: 8px 10px;
+    > div {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  &.overlay-caption {
+    .caption {
+      background: inherit;
+      color: white;
+      position: absolute;
+      overflow: hidden;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      z-index: 1;
+      &::before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        left: 0;
+        background: inherit;
+        -webkit-filter: blur(4px);
+        filter: blur(4px);
+        background-position: left top;
+
+        top: -94px;
+        width: 150px;
+        height: 150px;
+
+        @media (min-width: @screen-sm-min) {
+          top: -192px;
+          width: 248px;
+          height: 248px;
+        }
+      }
+      &::after {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.25)
+      }
+    }
+  }
+}
+
+// Categories
+.row.categories {
+  [class^=col-] {
+    padding: 0;
+  }
+}

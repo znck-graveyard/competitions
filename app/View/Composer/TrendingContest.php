@@ -27,7 +27,7 @@ class TrendingContest
     /**
      * @param \App\Contest $contests
      */
-    function __construct(Contest $contests)
+    public function __construct(Contest $contests)
     {
         $this->contests = $contests;
     }
@@ -54,7 +54,7 @@ class TrendingContest
     {
         $self = $this;
 
-        return Cache::remember('trending.events', 30, function () use ($self) {
+        return Cache::remember('trending.events', 60, function () use ($self) {
             return $self->calculatedTrendingContests();
         });
     }
@@ -64,10 +64,11 @@ class TrendingContest
      */
     protected function calculatedTrendingContests()
     {
-        return $this->contests->join('contestants', 'contestants.contest_id', '=', 'contests.id')
-            ->select(['contests.*', 'contestants.*', \DB::raw('count(contestants.*) as `aggregate`')])
+        return $this->contests->leftJoin('contestants', 'contestants.contest_id', '=', 'contests.id')
+            ->select(['contests.*', \DB::raw('count(contestants.*) as aggregate')])
             ->groupBy('contests.id')
             ->orderBy('aggregate', 'desc')
+            ->orderBy('created_at', 'desc')
             ->take(20)
             ->get();
     }
