@@ -20,6 +20,8 @@ class CreateContestsTable extends Migration
             $table->string('name');
             $table->text('description');
 
+            $table->string('slug')->unique();
+
             $table->string('image')->nullable();
 
             $table->boolean('public')->default(false);

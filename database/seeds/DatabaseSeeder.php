@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         foreach ([
                      UsersTableSeeder::class,
                      ContestsTableSeeder::class,
+                     EntriesTableSeeder::class,
                  ] as $seeder) {
             $this->call($seeder);
         }

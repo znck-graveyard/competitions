@@ -5,20 +5,37 @@
 @import "mixins";
 
 // Extend bootstrap
+@media (min-width: @screen-sm-min) {
+  .row-eq-height {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+  }
+}
+
 .btn-white {
   .button-variant(#000, #fff, #fff);
 }
 
 .panel-contests {
-  .panel-variant(transparent, #fff, transparent, transparent);
+  .panel-variant(transparent, #fff, #223577, transparent);
   border: none;
   .panel-heading {
     .background-banner(url(../image/bg-header.png));
   }
 }
 
+body {
+  background-color: #e7e7e7;
+}
+
 body, label, .checkbox label {
   font-weight: 300;
+}
+
+img {
+  max-width: 100%;
 }
 
 // Fix .nav
@@ -30,10 +47,6 @@ body, label, .checkbox label {
 .navbar-default {
   background-image: url("../image/bg-header.png");
   background-repeat: no-repeat;
-}
-
-body {
-  background-color: #e7e7e7;
 }
 
 // Banner on homepage.
