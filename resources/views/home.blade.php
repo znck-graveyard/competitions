@@ -9,9 +9,6 @@
                         <div>
                             <h1 class="text-white text-center">India's Largest Talent Community</h1>
 
-                            <h4 class="text-white text-center">is an online talent platform where users can showcase heir skills and compete to win fame
-                                and fortune </h4>
-
 
                             <div class="text-center">
                                 <a href="" class="btn btn-primary" role="button">Learn More</a>
@@ -25,6 +22,9 @@
                 </div>
             </div>
         </div>
+
+        @include('trending.contests')
+
     </div>
     <br/>
     <div class="container">

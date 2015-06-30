@@ -6224,8 +6224,32 @@ button.close {
     display: none !important;
   }
 }
+
+body,
+label,
+.checkbox label {
+  font-weight: 300;
+}
+.picCheer {
+  background-image: url(../image/login.jpg);
+  color: #ffffff;
+  background-repeat: no-repeat;
+}
+.darken {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(../image/login.jpg);
+}
+#navbar-head {
+    background-image: url(../image/bg-header.png);
+    background-repeat: repeat-x;
+    min-height: 100px;
+    margin-bottom: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+}
 .text-white {
   color: #fff;
+>>>>>>> 6f62b361f1f693a4e496e2013e66ceb07a59dc94
 }
 .flex-center-middle {
   display: -webkit-flex;
@@ -6469,6 +6493,7 @@ img {
 .row.categories [class^=col-] {
   padding: 0;
 }
+
 .stat-number {
   font-size: 1.2em;
 }
