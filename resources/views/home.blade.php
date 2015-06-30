@@ -9,19 +9,6 @@
                         <div>
                             <h1 class="text-white text-center">India's Largest Talent Community</h1>
 
-<<<<<<< HEAD
-
-        <div class="carousel-inner">
-            <div class="item slides active">
-                <div class="banner"></div>
-                <div class="hero">
-                    <hgroup>
-                        <h1>India's Largest Talent Community</h1>
-=======
-                            <h4 class="text-white text-center">is an online talent platform where users can showcase heir skills and compete to win fame
-                                and fortune </h4>
->>>>>>> 6f62b361f1f693a4e496e2013e66ceb07a59dc94
-
 
                             <div class="text-center">
                                 <a href="" class="btn btn-primary" role="button">Learn More</a>
