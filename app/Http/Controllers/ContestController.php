@@ -31,9 +31,10 @@ class ContestController extends Controller
      */
     public function contestCategoryHome($type)
     {
-        $contests = Contest::where('type', $type)->paginate(16);
+        $contests = Contest::where('contest_type', $type)->paginate(16);
 
-        return view('contest.indexCategory', compact('contests','type'));
+        $contest_type=ucfirst($type);
+        return view('contest.indexCategory', compact('contests','contest_type'));
     }
 
 

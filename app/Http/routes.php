@@ -40,3 +40,5 @@ Route::group(['prefix' => 'submission'], function () {
 
 Route::resource('submission', 'EntriesController', ['except' => ['store']]);
 
+Route:get('users/{username}','HomeController@userProfile');
+

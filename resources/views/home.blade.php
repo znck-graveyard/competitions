@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        @include('trending.contests')
+
 
     </div>
     <br/>
