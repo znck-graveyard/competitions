@@ -1,10 +1,26 @@
 <?php namespace App\Http\Controllers;
 
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Auth;
+use App\User;
+use App\UserAttribute;
 use App\Http\Requests;
-
+use App\Entry;
 class EntriesController extends Controller
 {
 
+    private $user;
+
+    /**
+     * @param Guard $auth
+     */
+    function __construct(Guard $auth)
+    {
+        $this->user = $auth->user();
+        $this->middleware('auth', ['only' => ['create', 'update', 'edit', 'storeFirstTimeEntry', 'store']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +30,7 @@ class EntriesController extends Controller
     {
         $entries = Entry::Paginate(15);
 
-        return view('entries.index', compact('entries'));
+        // view('entries.index', compact('entries'));
     }
 
     /**
@@ -22,19 +38,22 @@ class EntriesController extends Controller
      *
      * @return Response
      */
-    public function create(Requests\UserDetailsRequest $request)
+    public function create()
     {
-        $id = $this->user->id();
+        $id = $this->user->id;
         $contestant = User::find($id);
         $entries = $contestant->contestantEntries;
         if (is_null($entries)) {
-            $this->firstTimeEntry($request);
+            return $this->entryFirstTime();
         } else {
             return view('entries.create');
         }
     }
 
-    public function firstTimeEntry(Requests\UserDetailsRequest $request)
+    public function entryFirstTime(){
+        return view('entries.entry_first_time');
+    }
+    public function storeFirstTimeEntry(Requests\UserDetailsRequest $request)
     {
         $id = $this->user->id();
         $contestant = User::find($id);
@@ -52,7 +71,7 @@ class EntriesController extends Controller
 
     public function userAttributes(Requests\UserDetailsRequest $request, $id)
     {
-        $user_attribute = [];
+        $user_attributes = [];
         $short_bio = $request->get('short_bio');
 
         $user_attribute_short_bio = [
@@ -85,7 +104,7 @@ class EntriesController extends Controller
                 'key'     => 'cover_image',
                 'value'   => $filename
             ];
-            $user_attributes[] = $user_attribute_profile_pic;
+            $user_attributes[] = $user_attribute_cover_image;
         }
 
         if ($request->has('facebook_username')) {

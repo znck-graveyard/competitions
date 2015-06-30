@@ -13,12 +13,8 @@
 
 Route::get('/', 'HomeController@index');
 Route::get('faq', 'HomeController@faq');
-
-
-Route::controllers([
-    'auth'     => 'Auth\AuthController',
-    'password' => 'Auth\PasswordController',
-]);
+Route::controller('auth', 'Auth\AuthController');
+Route::controller('password', 'Auth\PasswordController');
 
 Route::group(['prefix' => 'contest'], function () {
     Route::get('create', ['uses' => 'ContestController@create', 'as' => 'contest.create']);
@@ -26,7 +22,7 @@ Route::group(['prefix' => 'contest'], function () {
     Route::get('category/{type}', 'ContestController@contestCategoryHome');
     Route::get('judge/{uid}', 'JudgementController@checkLink');
 
-    Route::post('createFirstTime', 'ContestController@storeFirstTime');
+    Route::post('createFirstTime', 'ContestController@storeFirstTimeContest');
     Route::post('create', 'ContestController@store');
 });
 
@@ -34,3 +30,13 @@ Route::resource('contest', 'ContestController', ['except' => ['index', 'store']]
 Route::bind('contest', function ($slug) {
     return \App\Contest::whereSlug($slug)->firstOrFail();
 });
+
+Route::group(['prefix' => 'submission'], function () {
+    Route::get('create', ['uses' => 'EntriesController@create', 'as' => 'submission.create']);
+    Route::post('entryFirstTime', 'EntriesController@storeFirstTimeEntry');
+    Route::post('create', 'EntriesController@store');
+
+});
+
+Route::resource('submission', 'EntriesController', ['except' => ['store']]);
+

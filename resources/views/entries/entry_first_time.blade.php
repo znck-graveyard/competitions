@@ -14,8 +14,8 @@
         </hgroup>
     </div>
     <div class="container">
-        <p><b>Before Creating contest please enter some information below.</b> </p>
-        {!! Form::open(['url'=>'contest/createFirstTime','files'=> true]) !!}
+        <p><b>Before Submitting please enter some information below.</b> </p>
+        {!! Form::open(['url'=>'submission/entryFirstTime','files'=> true]) !!}
         <div class="row margin_bottom">
             <div class="col-md-5">
                 <label for="first_name">First Name*</label>

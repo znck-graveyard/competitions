@@ -19,7 +19,7 @@ class ContestController extends Controller
     function __construct(Guard $auth)
     {
         $this->user = $auth->user();
-        $this->middleware('auth', ['only' => ['create', 'update', 'edit', 'storeFirstTime', 'store']]);
+        $this->middleware('auth', ['only' => ['create', 'update', 'edit', 'storeFirstTimeContest', 'store']]);
     }
 
     /**
@@ -33,7 +33,7 @@ class ContestController extends Controller
     {
         $contests = Contest::where('type', $type)->paginate(16);
 
-        return view('contest.indexCategory', compact('contests'));
+        return view('contest.indexCategory', compact('contests','type'));
     }
 
 
@@ -53,9 +53,13 @@ class ContestController extends Controller
         if ($maintainer_bool) {
             return view('contest.create')->with(['types' => $types, 'submission_types' => $submission_types]);
         } else {
-            return view('contest.create_first_time');
+            return $this->createFirstTime();
         }
 
+    }
+
+    public function createFirstTime(){
+        return view('contest.create_first_time');
     }
 
     /**
@@ -63,7 +67,7 @@ class ContestController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function storeFirstTime(Requests\UserDetailsRequest $request)
+    public function storeFirstTimeContest(Requests\UserDetailsRequest $request)
     {
 
         $id = $this->user->id;
