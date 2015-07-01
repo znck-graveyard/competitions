@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use App\Team;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -8,6 +9,7 @@ use App\User;
 use App\UserAttribute;
 use App\Http\Requests;
 use App\Entry;
+
 class EntriesController extends Controller
 {
 
@@ -21,6 +23,7 @@ class EntriesController extends Controller
         $this->user = $auth->user();
         $this->middleware('auth', ['only' => ['create', 'update', 'edit', 'storeFirstTimeEntry', 'store']]);
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -50,12 +53,14 @@ class EntriesController extends Controller
         }
     }
 
-    public function entryFirstTime(){
+    public function entryFirstTime()
+    {
         return view('entries.entry_first_time');
     }
+
     public function storeFirstTimeEntry(Requests\UserDetailsRequest $request)
     {
-        $id = $this->user->id();
+        $id = $this->user->id;
         $contestant = User::find($id);
         $contestant->first_name = ucfirst($request->get('first_name'));
         $contestant->last_name = $request->get('last_name');
@@ -76,8 +81,8 @@ class EntriesController extends Controller
 
         $user_attribute_short_bio = [
             'user_id' => $id,
-            'key'     => 'short_bio',
-            'value'   => $short_bio
+            'key' => 'short_bio',
+            'value' => $short_bio
         ];
 
         $user_attributes[] = $user_attribute_short_bio;
@@ -89,8 +94,8 @@ class EntriesController extends Controller
             Storage::disk('local')->put($filename, File::get($file));
             $user_attribute_profile_pic = [
                 'user_id' => $id,
-                'key'     => 'profile_pic',
-                'value'   => $filename
+                'key' => 'profile_pic',
+                'value' => $filename
             ];
             $user_attributes[] = $user_attribute_profile_pic;
         }
@@ -101,8 +106,8 @@ class EntriesController extends Controller
             Storage::disk('local')->put($filename, File::get($file));
             $user_attribute_cover_image = [
                 'user_id' => $id,
-                'key'     => 'cover_image',
-                'value'   => $filename
+                'key' => 'cover_image',
+                'value' => $filename
             ];
             $user_attributes[] = $user_attribute_cover_image;
         }
@@ -110,8 +115,8 @@ class EntriesController extends Controller
         if ($request->has('facebook_username')) {
             $user_attribute_facebook = [
                 'user_id' => $id,
-                'key'     => 'facebook_username',
-                'value'   => $request->get('facebook_username')
+                'key' => 'facebook_username',
+                'value' => $request->get('facebook_username')
             ];
             $user_attributes[] = $user_attribute_facebook;
 
@@ -119,16 +124,16 @@ class EntriesController extends Controller
         if ($request->has('twitter_username')) {
             $user_attribute_twitter = [
                 'user_id' => $id,
-                'key'     => 'twitter_username',
-                'value'   => $request->get('twitter_username')
+                'key' => 'twitter_username',
+                'value' => $request->get('twitter_username')
             ];
             $user_attributes[] = $user_attribute_twitter;
         }
         if ($request->has('instagram_username')) {
             $user_attribute_instagram = [
                 'user_id' => $id,
-                'key'     => 'instagram_username',
-                'value'   => $request->get('instagram_username')
+                'key' => 'instagram_username',
+                'value' => $request->get('instagram_username')
             ];
             $user_attributes[] = $user_attribute_instagram;
 
@@ -183,7 +188,9 @@ class EntriesController extends Controller
      */
     public function edit($id)
     {
-        return view('entries.edit', compact('entries'));
+        $entry = Entry::find($id);
+        $user_id = $this->user->id();
+        return view('entries.edit', compact('entry'));
     }
 
     /**
@@ -220,7 +227,7 @@ class EntriesController extends Controller
      */
     public function destroy($id)
     {
-        Entry::destroy(id);
+        Entry::destroy($id);
 
         return redirect()->home();
     }
@@ -238,13 +245,42 @@ class EntriesController extends Controller
         $entry->file_size = $file->getMaxFilesize();
         $entry->contest_id = $request->get('contest_id');
         $entry->is_team_entry = $request->get('is_team_entry');
-        $entry->entryable_id = $request->get('entryable_id');
-        $entry->entryable_type = $request->get('entryable_type');
-        $entry->moderated = $request->get('moderated');
-        $entry->moderation_comment = $request->get('comment');
+        if ($entry->is_team_entry == true) {
+            $entry->entryable_type = 'Team';
+            $team_id=$this->getTeam($request);
+            $entry->entryable_id = $team_id;
+        } else {
+            $entry->entryable_id = $this->user->id;
+            $entry->entryable_type = 'User';
+        }
+
         $entry->save();
 
         return [$entry];
+    }
+
+    public function getTeam(Requests\CreateEntryRequest $request)
+    {
+
+        $team_id = DB::table('teams')->insertGetId(
+            [
+                'name' => $request->team_name,
+                'contest_id' => $request->contest_id
+
+            ]
+        );
+
+        foreach ($request->team_members as $team_member) {
+            $user_id = User::whereUsername($team_member['username']);
+            DB::table('team_user')->insert(
+                [
+                    'user_id' => $user_id,
+                    'team_id'=>$team_id
+                ]
+
+            );
+        }
+        return $team_id;
     }
 
     public function voteEntry()

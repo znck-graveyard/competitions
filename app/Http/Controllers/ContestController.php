@@ -129,7 +129,7 @@ class ContestController extends Controller
                 'key'     => 'cover_image',
                 'value'   => $filename
             ];
-            $user_attributes[] = $user_attribute_profile_pic;
+            $user_attributes[] = $user_attribute_cover_image;
         }
 
         if ($request->has('facebook_username')) {
@@ -190,7 +190,7 @@ class ContestController extends Controller
 
         \DB::commit();
 
-        return redirect('contest/{type}');//not sure about return
+        return redirect('contest/{type}');//not sure about return TODO
 
     }
 
