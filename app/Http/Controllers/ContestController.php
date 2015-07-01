@@ -31,6 +31,8 @@ class ContestController extends Controller
      */
     public function category($type)
     {
+        $type = strtolower(str_replace('-', ' ', $type));
+        
         $contests = Contest::where('contest_type', $type)->paginate(16);
 
         return view('contest.category', compact('contests', 'type'));
