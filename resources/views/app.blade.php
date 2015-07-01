@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ $title or 'Blah Blah Blah' }}</title>
+    <title>@yield('title',  'Blah Blah Blah')</title>
 
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -15,11 +15,14 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+    @yield('styles')
 
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="{{ asset('javascript/jquery.min.js') }}"></script>
+    <script src="{{ asset('javascript/jquery.jcarousel.min.js') }}"></script>
+    <script async src="{{ asset('javascript/bootstrap.min.js') }}"></script>
 
     @yield('head')
+    @yield('head.scripts')
 </head>
 <body>
 
@@ -63,8 +66,8 @@
 </nav>
 
 @yield('content')
-
 <script type="text/javascript" src="{{ asset('/javascript/app.js') }}"></script>
+@yield('scripts')
 <script>
     var $buoop = {c: 2};
     function $buo_f() {

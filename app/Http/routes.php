@@ -26,6 +26,9 @@ Route::group(['prefix' => 'contest'], function () {
     Route::post('create', 'ContestController@store');
 });
 
+Route::group(['prefix' => 'contest',], function () {
+    Route::get('category/{slug}', ['as' => 'contest.category', 'uses' => 'ContestController@category']);
+});
 Route::resource('contest', 'ContestController', ['except' => ['index', 'store']]);
 Route::bind('contest', function ($slug) {
     return \App\Contest::whereSlug($slug)->firstOrFail();
@@ -40,5 +43,6 @@ Route::group(['prefix' => 'submission'], function () {
 
 Route::resource('submission', 'EntriesController', ['except' => ['store']]);
 
-Route:get('users/{username}','HomeController@userProfile');
+Route:
+get('users/{username}', 'HomeController@userProfile');
 

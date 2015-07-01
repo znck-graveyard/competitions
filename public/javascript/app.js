@@ -7,21 +7,16 @@ $(document).ready(function(){
         window.location.href = '/contest/create';
     });
 });
-/*
-$(document).ready(function () {
-    $(".datepicker").datepicker({
-        format: 'dd/mm/yyyy'
-    });
-});
-*/
 
-$(function(){
+/*$(function(){
     $('.time').timepicker({'timeFormat': 'H:i:s','step': 10});
-});
+});*/
+
+/*
 $(document).ready(function() {
     $("#datepicker").datepicker({
         autoclose: true,
         todayHighlight: true
     }).datepicker('update', new Date());
 
-});
+});*/

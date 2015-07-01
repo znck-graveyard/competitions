@@ -1,0 +1,20 @@
+{
+  "name": "competitions",
+  "version": "0.0.0",
+  "homepage": "https://github.com/znck/competitions",
+  "authors": [
+    "Rahul Kadyan <hi@znck.me>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.5",
+    "jcarousel": "~0.3.3"
+  }
+}
