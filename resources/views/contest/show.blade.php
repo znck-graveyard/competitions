@@ -63,8 +63,8 @@
                     </div>
                     <div class="panel-body">
                         <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane active" id="description">{{ nl2br($contest->description) }}</div>
-                            <div role="tabpanel" class="tab-pane" id="rules">{!! $contest->rules !!}</div>
+                            <div role="tabpanel" class="tab-pane active" id="description">{!! nl2br($contest->description) !!}</div>
+                            <div role="tabpanel" class="tab-pane" id="rules">{!! nl2br($contest->rules) !!}</div>
                             @if($contest->manual_review_enabled)
                                 <div role="tabpanel" class="tab-pane" id="judges">-- YET --</div>
                             @endif
@@ -81,12 +81,20 @@
                         </h3>
                     </div>
                     <div class="panel-body">
-                        @foreach($top as $entry)
-                            <div class="prize-card">
-                                <img src="{{ $entry->entryable->image or 'https://unsplash.it/64/64/?random&' . str_random(4) }}"/>
-                                <div class="prize">₹ {{ rand(1000, 100000) }}</div>
-                            </div>
-                        @endforeach
+
+                        <div class="prize-card">
+                            <img src="{{ asset('image/icons/gold.png') }}"/>
+                            <div class="prize">₹ {{ rand(1000, 100000) }}</div>
+                        </div><div class="prize-card">
+                            <img src="{{ asset('image/icons/silver.png') }}"/>
+                            <div class="prize">₹ {{ rand(1000, 100000) }}</div>
+                        </div>
+
+                        <div class="prize-card">
+                            <img src="{{ asset('image/icons/bronze.png') }}"/>
+                            <div class="prize">₹ {{ rand(1000, 100000) }}</div>
+                        </div>
+
                     </div>
                 </div>
             </div>

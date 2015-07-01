@@ -15,6 +15,7 @@ class ViewServiceProvider extends ServiceProvider
         view()->composer('trending.contests', \App\View\Composer\TrendingContest::class);
         view()->composer('trending.categories', \App\View\Composer\ContestInCategory::class);
         view()->composer('stats.counter', \App\View\Composer\StatsComposer::class);
+        view()->composer('pills', \App\View\Composer\PillComposer::class);
     }
 
     /**

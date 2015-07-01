@@ -135,8 +135,9 @@
 .prize-card, .entry-card.top {
   .clearfix();
   display: block;
-  padding: 8px 0;
-  height: 80px;
+  margin: 0 0 15px;
+  height: 64px;
+  background-color: #f7f7f7;
   img {
     width: 64px;
     height: 64px;
@@ -149,10 +150,33 @@
   }
 
   .title {
+    font-size: 16px;
     color: #223577;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   .name {
+    overflow: hidden;
+    font-size: 14px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     color: #808080;
+  }
+}
+
+.entry-card.top {
+  background-repeat: no-repeat;
+  background-position: bottom right;
+  background-size: 24px;
+  &:nth-of-type(1) {
+    background-image: url('../image/icons/1.jpg');
+  }
+  &:nth-of-type(2) {
+    background-image: url('../image/icons/2.jpg');
+  }
+  &:nth-of-type(3) {
+    background-image: url('../image/icons/3.jpg');
   }
 }

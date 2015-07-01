@@ -24,6 +24,29 @@
   }
 }
 
+.banner-category {
+  .banner-container {
+    @media (min-height: 640px) {
+      min-height: 400px;
+      height: 400px;
+    }
+  }
+  .banner-content {
+    > div {
+      padding: 0;
+    }
+  }
+
+  .banner-content {
+    .flex-center-middle();
+    > div {
+      padding: 32px 0;
+    }
+    flex: 1 1 260px;
+    min-height: 260px;
+  }
+}
+
 #home-banner {
   .background-banner(url('../image/home-banner.jpg'));
   #home-banner-container {

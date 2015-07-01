@@ -20,7 +20,7 @@ class ContestsTableSeeder extends Seeder
 
         $count = 100;
 
-        $types = ['art', 'dance', 'painting', 'music', 'singing', 'photography',];
+        $types = ['art', 'dance', 'painting', 'music', 'singing', 'photography', 'short films', 'content writing', 'business idea'];
         $allowed = ['file:pdf', 'file:doc', 'video,file:mp4', 'audio,file:mp3', 'photo,file:jpeg', 'photo,file:png'];
         $maintainers = \App\User::whereIsMaintainer(true)->lists('id')->toArray();
 
@@ -31,7 +31,7 @@ class ContestsTableSeeder extends Seeder
             $contest->slug = $fake->slug();
             $contest->contest_type = $fake->randomElement($types);
             $contest->public = $fake->boolean(90);
-            $contest->description = $fake->paragraph(10);
+            $contest->description = $fake->paragraphs(3, true);
             $contest->submission_type = $fake->randomElement($allowed);
             $contest->image = null;
             $contest->rules = $fake->paragraph(15);

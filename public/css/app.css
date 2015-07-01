@@ -6398,7 +6398,7 @@ fieldset[disabled] .btn-transparent-border.active {
   background-size: cover;
 }
 body {
-  background-color: #e7e7e7;
+  background-color: #f7f7f7;
 }
 body,
 label,
@@ -6547,8 +6547,9 @@ img {
 .prize-card,
 .entry-card.top {
   display: block;
-  padding: 8px 0;
-  height: 80px;
+  margin: 0 0 15px;
+  height: 64px;
+  background-color: #f7f7f7;
 }
 .prize-card:before,
 .entry-card.top:before,
@@ -6586,11 +6587,33 @@ img {
 }
 .prize-card .title,
 .entry-card.top .title {
+  font-size: 16px;
   color: #223577;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 .prize-card .name,
 .entry-card.top .name {
+  overflow: hidden;
+  font-size: 14px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   color: #808080;
+}
+.entry-card.top {
+  background-repeat: no-repeat;
+  background-position: bottom right;
+  background-size: 24px;
+}
+.entry-card.top:nth-of-type(1) {
+  background-image: url('../image/icons/1.jpg');
+}
+.entry-card.top:nth-of-type(2) {
+  background-image: url('../image/icons/2.jpg');
+}
+.entry-card.top:nth-of-type(3) {
+  background-image: url('../image/icons/3.jpg');
 }
 .stat-number {
   font-size: 1.2em;
@@ -6657,6 +6680,24 @@ img {
 .slider-wrapper .slider-control.right {
   right: 0;
 }
+#pills {
+  background-color: #e5e5e5;
+  border-bottom: 1px solid rgba(203, 203, 203, 0.5);
+}
+#pills .nav {
+  display: block;
+  width: 100%;
+}
+#pills .nav > li {
+  float: none;
+  display: inline-block;
+}
+#pills .nav > li a {
+  padding: 8px 15px;
+  color: #000;
+  background: transparent;
+  text-transform: uppercase;
+}
 .banner {
   background-position: center center;
   background-image: url('../image/home-banner.jpg');
@@ -6700,6 +6741,36 @@ img {
 }
 .banner .banner-container .banner-content > div {
   padding: 64px 0;
+}
+@media (min-height: 640px) {
+  .banner-category .banner-container {
+    min-height: 400px;
+    height: 400px;
+  }
+}
+.banner-category .banner-content > div {
+  padding: 0;
+}
+.banner-category .banner-content {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex: 1 1 260px;
+  -ms-flex: 1 1 260px;
+  flex: 1 1 260px;
+  min-height: 260px;
+}
+.banner-category .banner-content > div {
+  padding: 32px 0;
 }
 #home-banner {
   background-position: center center;

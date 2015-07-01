@@ -1,6 +1,6 @@
 @extends('app')
 @section('content')
-    <div class="banner" class="{{ str_slug($type) }}"
+    <div class="banner banner-category" class="{{ str_slug($type) }}"
             style="background-image: {{ config('banners.' . str_slug($type)) }}">
         <div class="container">
             <div class="row">
