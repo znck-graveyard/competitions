@@ -1,5 +1,7 @@
 <?php namespace App\Http\Controllers;
 
+use App\User;
+
 class HomeController extends Controller
 {
     /**
@@ -20,5 +22,17 @@ class HomeController extends Controller
     public function about()
     {
         return view('about');
+    }
+
+    public function userProfile($username)
+    {
+        $user = User::whereUsername($username);
+        if (is_null($user)) {
+            return redirect('/');
+        }
+        else {
+            return view('user.profile',compact('user'));
+        }
+
     }
 }
