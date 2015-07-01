@@ -6781,7 +6781,7 @@ img {
 }
 #home-banner #home-banner-container {
   min-height: 240px;
-  min-height: calc(100vh -  80px );
+  min-height: calc(100vh -  140px );
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -6792,7 +6792,7 @@ img {
 @media (min-height: 640px) {
   #home-banner #home-banner-container {
     min-height: 560px;
-    min-height: calc(100vh -  80px );
+    min-height: calc(100vh -  140px );
   }
 }
 #home-banner #home-banner-container #home-banner-content {
