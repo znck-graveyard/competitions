@@ -1,7 +1,7 @@
 @extends('app')
 @section('content')
     <div class="banner banner-category" class="{{ str_slug($type) }}"
-            style="background-image: {{ config('banners.' . str_slug($type)) }}">
+            style="background-image: {{ config('banners.' . str_slug($type), 'https://unsplash.it/64/64/?random&' . str_random(4)) }}">
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 banner-container">

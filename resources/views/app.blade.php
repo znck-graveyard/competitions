@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>@yield('title',  'Blah Blah Blah')</title>
+    <title>@yield('title',  'Whizzspace')</title>
 
     <meta name="csrf_token" content="{{ csrf_token() }}"/>
     @yield('meta')
