@@ -28,6 +28,8 @@
   position: relative;
   background-position: top left;
   background-repeat: no-repeat;
+  background: 100% 100%;
+  background-size: cover;
   overflow: hidden;
   .caption {
     padding: 8px 10px;
@@ -105,11 +107,52 @@
       height: 180px;
     }
   }
+
+  &.entry {
+    margin: 0;
+    width: 248px;
+    height: 248px;
+    .profile {
+      float: left;
+      margin-right: 8px;
+      img {
+        width: 40px;
+        height: 40px;
+        border-radius: 40px;
+        overflow: hidden;
+      }
+    }
+  }
 }
 
 // Categories
 .row.categories {
   [class^=col-] {
     padding: 0;
+  }
+}
+
+.prize-card, .entry-card.top {
+  .clearfix();
+  display: block;
+  padding: 8px 0;
+  height: 80px;
+  img {
+    width: 64px;
+    height: 64px;
+    float: left;
+    margin-right: 8px;
+  }
+  .prize {
+    line-height: 64px;
+    font-size: 28px;
+  }
+
+  .title {
+    color: #223577;
+  }
+
+  .name {
+    color: #808080;
   }
 }

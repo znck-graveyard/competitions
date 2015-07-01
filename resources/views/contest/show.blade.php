@@ -2,14 +2,34 @@
 
 @section('title'){{ $contest->name }}@endsection
 
+@section('head.scripts')
+    @parent
+    <script src="{{ asset('javascript/vue.min.js') }}"></script>
+    <script src="{{ asset('javascript/vue-resource.min.js') }}"></script>
+@endsection
+
+@section('meta')
+    @parent
+    <meta name="ws::contest" content="{{ $contest->slug }}"/>
+    <meta name="ws::contest.entries" content="{{ route('contest.entry.index', $contest->slug) }}"/>
+@endsection
+
 @section('content')
     <br/>
-    <div class="container">
-        <div class="row row-eq-height">
-            <div class="col-xs-12 col-md-9">
-                <img src="{{ $contest->image or 'https://unsplash.it/900/500/?random&' . str_random(4) }}" alt=""/>
+    <div class="container contest-container">
+        <div class="row">
+            <div class="col-xs-12 col-md-9 col-margin-bottom">
+                <div class="cover overlay overlay-gradient"
+                    style="background-image: url('{{ $contest->image or 'https://unsplash.it/900/308/?random&' . str_random(4) }}')">
+                    <h1 class="title">{{ $contest->name }} <br/> <small>{{ ucfirst($contest->contest_type) }}</small></h1>
+
+                    <div class="btn btn-transparent-border deadline text-uppercase">Ends {{ Carbon\Carbon::now()->diffForHumans($contest->end_date) }}</div>
+                    <div class="btn btn-transparent-border submit text-uppercase">Submit Entry</div>
+
+                </div>
             </div>
-            <div class="col-xs-12 col-md-3">
+
+            <div class="col-xs-12 col-md-3 col-margin-bottom col-md-no-padding">
                 <div class="panel panel-contests">
                     <div class="panel-heading">
                         <h3 class="panel-title">
@@ -17,7 +37,89 @@
                         </h3>
                     </div>
                     <div class="panel-body">
+                        @foreach($top as $entry)
+                            <div class="entry-card top">
+                                <img src="{{ $entry->entryable->image or 'https://unsplash.it/64/64/?random&' . str_random(4) }}"/>
+                                <div class="title">{{ ucfirst($entry->title) }}</div>
+                                <div class="by">{{ ucfirst($entry->entryable->name) }}</div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <div class="row row-eq-height">
+            <div class="col-xs-12 col-md-9 col-margin-bottom">
+                <div class="panel panel-contests">
+                    <div class="panel-heading">
+                        <ul class="nav nav-tabs nab-tabs-contest" role="tablist">
+                            <li role="presentation" class="active"><a href="#description" aria-controls="description" role="tab" data-toggle="tab">Description</a></li>
+                            <li role="presentation"><a href="#rules" aria-controls="rules" role="tab" data-toggle="tab">Rules &amp; Regulations</a></li>
+                            @if($contest->manual_review_enabled)
+                                <li role="presentation"><a href="#judges" aria-controls="judges" role="tab" data-toggle="tab">Judges</a></li>
+                            @endif
+                        </ul>
+                    </div>
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="description">{{ nl2br($contest->description) }}</div>
+                            <div role="tabpanel" class="tab-pane" id="rules">{!! $contest->rules !!}</div>
+                            @if($contest->manual_review_enabled)
+                                <div role="tabpanel" class="tab-pane" id="judges">-- YET --</div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-md-3 col-margin-bottom col-md-no-padding">
+                <div class="panel panel-contests">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Prizes
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        @foreach($top as $entry)
+                            <div class="prize-card">
+                                <img src="{{ $entry->entryable->image or 'https://unsplash.it/64/64/?random&' . str_random(4) }}"/>
+                                <div class="prize">₹ {{ rand(1000, 100000) }}</div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-margin-bottom">
+                <div class="panel panel-contests">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            All Entries
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row text-center" id="contest-entries">
+                            <div class="col-xs-12 col-sm-6 col-md-3 text-center" v-repeat="entry: entries">
+                                <a href="{{ route('contest.entry.show', [$contest->slug, '']) }}/@{{ entry.uuid }}" title="@{{ entry.title }}">
+                                    <div class="card entry overlay-caption"
+                                         v-style="background-image: 'url(' + entry.image + '), url({{ asset('image/placeholder.jpg') }})'">
+                                        <div class="caption text-left">
+                                            <div class="profile">
+                                                <img v-attr="src: entry.owner.image"/>
+                                            </div>
+                                            <div class="name" v-text="entry.owner.name"></div>
+                                            <div class="stats">
+                                                <small v-text="entry.views + (entry.views === 1 ? ' view' : ' views')"></small>
+                                                <small v-text="entry.upvotes + (entry.upvotes === 1 ? ' upvote' : ' upvotes')"></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

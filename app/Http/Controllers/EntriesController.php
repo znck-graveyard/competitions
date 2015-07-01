@@ -1,13 +1,18 @@
 <?php namespace App\Http\Controllers;
 
-use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
+use App\Contest;
+use App\Entry;
 use App\Http\Controllers\Auth;
+use App\Http\Requests;
+use App\Transformer\EntryTransformer;
 use App\User;
 use App\UserAttribute;
-use App\Http\Requests;
-use App\Entry;
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use League\Fractal\Manager;
+
 class EntriesController extends Controller
 {
 
@@ -21,16 +26,32 @@ class EntriesController extends Controller
         $this->user = $auth->user();
         $this->middleware('auth', ['only' => ['create', 'update', 'edit', 'storeFirstTimeEntry', 'store']]);
     }
+
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Contest             $contest
+     *
+     * @return \App\Http\Controllers\Response
      */
-    public function index()
+    public function index(Request $request, Contest $contest)
     {
-        $entries = Entry::Paginate(15);
+        if (!$request->ajax()) {
+            abort(403);
+        }
 
-        // view('entries.index', compact('entries'));
+        $entries = Entry::whereContestId($contest->id)
+            ->orderBy('created_at')
+            ->offset($request->get('from', 0))
+            ->take(16)
+            ->get();
+
+        $fractal = new Manager();
+        $resource = new \League\Fractal\Resource\Collection($entries, new EntryTransformer());
+
+        return response()->json($fractal->createData($resource)->toArray());
+
     }
 
     /**
@@ -50,9 +71,11 @@ class EntriesController extends Controller
         }
     }
 
-    public function entryFirstTime(){
+    public function entryFirstTime()
+    {
         return view('entries.entry_first_time');
     }
+
     public function storeFirstTimeEntry(Requests\UserDetailsRequest $request)
     {
         $id = $this->user->id();

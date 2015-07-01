@@ -1,0 +1,98 @@
+.contest-container {
+  @media (min-width: @screen-md-min) {
+    .col-md-no-padding {
+      padding-left: 0;
+    }
+  }
+  .col-margin-bottom {
+    margin-bottom: 15px;
+  }
+
+  .cover {
+    height: 308px;
+    width: auto;
+    position: relative;
+    width: 100%;
+    .background-banner(url('image/placeholer.jpg'));
+    .title {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      padding: 0;
+      margin: 0;
+      color: #fff;
+      small {
+        color: #fff;
+      }
+    }
+    .deadline, .submit {
+      position: absolute;
+      bottom: 15px;
+    }
+    .deadline {
+      left: 15px;
+      @media screen and (max-width: @screen-xs-max) {
+        left: 50%;
+        transform: translate(-50%);
+        bottom: 60px;
+      }
+    }
+    .submit {
+      right: 15px;
+      @media screen and (max-width: @screen-xs-max) {
+        right: 0;
+        transform: translate(-50%);
+        left: 50%;
+      }
+    }
+  }
+  .panel {
+    flex-grow: 1;
+    margin-bottom: 0;
+  }
+  .row-eq-height {
+    [class*=col-md-] {
+      display: flex;
+    }
+  }
+
+}
+
+#contest-entries {
+  .col-xs-12 {
+    padding: 0 0 15px;
+  }
+  padding: 15px 15px 0;
+}
+
+.nab-tabs-contest {
+  border: none;
+  > li {
+    > a {
+      padding: 0 24px;
+      border: none;
+      color: #999;
+      text-transform: uppercase;
+      &:hover, &:focus {
+        background: transparent;
+      }
+    }
+
+    // Active state, and its :hover to override normal :hover
+    &.active > a {
+      &,
+      &:hover,
+      &:focus {
+        color: #fff;
+        background: transparent;
+        border: none;
+        cursor: default;
+      }
+    }
+  }
+  // pulling this in mainly for less shorthand
+  &.nav-justified {
+    .nav-justified();
+    .nav-tabs-justified();
+  }
+}

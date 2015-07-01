@@ -20,6 +20,7 @@ body, label, .checkbox label {
 }
 
 @import "bootstrap/bootstrap";
+@import "bootstrap/variables";
 @import "typography";
 @import "mixins";
 
@@ -37,6 +38,11 @@ body, label, .checkbox label {
   .button-variant(#000, #fff, #fff);
 }
 
+.btn-transparent-border {
+  .button-variant(#000, #fff, rgba(0, 0, 0, 0.4));
+  border-width: 3px;
+}
+
 .panel-contests {
   .panel-variant(transparent, #fff, #223577, transparent);
   border: none;
@@ -44,7 +50,6 @@ body, label, .checkbox label {
     .background-banner(url(../image/bg-header.png));
   }
 }
-
 
 body {
   background-color: #e7e7e7;
@@ -70,36 +75,14 @@ img {
 }
 
 // Banner on homepage.
-#home-banner {
-  .background-banner(url('../image/home-banner.jpg'));
-  #home-banner-container {
-    min-height: 240px;
-    min-height: ~"calc(100vh - "@navbar-height~")";
-    @media (min-height: 640px) {
-      min-height: 560px;
-      min-height: ~"calc(100vh - "@navbar-height~")";
-    }
-
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-direction: column;
-    flex-direction: column;
-
-    #home-banner-content {
-      .flex-center-middle();
-      > div {
-        padding: 64px 0;
-      }
-      flex: 1 1 260px;
-      min-height: 260px;
-    }
-
-    #stat-container {
-      flex: 0 0 160px;
-    }
-  }
+#content-wrapper {
+  min-height: ~"calc(100vh - " (@navbar-height + 75px) ~")";
 }
 
 @import 'cards';
 @import 'stats';
 @import 'slider';
+@import 'banner';
+@import 'footer';
+@import 'overlay';
+@import 'contest';

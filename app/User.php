@@ -39,6 +39,8 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
  * @method static \Illuminate\Database\Query\Builder|\App\User whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\User whereDeletedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|Entry[] $entries 
+ * @property-read mixed $name 
  */
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
@@ -67,6 +69,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     protected $hidden  = ['password'];
     protected $guarded = ['id'];
+
+    protected $appends = ['name'];
 
 
     /**
@@ -118,5 +122,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function entries()
     {
         return $this->morphMany(Entry::class, 'entryable');
+    }
+
+    public function getNameAttribute()
+    {
+        return ucfirst($this->attributes['first_name'] . ' ' . $this->attributes['last_name']);
     }
 }

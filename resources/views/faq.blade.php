@@ -1,1 +1,4 @@
-@extends('app)
+@extends('app')
+@section('content')
+    FAQ
+@endsection

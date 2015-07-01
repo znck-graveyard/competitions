@@ -9,10 +9,12 @@
                         <div>
                             <h1 class="text-white text-center">India's Largest Talent Community</h1>
 
+                            <h3 class="text-white text-center"
+                                style="font-weight: normal">Whizzspace is an online talent platform where people can showcase <br/> their skills and compete to win fame and fortune.</h3>
 
                             <div class="text-center">
                                 <a href="" class="btn btn-primary" role="button">Learn More</a>
-                                <a href="" class="btn btn-white" role="button">Explore</a>
+                                <a href="#contests" class="btn btn-white" role="button">Explore</a>
                             </div>
                         </div>
                     </div>
@@ -36,7 +38,7 @@
         @include('trending.contests')
     </div>
     <br/>
-    <div class="container">
+    <div class="container" id="contests">
         <div class="row">
             <div class="col-xs-12">
                 <h2 class="text-orange text-uppercase text-center">Explore Contests</h2>

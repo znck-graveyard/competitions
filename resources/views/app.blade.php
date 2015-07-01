@@ -7,6 +7,8 @@
 
     <title>@yield('title',  'Blah Blah Blah')</title>
 
+    <meta name="csrf_token" content="{{ csrf_token() }}"/>
+    @yield('meta')
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -16,6 +18,7 @@
     <![endif]-->
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
     @yield('styles')
+    <link rel="stylesheet" href="http://brevelabs.com/css/badge.css">
 
     <script src="{{ asset('javascript/jquery.min.js') }}"></script>
     <script src="{{ asset('javascript/jquery.jcarousel.min.js') }}"></script>
@@ -65,8 +68,14 @@
     </div>
 </nav>
 
-@yield('content')
+<div id="content-wrapper">
+    @yield('content')
+</div>
+
+@include('footer')
+
 <script type="text/javascript" src="{{ asset('/javascript/app.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/js/app.js') }}"></script>
 @yield('scripts')
 <script>
     var $buoop = {c: 2};

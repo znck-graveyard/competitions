@@ -1,5 +1,6 @@
 <?php namespace App\Providers;
 
+use App\Entry;
 use App\Judge;
 use Illuminate\Support\ServiceProvider;
 use Rhumsaa\Uuid\Uuid;
@@ -15,9 +16,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Judge::creating(function (Judge $judge) {
-            if ($judge->token) {
-                $judge->token = Uuid::uuid4()->toString();
-            }
+            $judge->token = Uuid::uuid4()->toString();
+        });
+
+        Entry::creating(function (Entry $entry) {
+            $entry->uuid = Uuid::uuid4()->toString();
         });
     }
 

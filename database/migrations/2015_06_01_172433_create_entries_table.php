@@ -15,6 +15,7 @@ class CreateEntriesTable extends Migration
     {
         Schema::create('entries', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('uuid', 36)->index();
             $table->string('title');
             $table->text('abstract');
             $table->string('filename')->nullable();
@@ -26,6 +27,10 @@ class CreateEntriesTable extends Migration
             $table->integer('contest_id')->unsigned()->index();
             $table->integer('entryable_id')->unsigned();
             $table->string('entryable_type')->unsigned();
+
+            $table->double('score')->default(0);
+            $table->integer('upvotes')->default(0);
+            $table->integer('downvotes')->default(0);
 
             $table->boolean('moderated')->default(false);
             $table->text('moderation_comment')->nullable();
@@ -45,6 +50,7 @@ class CreateEntriesTable extends Migration
         Schema::table('entries', function ($table) {
             $table->dropIndex('entries_contest_id_index');
             $table->dropForeign('entries_contest_id_foreign');
+            $table->dropIndex(['uuid']); // Drop basic index in 'uuid' from 'entries' table
         });
         Schema::drop('entries');
     }

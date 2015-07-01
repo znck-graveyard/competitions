@@ -29,12 +29,11 @@ class ContestController extends Controller
      *
      * @return Response
      */
-    public function contestCategoryHome($type)
+    public function category($type)
     {
         $contests = Contest::where('contest_type', $type)->paginate(16);
 
-        $contest_type=ucfirst($type);
-        return view('contest.indexCategory', compact('contests','contest_type'));
+        return view('contest.category', compact('contests', 'type'));
     }
 
 
@@ -59,7 +58,8 @@ class ContestController extends Controller
 
     }
 
-    public function createFirstTime(){
+    public function createFirstTime()
+    {
         return view('contest.create_first_time');
     }
 
@@ -203,7 +203,13 @@ class ContestController extends Controller
      */
     public function show(Contest $contest)
     {
-        return view('contest.show', compact('contest'));
+        $contest->load(['entries', 'entries.entryable']);
+
+        $top = $contest->entries->take(3)->sort(function ($a, $b) {
+            return $a->score > $b->score;
+        });
+
+        return view('contest.show', compact('contest', 'top'));
     }
 
     /**
