@@ -24,6 +24,8 @@ class AuthController extends Controller {
 
     protected $redirectPath = '/';
 
+    private $user;
+
 	/**
 	 * Create a new authentication controller instance.
 	 *
@@ -31,11 +33,10 @@ class AuthController extends Controller {
 	 * @param  \Illuminate\Contracts\Auth\Registrar  $registrar
 	 * @return void
 	 */
-	public function __construct()
+	public function __construct(Guard $auth, User $user)
 	{
-
-
-		$this->middleware('guest', ['except' => 'getLogout']);
+        $this->user = $user;
+        $this->middleware('guest', ['except' => 'getLogout']);
 	}
 
     /**

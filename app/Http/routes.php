@@ -13,9 +13,10 @@
 
 Route::get('/', 'HomeController@index');
 Route::get('faq', 'HomeController@faq');
+Route::get('login/facebook','Auth\AuthController@facebookLogin');
+Route::get('login/facebookHandle','Auth\AuthController@facebookLoginHandle');
 Route::controller('auth', 'Auth\AuthController');
 Route::controller('password', 'Auth\PasswordController');
-
 Route::group(['prefix' => 'contest'], function () {
     Route::get('create', ['uses' => 'ContestController@create', 'as' => 'contest.create']);
     Route::get('administration/judge/{id}', 'JudgementController@contestJudge');

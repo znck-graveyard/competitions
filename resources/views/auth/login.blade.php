@@ -40,10 +40,10 @@
                         </div>
                         <div class="form-group row">
                             <div class="col-md-12">
-                                <button type="submit"
+                                <a href="url('/login/facebook')"
                                         class="btn btn-primary btn-large col-md-12 col-sm-12 col-xs-12">
-                                    Sign Up With Facebook
-                                </button>
+                                    Sign In With Facebook
+                                </a>
                             </div>
                         </div>
 

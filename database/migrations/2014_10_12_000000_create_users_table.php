@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('first_name');
             $table->string('last_name')->nullable();
             $table->enum('gender', ['male', 'female', 'other'])->default('other');
-            $table->string('password', 60);
+            $table->string('password', 60)->nullable();
             $table->date('date_of_birth')->nullable();
             $table->boolean('is_maintainer')->default(false);
             $table->timestamp('created_at');
