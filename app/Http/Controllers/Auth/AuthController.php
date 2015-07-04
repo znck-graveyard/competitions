@@ -6,6 +6,8 @@ use Illuminate\Contracts\Auth\Registrar;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use App\User;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Socialite\Facades\Socialite;
+use App\Http\Requests;
 
 class AuthController extends Controller {
 
@@ -75,6 +77,43 @@ class AuthController extends Controller {
 
         ]);
     }
+    public function facebookLogin()
+    {
+        return Socialite::with('facebook')->redirect();
+    }
+
+    public function facebookLoginHandle()
+    {
+        $code = Input::get('code');
+        if (!$code)
+            return redirect('\login')->flash()->error('Cannot Login with Facebook');
+        else {
+            $user = Socialite::driver('facebook')->user();
+            $facebookUser = null;
+            $userCheck = User::where('email', '=', $user->email)->first();
+            if (!empty($userCheck)) {
+                $facebookUser = $userCheck;
+            }else{
+                $name = explode(' ', $user->name);
+                $facebookUser= User::create([
+                    'first_name' => $name[0],
+                    'last_name' => $name[1],
+                    'username'=>$user->nickname,
+                    'email' => $user->email,
+                    'password' => null,
+                    'is_maintainer'=>false,
+
+                ]);
+
+            }
+            $this->auth->login($facebookUser, true);
+
+            return redirect()->intended($this->redirectPath());
+        }
+    }
+
+
+
 
 
 }
