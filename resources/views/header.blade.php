@@ -8,7 +8,9 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Whizzspace Logo</a>
+            <a class="text-link" href="{{ url('/') }}">
+                <img src="{{ asset('image/logo.svg') }}" alt="Whizzspace Logo"/>
+            </a>
         </div>
 
         <div class="collapse navbar-collapse clearfix" id="navbar-collapse">

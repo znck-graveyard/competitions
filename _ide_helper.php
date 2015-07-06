@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.1.3 (LTS) on 2015-07-01.
+ * Generated for Laravel 5.1.6 (LTS) on 2015-07-06.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -5625,6 +5625,17 @@ namespace {
         }
         
         /**
+         * Return the most suitable content type from the given array based on content negotiation.
+         *
+         * @param string|array $contentTypes
+         * @return string|null 
+         * @static 
+         */
+        public static function prefers($contentTypes){
+            return \Illuminate\Http\Request::prefers($contentTypes);
+        }
+        
+        /**
          * Determines whether a request accepts JSON.
          *
          * @return bool 
@@ -5707,11 +5718,12 @@ namespace {
         /**
          * Get the route handling the request.
          *
-         * @return \Illuminate\Routing\Route|null 
+         * @param string|null $param
+         * @return object|string 
          * @static 
          */
-        public static function route(){
-            return \Illuminate\Http\Request::route();
+        public static function route($param = null){
+            return \Illuminate\Http\Request::route($param);
         }
         
         /**
@@ -8321,6 +8333,17 @@ namespace {
         }
         
         /**
+         * Return the most suitable content type from the given array based on content negotiation.
+         *
+         * @param string|array $contentTypes
+         * @return string|null 
+         * @static 
+         */
+        public static function prefers($contentTypes){
+            return \Illuminate\Http\Request::prefers($contentTypes);
+        }
+        
+        /**
          * Determines whether a request accepts JSON.
          *
          * @return bool 
@@ -8403,11 +8426,12 @@ namespace {
         /**
          * Get the route handling the request.
          *
-         * @return \Illuminate\Routing\Route|null 
+         * @param string|null $param
+         * @return object|string 
          * @static 
          */
-        public static function route(){
-            return \Illuminate\Http\Request::route();
+        public static function route($param = null){
+            return \Illuminate\Http\Request::route($param);
         }
         
         /**
@@ -12639,6 +12663,92 @@ namespace {
          */
         public static function hasMacro($name){
             return \Illuminate\Html\HtmlBuilder::hasMacro($name);
+        }
+        
+    }
+
+
+    class Socialize extends \Laravel\Socialite\Facades\Socialite{
+        
+        /**
+         * Get a driver instance.
+         *
+         * @param string $driver
+         * @return mixed 
+         * @static 
+         */
+        public static function with($driver){
+            return \Laravel\Socialite\SocialiteManager::with($driver);
+        }
+        
+        /**
+         * Build an OAuth 2 provider instance.
+         *
+         * @param string $provider
+         * @param array $config
+         * @return \Laravel\Socialite\Two\AbstractProvider 
+         * @static 
+         */
+        public static function buildProvider($provider, $config){
+            return \Laravel\Socialite\SocialiteManager::buildProvider($provider, $config);
+        }
+        
+        /**
+         * Format the Twitter server configuration.
+         *
+         * @param array $config
+         * @return array 
+         * @static 
+         */
+        public static function formatConfig($config){
+            return \Laravel\Socialite\SocialiteManager::formatConfig($config);
+        }
+        
+        /**
+         * Get the default driver name.
+         *
+         * @throws \InvalidArgumentException
+         * @return string 
+         * @static 
+         */
+        public static function getDefaultDriver(){
+            return \Laravel\Socialite\SocialiteManager::getDefaultDriver();
+        }
+        
+        /**
+         * Get a driver instance.
+         *
+         * @param string $driver
+         * @return mixed 
+         * @static 
+         */
+        public static function driver($driver = null){
+            //Method inherited from \Illuminate\Support\Manager            
+            return \Laravel\Socialite\SocialiteManager::driver($driver);
+        }
+        
+        /**
+         * Register a custom driver creator Closure.
+         *
+         * @param string $driver
+         * @param \Closure $callback
+         * @return $this 
+         * @static 
+         */
+        public static function extend($driver, $callback){
+            //Method inherited from \Illuminate\Support\Manager            
+            return \Laravel\Socialite\SocialiteManager::extend($driver, $callback);
+        }
+        
+        /**
+         * Get all of the created "drivers".
+         *
+         * @return array 
+         * @static 
+         */
+        public static function getDrivers(){
+            //Method inherited from \Illuminate\Support\Manager            
+            return \Laravel\Socialite\SocialiteManager::getDrivers();
         }
         
     }

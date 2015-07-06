@@ -9,7 +9,7 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-xs-12 text-center">
-                                <img src="logo" alt="Whizzspace Logo"
+                                <img src="{{ url('image/logo.svg') }}" alt="Whizzspace Logo"
                                     style="height: 96px; margin-bottom: 15px"/>
                             </div>
                         </div>
@@ -85,7 +85,7 @@
 
                                 <div class="col-xs-12">
                                     <small class="pull-right text-uppercase">
-                                            Already a member? <a class="text-link" href="{{ url('/auth/login') }}">Sign In</a>
+                                            <a class="text-link" href="{{ url('/auth/login') }}">Already a member? Sign In</a>
                                     </small>
                                 </div>
                             </form>

@@ -108,9 +108,9 @@
                             All Entries
                         </h3>
                     </div>
-                    <div class="panel-body">
-                        <div class="row text-center" id="contest-entries">
-                            <div class="col-xs-12 col-sm-6 col-md-3 text-center" v-repeat="entry: entries">
+                    <div class="panel-body" id="contest-entries">
+                        <div class="row text-center">
+                            <div class="col-xs-12 col-sm-6 col-md-3 text-center" v-repeat="entry: entries | paginate">
                                 <a href="{{ route('contest.entry.show', [$contest->slug, '']) }}/@{{ entry.uuid }}" title="@{{ entry.title }}">
                                     <div class="card entry overlay-caption"
                                          v-style="background-image: 'url(' + entry.image + '), url({{ asset('image/placeholder.jpg') }})'">
@@ -127,6 +127,23 @@
                                     </div>
                                 </a>
                             </div>
+                        </div>
+                        <div class="row text-center">
+                            <nav>
+                                <ul class="pagination">
+                                    <li v-class="disabled: $data.currentPage == 1">
+                                        <a href="#" aria-label="Previous" v-on="click: goToPage($event, -1)">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li v-repeat="page: pageList" v-class="active: page == $root.currentPage"><a href="#" v-on="click: goToPage($event, page)" v-text="page"></a></li>
+                                    <li v-class="disabled: $data.currentPage == $data.totalPages">
+                                        <a href="#" aria-label="Next" v-on="click: goToPage($event, 0)">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </div>
