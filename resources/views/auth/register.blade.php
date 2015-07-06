@@ -1,25 +1,5 @@
 @extends('app')
 
-@section('scripts')
-    <script>
-        window.fbAsyncInit = function() {
-            FB.init({
-                appId      : '1458806661106453',
-                xfbml      : true,
-                version    : 'v2.3'
-            });
-        };
-
-        (function(d, s, id){
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) {return;}
-            js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/en_US/sdk.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-    </script>
-@endsection
-
 @section('content')
     <div class="auth-banner"></div>
     <div class="container">
@@ -35,7 +15,7 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <a class="btn btn-facebook text-uppercase btn-huge btn-block" href="#">
+                                <a class="btn btn-facebook text-uppercase btn-huge btn-block" href="{{ url('/login/facebook')}}">
                                     Sign Up With Facebook
                                 </a>
                             </div>

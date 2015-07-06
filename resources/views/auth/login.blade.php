@@ -15,7 +15,7 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <a class="btn btn-facebook text-uppercase btn-huge btn-block" href="#">
+                                <a class="btn btn-facebook text-uppercase btn-huge btn-block" href="{{ url('/login/facebook') }}">
                                     Login Up With Facebook
                                 </a>
                             </div>

@@ -142,6 +142,7 @@ return [
         'Laracasts\Flash\FlashServiceProvider',
         'Zizaco\Entrust\EntrustServiceProvider',
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
+        'Laravel\Socialite\SocialiteServiceProvider',
     ],
     /*
     |--------------------------------------------------------------------------
@@ -192,6 +193,8 @@ return [
         'Entrust'   => 'Zizaco\Entrust\EntrustFacade',
         'Form'      => 'Illuminate\Html\FormFacade',
         'Html'      => 'Illuminate\Html\HtmlFacade',
+        'Socialize' => 'Laravel\Socialite\Facades\Socialite',
+
 
     ],
 
