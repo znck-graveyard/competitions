@@ -192,7 +192,7 @@ class ContestController extends Controller
 
         \DB::commit();
 
-        return redirect('contest/{type}');//not sure about return TODO
+        return redirect('contest/{type}');
 
     }
 
