@@ -1,80 +1,76 @@
 @extends('app')
 
 @section('content')
+    <div class="auth-banner"></div>
     <div class="container">
         <div class="row">
             <div class="col-md-4 col-md-offset-4" id="signup">
                 <div class="panel panel-default">
-
                     <div class="panel-body">
-                        <div class="row" style="margin:45px;padding-left:45px">
-                            <p>LOGO</p>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-12">
-                                <button type="submit"
-                                        class="btn btn-primary btn-large col-md-12 col-sm-12 col-xs-12">
-                                    Sign Up With Facebook
-                                </button>
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <img src="logo" alt="Whizzspace Logo"
+                                     style="height: 96px; margin-bottom: 15px"/>
                             </div>
                         </div>
-
-                        <table width="100%">
-                            <td>
-                                <hr/>
-                            </td>
-                            <td style="width:1px; padding: 0 10px; white-space: nowrap;">Or</td>
-                            <td>
-                                <hr/>
-                            </td>
-                        </table>
-                        @if (count($errors) > 0)
-                            <div class="alert alert-danger">
-                                <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <a class="btn btn-facebook text-uppercase btn-huge btn-block" href="#">
+                                    Login Up With Facebook
+                                </a>
+                            </div>
+                        </div>
+                        <hr/>
+                        @if(count($errors) > 0)
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="alert alert-danger">
+                                        <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         @endif
+                        <div class="row">
+                            <form class="form clearfix" role="form" method="POST"
+                                  action="{{ url('/auth/register') }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-                        <form class="form-horizontal" role="form" method="POST" action="{{ url('/auth/login') }}">
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-                            <div class="form-group row">
-
-                                <div class="col-md-12">
-                                    <input type="email" class="form-control" name="email" value="{{ old('email') }}"
-                                           placeholder="Email Address">
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-
-                                <div class="col-md-12">
-                                    <input type="password" class="form-control" name="password"
-                                           placeholder="Password">
-                                </div>
-                            </div>
-
-
-
-                            <div class="form-group">
-                                <div>
-                                    <div class="col-md-12">
-                                        <button type="submit"
-                                                class="btn btn-primary btn-large col-md-12 col-sm-12 col-xs-12"
-                                                style="background: #ec6814;border-color: #ec6814">
-                                            Sign In
-                                        </button>
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control input-lg" name="username"
+                                               value="{{ old('username') }}" placeholder="username or email">
                                     </div>
-
-                                    <a class="btn btn-link" href="{{ url('/password/email') }}">Forgot Your
-                                        Password?</a>
                                 </div>
-                            </div>
-                        </form>
+
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <input type="password" class="form-control input-lg" name="password"
+                                               placeholder="password">
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <button class="btn btn-primary btn-huge btn-block text-uppercase"
+                                                type="submit"> Sign In </button>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12">
+                                    <small class="pull-left text-uppercase">
+                                        <a class="text-link" href="{{ url('/password/email') }}">Forgot Password?</a>
+                                    </small>
+                                    <small class="pull-right text-uppercase">
+                                        New Here? <a class="text-link" href="{{ url('/auth/login') }}">Sign In</a>
+                                    </small>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

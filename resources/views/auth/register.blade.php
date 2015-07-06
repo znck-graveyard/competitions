@@ -1,133 +1,112 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('app')
 
+@section('scripts')
+    <script>
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId      : '1458806661106453',
+                xfbml      : true,
+                version    : 'v2.3'
+            });
+        };
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+@endsection
 
-
-    <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
-    <style>
-        body {
-            background: #bababa;
-        }
-    </style>
-</head>
-<body>
-    <div id="image-signup">
-
-        <div class="container-float">
-            <div class="row">
-                <div class="col-md-4 col-md-offset-4" id="signup">
-                    <div class="panel panel-default">
-
-                        <div class="panel-body">
-                            <div class="row" style="margin:45px;padding-left:45px">
-                                <p>LOGO</p>
+@section('content')
+    <div class="auth-banner"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4" id="signup">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <img src="logo" alt="Whizzspace Logo"
+                                    style="height: 96px; margin-bottom: 15px"/>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-md-12">
-                                    <button type="submit"
-                                            class="btn btn-primary btn-large col-md-12 col-sm-12 col-xs-12">
-                                        Sign Up With Facebook
-                                    </button>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <a class="btn btn-facebook text-uppercase btn-huge btn-block" href="#">
+                                    Sign Up With Facebook
+                                </a>
+                            </div>
+                        </div>
+                        <hr/>
+                        @if(count($errors) > 0)
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="alert alert-danger">
+                                        <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-
-                            <table width="100%">
-                                <td>
-                                    <hr/>
-                                </td>
-                                <td style="width:1px; padding: 0 10px; white-space: nowrap;">Or</td>
-                                <td>
-                                    <hr/>
-                                </td>
-                            </table>
-                            ​
-
-
-
-                            @if (count($errors) > 0)
-                                <div class="alert alert-danger">
-                                    <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
-
-
-                            <form class="form-horizontal" role="form" method="POST"
-                                  action="{{ url('/auth/register') }}">
+                        @endif
+                        <div class="row">
+                            <form class="form clearfix" role="form" method="POST"
+                                action="{{ url('/auth/register') }}">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-
-                                <div class="form-group row">
-                                    <div class="col-md-6 col-sm-6 col-xs-6">
-                                        <input type="text" class="form-control" name="first_name"
-                                               value="{{ old('first_name') }}" placeholder="First Name">
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 col-xs-6">
-                                        <input type="text" class="form-control" name="last_name"
-                                               value="{{ old('last_name') }}" placeholder="Last Name">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-md-12">
-                                        <input type="text" class="form-control" name="username"
-                                               value="{{ old('username') }}" placeholder="Username">
+                                <div class="col-xs-6" style="padding-right: 7.5px">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control input-lg" name="first_name"
+                                               value="{{ old('first_name') }}" placeholder="first name">
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
-
-                                    <div class="col-md-12">
-                                        <input type="email" class="form-control" name="email" value="{{ old('email') }}"
-                                               placeholder="Email Address">
+                                <div class="col-xs-6" style="padding-left: 7.5px">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control input-lg" name="last_name"
+                                               value="{{ old('last_name') }}" placeholder="last name">
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
-
-                                    <div class="col-md-12">
-                                        <input type="password" class="form-control" name="password"
-                                               placeholder="Password">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control input-lg" name="username"
+                                               value="{{ old('username') }}" placeholder="username">
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
-
-                                    <div class="col-md-12">
-                                        <input type="password" class="form-control" name="password_confirmation"
-                                               placeholder="Confirm Password">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <input type="email" class="form-control input-lg" name="email"
+                                               value="{{ old('email') }}"
+                                               placeholder="email address">
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <button type="submit"
-                                                class="btn btn-primary btn-large col-md-12 col-sm-12 col-xs-12"
-                                                style="background: #ec6814;border-color: #ec6814">
-                                            Sign Up
-                                        </button>
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <input type="password" class="form-control input-lg" name="password"
+                                               placeholder="password">
                                     </div>
-                                    <div style="float:right; font-size: 90%; position: relative; bottom:-10px; right:15px">
-                                        Already a member? <a id="signinlink" href="{{ url('/auth/login') }}">Sign In</a>
+                                </div>
+
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <button class="btn btn-primary btn-huge btn-block text-uppercase"
+                                                type="submit"> Sign Up </button>
                                     </div>
+                                </div>
+
+                                <div class="col-xs-12">
+                                    <small class="pull-right text-uppercase">
+                                            Already a member? <a class="text-link" href="{{ url('/auth/login') }}">Sign In</a>
+                                    </small>
                                 </div>
                             </form>
                         </div>
@@ -136,5 +115,4 @@
             </div>
         </div>
     </div>
-</body>
-</html>
+@endsection

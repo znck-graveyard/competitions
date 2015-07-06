@@ -43,6 +43,14 @@ body, label, .checkbox label {
   border-width: 3px;
 }
 
+.btn-facebook {
+  .button-variant(#fff; #3b579d; #3b468c);
+}
+
+.btn-huge {
+  .button-size(10px; 24px; @font-size-base; @line-height-base; @border-radius-base);
+}
+
 .panel-contests {
   .panel-variant(transparent, #fff, #223577, transparent);
   border: none;
@@ -79,6 +87,7 @@ img {
   min-height: ~"calc(100vh - " (@navbar-height + 75px) ~")";
 }
 
+@import 'auth';
 @import 'cards';
 @import 'stats';
 @import 'slider';

@@ -1,7 +1,7 @@
 (function() {
   var apiURL, contestId, token;
 
-  if (Vue && $('#contest-entries').length) {
+  if (window.Vue && $('#contest-entries').length) {
     apiURL = $('meta[name="ws::contest.entries"]').attr('content');
     contestId = $('meta[name="ws::contest"]').attr('content');
     token = $('meta[name="csrf_token"]').attr('content');

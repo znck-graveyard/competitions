@@ -1,6 +1,6 @@
 @foreach($categories as $type => $contests)
     <div class="panel panel-contests">
-        <div class="panel-heading" style="background-color: {{ config('colors.'.$type, '#000') }}">
+        <div class="panel-heading" style="background-color: {{ config('colors.'.str_slug($type), '#000') }}">
             <h3 class="panel-title text-uppercase">
                 {{ $type }}
 
