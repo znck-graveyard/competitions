@@ -9,7 +9,7 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-xs-12 text-center">
-                                <img src="logo" alt="Whizzspace Logo"
+                                <img src="{{ url('image/logo.svg') }}" alt="Whizzspace Logo"
                                      style="height: 96px; margin-bottom: 15px"/>
                             </div>
                         </div>

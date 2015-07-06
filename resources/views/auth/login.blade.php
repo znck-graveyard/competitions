@@ -9,7 +9,7 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-xs-12 text-center">
-                                <img src="logo" alt="Whizzspace Logo"
+                                <img src="{{ url('image/logo.svg') }}" alt="Whizzspace Logo"
                                      style="height: 96px; margin-bottom: 15px"/>
                             </div>
                         </div>
@@ -37,12 +37,12 @@
                         @endif
                         <div class="row">
                             <form class="form clearfix" role="form" method="POST"
-                                  action="{{ url('/auth/register') }}">
+                                  action="{{ url('/auth/login') }}">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                                 <div class="col-xs-12">
                                     <div class="form-group">
-                                        <input type="text" class="form-control input-lg" name="username"
+                                        <input type="text" class="form-control input-lg" name="email"
                                                value="{{ old('username') }}" placeholder="username or email">
                                     </div>
                                 </div>
@@ -66,7 +66,7 @@
                                         <a class="text-link" href="{{ url('/password/email') }}">Forgot Password?</a>
                                     </small>
                                     <small class="pull-right text-uppercase">
-                                        New Here? <a class="text-link" href="{{ url('/auth/login') }}">Sign In</a>
+                                        <a class="text-link" href="{{ url('/auth/login') }}">New Here? Sign In</a>
                                     </small>
                                 </div>
                             </form>

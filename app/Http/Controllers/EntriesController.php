@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use League\Fractal\Manager;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class EntriesController extends Controller
 {
@@ -43,12 +44,11 @@ class EntriesController extends Controller
 
         $entries = Entry::whereContestId($contest->id)
             ->orderBy('created_at')
-            ->offset($request->get('from', 0))
-            ->take(16)
-            ->get();
+            ->paginate(16);
 
         $fractal = new Manager();
         $resource = new \League\Fractal\Resource\Collection($entries, new EntryTransformer());
+        $resource->setPaginator(new IlluminatePaginatorAdapter($entries));
 
         return response()->json($fractal->createData($resource)->toArray());
 
@@ -166,7 +166,10 @@ class EntriesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @return Response
+     * @param \App\Http\Requests\CreateEntryRequest $request
+     *
+     * @return \App\Http\Controllers\Response
+     * @throws \Exception
      */
     public function store(Requests\CreateEntryRequest $request)
     {
