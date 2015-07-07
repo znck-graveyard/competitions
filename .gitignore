@@ -4,3 +4,5 @@
 storage/database.sqlite
 .idea
 .DS_Store
+public/blog/img/post-bg.jpg
+public/blog/post.html
