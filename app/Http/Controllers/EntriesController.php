@@ -191,13 +191,17 @@ class EntriesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param \App\Contest $contest
+     * @param \App\Entry   $entry
      *
-     * @return Response
+     * @return \App\Http\Controllers\Response
      */
-    public function show(Requests\CreateEntryRequest $request, Entry $entry)
+    public function show(Contest $contest, Entry $entry)
     {
-        return $request->sendResponse($entry);
+        $one = $entry;
+        $other = $contest->entries->random();
+
+        return view('comparator.abstract', compact('one', 'other'));
     }
 
     /**

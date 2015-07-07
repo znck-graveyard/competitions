@@ -96,7 +96,9 @@ class AuthController extends Controller
         $code = Input::get('code');
 
         if (!$code) {
-            return redirect('\login')->flash()->error('Cannot login with Facebook.');
+            flash()->error('Cannot login with Facebook.');
+
+            return redirect('/auth/login');
         }
 
         $user = Socialite::driver('facebook')->user();
