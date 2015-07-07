@@ -29,7 +29,7 @@ class AuthController extends Controller
     }
 
     protected $redirectPath = '/';
-
+    protected $loginPath    = '/login';
     protected $auth;
     protected $user;
 
@@ -76,13 +76,11 @@ class AuthController extends Controller
     public function create(array $data)
     {
         return User::create([
-            'first_name'    => $data['first_name'],
-            'last_name'     => $data['last_name'],
-            'username'      => $data['username'],
-            'email'         => $data['email'],
-            'password'      => bcrypt($data['password']),
-            'is_maintainer' => false,
-
+            'first_name' => $data['first_name'],
+            'last_name'  => $data['last_name'],
+            'username'   => $data['username'],
+            'email'      => $data['email'],
+            'password'   => bcrypt($data['password']),
         ]);
     }
 

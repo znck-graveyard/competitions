@@ -1,0 +1,49 @@
+.file-input {
+  display: flex;
+  flex-direction: row;
+  .thumbnail {
+    flex: 0 0 96px;
+    margin-right: 15px;
+    margin-bottom: 0;
+    @media screen and (min-width: @screen-md-min) {
+      flex: 0 0 160px;
+    }
+  }
+  .row {
+    flex: 1 1;
+    display: inline-flex;
+    align-items: flex-end;
+  }
+}
+
+label.required {
+  &:after {
+    content: '*';
+    font-size: 0.9em;
+    vertical-align: super;
+    color: @brand-primary;
+  }
+}
+
+.input-with-icon {
+  display: flex;
+  flex-direction: row;
+  label {
+    flex: 0 0 44px;
+    margin-right: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    img {
+      height: 28px;
+      border-radius: 2px;
+    }
+  }
+  input {
+    flex: 1 1;
+  }
+}
+
+label {
+  font-weight: 400;
+}

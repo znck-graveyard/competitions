@@ -4,7 +4,6 @@ use App\Contest;
 use App\Http\Controllers\Auth;
 use App\Http\Requests;
 use App\User;
-use App\UserAttribute;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -32,7 +31,7 @@ class ContestController extends Controller
     public function category($type)
     {
         $type = strtolower(str_replace('-', ' ', $type));
-        
+
         $contests = Contest::where('contest_type', $type)->paginate(16);
 
         return view('contest.category', compact('contests', 'type'));
@@ -48,122 +47,16 @@ class ContestController extends Controller
     {
         $user = User::find($this->user->id);
 
-        $maintainer_bool = $user->is_maintainer;
         $contest = new Contest();
         $types = $contest->getTypes();
         $submission_types = $contest->getSubmissionTypes();
-        if ($maintainer_bool) {
-            return view('contest.create')->with(['types' => $types, 'submission_types' => $submission_types]);
-        } else {
-            return $this->createFirstTime();
+        if ($user->is_maintainer === true) {
+            return view('contest.create')->with(['contestTypes' => $types, 'submissionTypes' => $submission_types]);
         }
 
-    }
+//        session(['maintainer-request' => true]);
 
-    public function createFirstTime()
-    {
-        return view('contest.create_first_time');
-    }
-
-    /**
-     * @param Requests\UserDetailsRequest $request
-     *
-     * @return \Illuminate\View\View
-     */
-    public function storeFirstTimeContest(Requests\UserDetailsRequest $request)
-    {
-
-        $id = $this->user->id;
-        $moderator = User::find($id);
-        $moderator->first_name = ucfirst($request->get('first_name'));
-        $moderator->last_name = ucfirst($request->get('last_name'));
-        $moderator->email = $request->get('email');
-        $moderator->date_of_birth = $request->get('date_of_birth');
-        $moderator->gender = $request->get('gender');
-
-        $this->userAttributes($request, $id);
-        $moderator->save();
-
-        $contest = new Contest();
-        $types = $contest->getTypes();
-        $submission_types = $contest->getSubmissionTypes();
-
-        return view('contest.create')->with(['types' => $types, 'submission_types' => $submission_types]);
-    }
-
-
-    /**
-     * Entering User Attributes
-     *
-     * @param Requests\UserDetailsRequest $request
-     * @param                             $id
-     */
-    public function userAttributes(Requests\UserDetailsRequest $request, $id)
-    {
-        $user_attribute = [];
-        $short_bio = $request->get('short_bio');
-        $user_attribute_short_bio = [
-            'user_id' => $id,
-            'key'     => 'short_bio',
-            'value'   => $short_bio
-        ];
-        $user_attributes[] = $user_attribute_short_bio;
-
-        if ($request->hasFile('profile_pic')) {
-            $file = $request->file('profile_pic');
-            $extension = $file->getClientOriginalExtension();
-            $filename = $file->getFilename() . '.' . $extension;
-            Storage::disk('local')->put($filename, File::get($file));
-            $user_attribute_profile_pic = [
-                'user_id' => $id,
-                'key'     => 'profile_pic',
-                'value'   => $filename
-            ];
-            $user_attributes[] = $user_attribute_profile_pic;
-        }
-        if ($request->hasFile('cover_image')) {
-            $file = $request->file('cover_image');
-            $extension = $file->getClientOriginalExtension();
-            $filename = $file->getFilename() . '.' . $extension;
-            Storage::disk('local')->put($filename, File::get($file));
-            $user_attribute_cover_image = [
-                'user_id' => $id,
-                'key'     => 'cover_image',
-                'value'   => $filename
-            ];
-            $user_attributes[] = $user_attribute_cover_image;
-        }
-
-        if ($request->has('facebook_username')) {
-            $user_attribute_facebook = [
-                'user_id' => $id,
-                'key'     => 'facebook_username',
-                'value'   => $request->get('facebook_username')
-            ];
-            $user_attributes[] = $user_attribute_facebook;
-
-        }
-        if ($request->has('twitter_username')) {
-            $user_attribute_twitter = [
-                'user_id' => $id,
-                'key'     => 'twitter_username',
-                'value'   => $request->get('twitter_username')
-            ];
-            $user_attributes[] = $user_attribute_twitter;
-        }
-        if ($request->has('instagram_username')) {
-            $user_attribute_instagram = [
-                'user_id' => $id,
-                'key'     => 'instagram_username',
-                'value'   => $request->get('instagram_username')
-            ];
-            $user_attributes[] = $user_attribute_instagram;
-
-        }
-        foreach ($user_attributes as $attribute) {
-            UserAttribute::create($attribute);
-        }
-
+        return view('contest.new', compact('user'));
     }
 
     /**

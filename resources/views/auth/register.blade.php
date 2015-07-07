@@ -15,7 +15,7 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <a class="btn btn-facebook text-uppercase btn-huge btn-block" href="{{ url('/login/facebook')}}">
+                                <a class="btn btn-facebook text-uppercase btn-huge btn-block" href="{{ route('auth.facebook') }}">
                                     Sign Up With Facebook
                                 </a>
                             </div>
@@ -37,7 +37,7 @@
                         @endif
                         <div class="row">
                             <form class="form clearfix" role="form" method="POST"
-                                action="{{ url('/auth/register') }}">
+                                action="{{ route('auth.signup') }}">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                                 <div class="col-xs-6" style="padding-right: 7.5px">
@@ -85,7 +85,7 @@
 
                                 <div class="col-xs-12">
                                     <small class="pull-right text-uppercase">
-                                            <a class="text-link" href="{{ url('/auth/login') }}">Already a member? Sign In</a>
+                                            <a class="text-link" href="{{ route('auth.login') }}">Already a member? Sign In</a>
                                     </small>
                                 </div>
                             </form>

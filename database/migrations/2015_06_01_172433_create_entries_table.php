@@ -29,6 +29,7 @@ class CreateEntriesTable extends Migration
             $table->string('entryable_type')->unsigned();
 
             $table->double('score')->default(0);
+            $table->integer('views')->default(0);
             $table->integer('upvotes')->default(0);
             $table->integer('downvotes')->default(0);
 

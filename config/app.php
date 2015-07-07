@@ -143,6 +143,7 @@ return [
         'Zizaco\Entrust\EntrustServiceProvider',
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
         'Laravel\Socialite\SocialiteServiceProvider',
+        Intervention\Image\ImageServiceProvider::class
     ],
     /*
     |--------------------------------------------------------------------------
@@ -194,6 +195,7 @@ return [
         'Form'      => 'Illuminate\Html\FormFacade',
         'Html'      => 'Illuminate\Html\HtmlFacade',
         'Socialize' => 'Laravel\Socialite\Facades\Socialite',
+        'Image'     => Intervention\Image\Facades\Image::class,
 
 
     ],

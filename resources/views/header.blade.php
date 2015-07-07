@@ -18,20 +18,20 @@
                 <li><a href="{{ url('/') }}">About</a></li>
                 <li><a href="{{ url('/faq') }}">FAQ</a></li>
                 @if (Auth::guest())
-                    <li><a href="{{ url('/auth/register') }}">Login/SignUp</a></li>
+                    <li><a href="{{ route('auth.login') }}">Login/SignUp</a></li>
                 @else
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                            aria-expanded="false">{{ Auth::user()->first_name }} <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="{{ url('/auth/profile') }}">Profile</a></li>
-                            <li><a href="{{ url('/auth/logout') }}">Logout</a></li>
+                            <li><a href="{{ route('auth.login') }}">Logout</a></li>
                         </ul>
                     </li>
                 @endif
                 <li>
                     <p class="navbar-btn">
-                        <a class="btn btn-white text-uppercase" href="#">create contest</a>
+                        <a class="btn btn-white text-uppercase" href="{{ route('contest.create') }}">create contest</a>
                     </p>
                 </li>
             </ul>

@@ -1,23 +1,46 @@
 <?php
-Route::get('/', 'HomeController@index');
-Route::get('faq', 'HomeController@faq');
-Route::get('login/facebook','Auth\AuthController@facebookLogin');
-Route::get('login/facebook/callback','Auth\AuthController@facebookLoginHandle');
+Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index']);
 
-Route::controller('auth', 'Auth\AuthController');
-Route::controller('password', 'Auth\PasswordController');
+/*
+ * Static routes
+ */
+Route::get('faq', 'HomeController@faq');
+
+Route::group([], function () {
+    /*
+     * Auth routes
+     */
+    Route::get('login', ['as' => 'auth.login', 'uses' => 'Auth\AuthController@getLogin']);
+    Route::get('login/facebook', ['as' => 'auth.facebook', 'uses' => 'Auth\AuthController@facebookLogin']);
+    Route::get('login/facebook/callback',
+        ['as' => 'auth.facebook.callback', 'uses' => 'Auth\AuthController@facebookLoginHandle']);
+    Route::get('logout', ['as' => 'auth.logout', 'uses' => 'Auth\AuthController@getLogout']);
+    Route::get('register', ['as' => 'auth.signup', 'uses' => 'Auth\AuthController@getRegister']);
+
+    Route::post('login', 'Auth\AuthController@postLogin');
+    Route::post('register', 'Auth\AuthController@postRegister');
+    /*
+     * Password routes
+     */
+    Route::get('recovery', ['as' => 'password.forgot', 'uses' => 'Auth\PasswordController@getEmail']);
+    Route::get('reset', ['as' => 'password.reset', 'uses' => 'Auth\PasswordController@getReset']);
+
+    Route::post('recovery', 'Auth\PasswordController@postEmail');
+    Route::post('reset/{token?}', 'Auth\PasswordController@postReset');
+});
 
 Route::group(['prefix' => 'contest'], function () {
-    Route::get('create', ['uses' => 'ContestController@create', 'as' => 'contest.create']);
+//    Route::get('create', ['uses' => 'ContestController@create', 'as' => 'contest.create']);
     Route::get('administration/judge/{id}', 'JudgementController@contestJudge');
     Route::get('judge/{uid}', 'JudgementController@checkLink');
 
     Route::post('createFirstTime', 'ContestController@storeFirstTimeContest');
-    Route::post('create', 'ContestController@store');
+//    Route::post('create', 'ContestController@store');
 
     Route::get('category/{slug}', ['as' => 'contest.category', 'uses' => 'ContestController@category']);
 });
-Route::resource('contest', 'ContestController', ['except' => ['index', 'store']]);
+
+Route::resource('contest', 'ContestController');
 Route::bind('contest', function ($slug) {
     return \App\Contest::whereSlug($slug)->firstOrFail();
 });
@@ -35,4 +58,12 @@ Route::group(['prefix' => 'submission'], function () {
 
 Route::resource('submission', 'EntriesController', ['except' => ['store']]);
 
-Route::get('users/{username}', 'HomeController@userProfile');
+Route::post('contestant/update', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
+Route::group(['prefix' => 'contestant/{username}'], function () {
+    Route::get('/', 'HomeController@userProfile');
+    Route::get('photo/{width?}/{height?}', ['as' => 'user.photo', 'uses' => 'ProfileController@photo']);
+    Route::get('cover/{width?}/{height?}', ['as' => 'user.cover', 'uses' => 'ProfileController@cover']);
+});
+Route::bind('username', function ($value) {
+    return \App\User::whereUsername($value)->orWhere('id', '=', $value)->firstOrFail();
+});

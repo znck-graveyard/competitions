@@ -30,7 +30,7 @@
                     @endif
 
                     <div class="row">
-                        <form class="form clearfix" role="form" method="POST" action="{{ url('/password/reset') }}">
+                        <form class="form clearfix" role="form" method="POST" action="{{ route('password.route') }}">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <input type="hidden" name="token" value="{{ $token }}">
 

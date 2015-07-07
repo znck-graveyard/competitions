@@ -39,7 +39,7 @@
 					@endif
 
 					<div class="row">
-                        <form class="form clearfix" role="form" method="POST" action="{{ url('/password/email') }}">
+                        <form class="form clearfix" role="form" method="POST" action="{{ route('password.forgot') }}">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                             <div class="col-xs-12">
