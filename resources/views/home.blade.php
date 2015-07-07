@@ -29,14 +29,7 @@
 
     </div>
     <br/>
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <h2 class="text-orange text-uppercase text-center">Trending</h2>
-            </div>
-        </div>
         @include('trending.contests')
-    </div>
     <br/>
     <div class="container" id="contests">
         <div class="row">

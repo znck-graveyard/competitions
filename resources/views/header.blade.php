@@ -9,7 +9,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="text-link" href="{{ url('/') }}">
-                <img src="{{ asset('image/logo.svg') }}" alt="Whizzspace Logo"/>
+                <img src="{{ asset('image/logo.jpg') }}" alt="Whizzspace Logo"/>
             </a>
         </div>
 
@@ -29,11 +29,11 @@
                         </ul>
                     </li>
                 @endif
-                <li>
-                    <p class="navbar-btn">
-                        <a class="btn btn-white text-uppercase" href="{{ route('contest.create') }}">create contest</a>
-                    </p>
-                </li>
+                {{--<li>--}}
+                    {{--<p class="navbar-btn">--}}
+                        {{--<a class="btn btn-white text-uppercase" href="{{ route('contest.create') }}">create contest</a>--}}
+                    {{--</p>--}}
+                {{--</li>--}}
             </ul>
         </div>
     </div>

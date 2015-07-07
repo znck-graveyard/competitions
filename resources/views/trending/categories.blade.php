@@ -20,12 +20,12 @@
         </div>
     </div>
 @empty
-    <div class="container">
+    <div class="container text-center">
         <div class="row">
             <div class="col-xs-12">
-                <img src="{{ asset('image/placeholder.jpg') }}"/>
+                <img src="{{ asset('image/placeholder-wide.jpg') }}"/>
                 <h2 style="color: #bbb">
-                    There are no contests as of now!<br/>Keep looking here for exciting contests.
+                    There are no contests as of now!<br/>Keep looking this space for more updates.
                 </h2>
             </div>
         </div>
