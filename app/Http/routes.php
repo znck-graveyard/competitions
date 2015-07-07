@@ -1,8 +1,8 @@
 <?php
 Route::get('/', 'HomeController@index');
 Route::get('faq', 'HomeController@faq');
-Route::get('login/facebook','Auth\AuthController@facebookLogin');
-Route::get('login/facebook/callback','Auth\AuthController@facebookLoginHandle');
+Route::get('login/facebook', 'Auth\AuthController@facebookLogin');
+Route::get('login/facebook/callback', 'Auth\AuthController@facebookLoginHandle');
 
 Route::controller('auth', 'Auth\AuthController');
 Route::controller('password', 'Auth\PasswordController');
@@ -35,4 +35,5 @@ Route::group(['prefix' => 'submission'], function () {
 
 Route::resource('submission', 'EntriesController', ['except' => ['store']]);
 
+Route::get('users/entries', 'HomeController@userEntries');
 Route::get('users/{username}', 'HomeController@userProfile');

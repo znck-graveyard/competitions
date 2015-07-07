@@ -2,6 +2,7 @@
 
 use App\User;
 use App\Team;
+
 class HomeController extends Controller
 {
     /**
@@ -34,21 +35,29 @@ class HomeController extends Controller
         if (is_null($user)) {
             return redirect('/');
         } else {
-            $entries = $user->entriesSubmitted();
-            $teams = $user->teams();
-            foreach ($teams as $team) {
-                $team_entry = $team->entriesSubmitted();
-                $entries = array_merge($entries,$team_entry);
-            }
-            $paginator=$entries->epaginate(16);
-            $user_entries=$paginator->getCollection();
-            $fractal = new Manager();
-            $resource = new \League\Fractal\Resource\Collection($user_entries, new EntryTransformer());
-            $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
-
-            //TODO  don't know how to access this with view
-           // return view('user.profile', compact('user','entries'));
+            return view('profile.blade.php',compact('user'));
         }
+
+    }
+
+    /**
+     * @param $user
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function userEntries($user)
+    {
+        $entries = $user->entriesSubmitted();
+        $teams = $user->teams();
+        foreach ($teams as $team) {
+            $team_entry = $team->entriesSubmitted();
+            $entries = array_merge($entries, $team_entry);
+        }
+        $paginator = $entries->paginate(16);
+        $user_entries = $paginator->getCollection();
+        $fractal = new Manager();
+        $resource = new \League\Fractal\Resource\Collection($user_entries, new EntryTransformer());
+        $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
+        return response()->json($fractal->createData($resource)->toArray());
 
     }
 }

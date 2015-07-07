@@ -24,7 +24,7 @@ class CreateEntriesTable extends Migration
 
             $table->boolean('is_team_entry')->default(false);
 
-            $table->integer('contest_id')->unsigned()->index();
+            $table->integer('contest_id')->index();
             $table->integer('entryable_id')->unsigned();
             $table->string('entryable_type')->unsigned();
 
@@ -48,8 +48,8 @@ class CreateEntriesTable extends Migration
     public function down()
     {
         Schema::table('entries', function ($table) {
-            $table->dropIndex('entries_contest_id_index');
-            $table->dropForeign('entries_contest_id_foreign');
+           $table->dropIndex(['contest_id']);
+            $table->dropForeign(['contest_id']);
             $table->dropIndex(['uuid']); // Drop basic index in 'uuid' from 'entries' table
         });
         Schema::drop('entries');

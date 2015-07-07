@@ -143,6 +143,8 @@ return [
         'Zizaco\Entrust\EntrustServiceProvider',
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
         'Laravel\Socialite\SocialiteServiceProvider',
+        'GrahamCampbell\Throttle\ThrottleServiceProvider'
+
     ],
     /*
     |--------------------------------------------------------------------------
@@ -194,6 +196,7 @@ return [
         'Form'      => 'Illuminate\Html\FormFacade',
         'Html'      => 'Illuminate\Html\HtmlFacade',
         'Socialize' => 'Laravel\Socialite\Facades\Socialite',
+        'Throttle'  => 'GrahamCampbell\Throttle\Facade\Throttle',
 
 
     ],
