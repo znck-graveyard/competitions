@@ -1,3 +1,15 @@
+@if(empty($trendingContests))
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <img src="{{ asset('image/placeholder.jpg') }}"/>
+                <h2 style="color: #bbb">
+                    There are no contests as of now!<br/>Keep looking here for trending contests.
+                </h2>
+            </div>
+        </div>
+    </div>
+@endif
 <div class="slider-wrapper">
     <div id="trending-contest" class="slider">
         <!-- Wrapper for slides -->

@@ -1,4 +1,4 @@
-@foreach($categories as $type => $contests)
+@forelse($categories as $type => $contests)
     <div class="panel panel-contests">
         <div class="panel-heading" style="background-color: {{ config('colors.'.str_slug($type), '#000') }}">
             <h3 class="panel-title text-uppercase">
@@ -19,4 +19,15 @@
             </div>
         </div>
     </div>
-@endforeach
+@empty
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <img src="{{ asset('image/placeholder.jpg') }}"/>
+                <h2 style="color: #bbb">
+                    There are no contests as of now!<br/>Keep looking here for exciting contests.
+                </h2>
+            </div>
+        </div>
+    </div>
+@endforelse
