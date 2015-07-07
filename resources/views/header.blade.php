@@ -8,7 +8,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="text-link" href="{{ url('/') }}">
+            <a class="navbar-brand" href="{{ url('/') }}" style="padding: 22px 15px">
                 <img src="{{ asset('image/logo.jpg') }}" alt="Whizzspace Logo"/>
             </a>
         </div>
