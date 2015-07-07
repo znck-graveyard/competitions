@@ -74,6 +74,5 @@ return [
 	|
 	*/
 
-	'prefix' => 'laravel',
-
+	'prefix' => 'whizzspace',
 ];
