@@ -13,12 +13,12 @@
 
         <div class="col-xs-12 col-md-9 text-right text-center-xs" style="line-height: 50px;">
             <ul class="list-inline center-block">
-                <li><a href="{{ url('/about') }}">About</a></li>
-                <li><a href="{{ url('/faqs') }}">FAQ</a></li>
-                <li><a href="{{ url('/support') }}">Support</a></li>
-                <li><a href="{{ url('/terms') }}">Terms of Service</a></li>
-                <li><a href="{{ url('/privacy') }}">Privacy Policy</a></li>
-                <li><a href="{{ url('/copyright') }}">&copy; Wizzspace</a></li>
+                <li><a href="{{ url('about') }}">About</a></li>
+                <li><a href="{{ url('blog') }}">Blog</a></li>
+{{--                <li><a href="{{ url('support') }}">Support</a></li>--}}
+                <li><a href="{{ url('terms') }}">Terms of Service</a></li>
+{{--                <li><a href="{{ url('privacy') }}">Privacy Policy</a></li>--}}
+                <li><a href="{{ url('copyright') }}">&copy; Wizzspace</a></li>
             </ul>
             <ul class="list-inline center-block">
                 <li><a href="https://twitter.com/#" title="Follow us on Twitter">

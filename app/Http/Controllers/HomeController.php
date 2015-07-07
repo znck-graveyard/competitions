@@ -1,7 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use App\User;
-use App\Team;
+
 class HomeController extends Controller
 {
     /**
@@ -24,8 +24,14 @@ class HomeController extends Controller
         return view('about');
     }
 
+    public function terms()
+    {
+        return view('terms');
+    }
+
     /**
      * @param $username
+     *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
      */
     public function userProfile($username)
@@ -38,16 +44,16 @@ class HomeController extends Controller
             $teams = $user->teams();
             foreach ($teams as $team) {
                 $team_entry = $team->entriesSubmitted();
-                $entries = array_merge($entries,$team_entry);
+                $entries = array_merge($entries, $team_entry);
             }
-            $paginator=$entries->epaginate(16);
-            $user_entries=$paginator->getCollection();
+            $paginator = $entries->epaginate(16);
+            $user_entries = $paginator->getCollection();
             $fractal = new Manager();
             $resource = new \League\Fractal\Resource\Collection($user_entries, new EntryTransformer());
             $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
 
             //TODO  don't know how to access this with view
-           // return view('user.profile', compact('user','entries'));
+            // return view('user.profile', compact('user','entries'));
         }
 
     }

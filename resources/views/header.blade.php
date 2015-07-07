@@ -15,8 +15,8 @@
 
         <div class="collapse navbar-collapse clearfix" id="navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="{{ url('/') }}">About</a></li>
-                <li><a href="{{ url('/faq') }}">FAQ</a></li>
+                <li><a href="{{ url('about') }}">About</a></li>
+                <li><a href="{{ url('blog') }}">Blog</a></li>
                 @if (Auth::guest())
                     <li><a href="{{ route('auth.login') }}">Login/SignUp</a></li>
                 @else

@@ -4,7 +4,8 @@ Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index']);
 /*
  * Static routes
  */
-Route::get('faq', 'HomeController@faq');
+Route::get('about', 'HomeController@about');
+Route::get('terms', 'HomeController@terms');
 
 Route::group([], function () {
     /*
@@ -65,5 +66,12 @@ Route::group(['prefix' => 'contestant/{username}'], function () {
     Route::get('cover/{width?}/{height?}', ['as' => 'user.cover', 'uses' => 'ProfileController@cover']);
 });
 Route::bind('username', function ($value) {
-    return \App\User::whereUsername($value)->orWhere('id', '=', $value)->firstOrFail();
+    if (is_numeric($value)) {
+        $user = \App\User::whereId($value)->first();
+        if ($user) {
+            return $user;
+        }
+    }
+
+    return \App\User::whereUsername($value)->firstOrFail();
 });

@@ -41,6 +41,15 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
  * @method static \Illuminate\Database\Query\Builder|\App\User whereDeletedAt($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|Entry[]         $entries
  * @property-read mixed                                                    $name
+ * @property string $remember_token 
+ * @property-read \Illuminate\Database\Eloquent\Collection|UserAttribute[] $extras 
+ * @property mixed $profile_photo 
+ * @property mixed $cover_photo 
+ * @property mixed $connection_facebook 
+ * @property mixed $connection_twitter 
+ * @property mixed $connection_instagram 
+ * @property mixed $bio 
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereRememberToken($value)
  */
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {

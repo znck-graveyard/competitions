@@ -1,3 +1,25 @@
+@section('styles')
+    @parent
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet"
+          type="text/css"/>
+@endsection
+
+@section('scripts')
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('.input-group.date').datepicker({
+                autoclose: true,
+                todayHighlight: true,
+                format: 'yyyy-mm-dd'
+            }).datepicker('update', new Date());
+
+        });
+    </script>
+@endsection
+
 <div class="container">
     @if(count($errors))
         <div class="row">
@@ -45,7 +67,13 @@
                 <div class="col-xs-12 col-sm-6">
                     <div class="form-group">
                         <label class="text-uppercase required" for="dob">Date of Birth</label>
-                        {!! Form::input('date', 'date_of_birth', $user->date_of_birth ? $user->date_of_birth->format('Y-m-d') : old('date_of_birth'), ['class' => 'input-lg form-control', 'required' =>'', 'placeholder' => 'select your date of birth', 'id' => 'dob']) !!}
+
+                        <div class="input-group date">
+                            {!! Form::text('date_of_birth', $user->date_of_birth ? $user->date_of_birth->format('Y-m-d') : old('date_of_birth'), ['class' => 'input-lg form-control', 'required' =>'', 'placeholder' => 'select your date of birth', 'id' => 'dob', 'data-type'=>'date']) !!}
+                            <span class="input-group-addon" style="cursor: pointer">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                            </span>
+                        </div>
                     </div>
                 </div>
 
@@ -59,7 +87,7 @@
                 <div class="col-xs-12 col-sm-6">
                     <div class="file-input">
                         <div class="thumbnail pull-left">
-                            <img src="{{ route('user.photo') }}" alt=""/>
+                            <img src="{{ route('user.photo', [$user->username ?: $user->id, 196]) }}"/>
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
@@ -87,7 +115,7 @@
                 <div class="col-xs-12 col-sm-6">
                     <div class="file-input">
                         <div class="thumbnail pull-left">
-                            <img src="{{ route('user.cover') }}"/>
+                            <img src="{{ route('user.cover', [$user->username ?: $user->id, 196]) }}"/>
                         </div>
                         <div class="row">
                             <div class="col-xs-12">

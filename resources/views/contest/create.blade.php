@@ -24,9 +24,6 @@
 
         });
     </script>
-
-
-
 @endsection
 @section('content')
 
@@ -54,7 +51,7 @@
                             <label for="type">Contest Type*</label>
                             <select class="input-large form-control" id="type" name="type">
                                 <option value="" selected="selected">Select anyone Type</option>
-                                @foreach($types as $type)
+                                @foreach($contestTypes as $type)
                                     <option value="{{ $type }}">{{ $type }}</option>
 
                                 @endforeach
@@ -68,7 +65,7 @@
                         <label for="submission_type">Submission Format*</label>
                         <select class="input-large form-control" id="submission_type" name="submission_type">
                             <option value="" selected="selected">Select format</option>
-                            @foreach($submission_types as $type)
+                            @foreach($submissionTypes as $type)
                                 <option value="{{ $type }}">{{ $type }}</option>
                             @endforeach
                         </select>

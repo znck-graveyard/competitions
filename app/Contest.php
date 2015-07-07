@@ -51,11 +51,11 @@
  * @method static \Illuminate\Database\Query\Builder|\App\Contest whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Contest whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Contest wherePageView($value)
- * @property string $contest_type
- * @property string $slug
- * @property boolean $public
- * @property string $prize_description
- * @property-read \Illuminate\Database\Eloquent\Collection|Entry[] $entries
+ * @property string                                                     $contest_type
+ * @property string                                                     $slug
+ * @property boolean                                                    $public
+ * @property string                                                     $prize_description
+ * @property-read \Illuminate\Database\Eloquent\Collection|Entry[]      $entries
  * @method static \Illuminate\Database\Query\Builder|\App\Contest whereContestType($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Contest whereSlug($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Contest wherePublic($value)
