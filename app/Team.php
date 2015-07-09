@@ -1,6 +1,7 @@
 <?php namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Entry;
 
 /**
  * App\Team
@@ -55,6 +56,14 @@ class Team extends Model
     public function teamMembers()
     {
         return $this->belongsToMany(User::class, 'team_user');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function winnerTeam()
+    {
+        return $this->morphMany(ContestWinners::class, 'winnerable');
     }
 
 }

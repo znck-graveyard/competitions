@@ -6,11 +6,13 @@ use App\Http\Requests;
 use App\User;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ContestController extends Controller
 {
     private $user;
+
 
     /**
      * @param Guard $auth
@@ -19,6 +21,7 @@ class ContestController extends Controller
     {
         $this->user = $auth->user();
         $this->middleware('auth', ['only' => ['create', 'update', 'edit', 'storeFirstTimeContest', 'store']]);
+        $this->middleware('countView',['only' => ['show']]);
     }
 
     /**
@@ -45,6 +48,7 @@ class ContestController extends Controller
      */
     public function create()
     {
+        abort(404);
         $user = User::find($this->user->id);
 
         $contest = new Contest();
@@ -98,7 +102,11 @@ class ContestController extends Controller
      */
     public function show(Contest $contest)
     {
+
+        $test=Contest::whereSlug($contest->slug)->first();
+        //Log::info($test->name);
         $contest->load(['entries', 'entries.entryable']);
+
 
         $top = $contest->entries->take(3)->sort(function ($a, $b) {
             return $a->score > $b->score;

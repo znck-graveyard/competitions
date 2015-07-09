@@ -144,6 +144,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->morphMany(Entry::class, 'entryable');
     }
 
+    /**
+     * Polymorphic relation to determine winning users of a contest
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function winnerUsers()
+    {
+        return $this->morphMany(ContestWinners::class, 'winnerable');
+    }
+
     /*
      * Setters and Getters.
      */

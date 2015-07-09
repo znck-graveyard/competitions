@@ -18,6 +18,7 @@ class EntriesController extends Controller
 {
 
     private $user;
+    protected $contest;
 
     /**
      * @param Guard $auth
@@ -26,6 +27,7 @@ class EntriesController extends Controller
     {
         $this->user = $auth->user();
         $this->middleware('auth', ['only' => ['create', 'update', 'edit', 'storeFirstTimeEntry', 'store']]);
+        $this->middleware('countView',['only' => ['show']]);
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use App\User;
+use App\Team;
 
 class HomeController extends Controller
 {
@@ -43,6 +44,7 @@ class HomeController extends Controller
             $entries = $user->entriesSubmitted();
             $teams = $user->teams();
             foreach ($teams as $team) {
+
                 $team_entry = $team->entriesSubmitted();
                 $entries = array_merge($entries, $team_entry);
             }
