@@ -129,6 +129,7 @@ return [
         'Illuminate\View\ViewServiceProvider',
         'Illuminate\Html\HtmlServiceProvider',
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
+        'GrahamCampbell\Throttle\ThrottleServiceProvider',
         /*
          * Application Service Providers...
          */
@@ -196,6 +197,7 @@ return [
         'Html'      => 'Illuminate\Html\HtmlFacade',
         'Socialize' => 'Laravel\Socialite\Facades\Socialite',
         'Image'     => Intervention\Image\Facades\Image::class,
+        'Throttle' => 'GrahamCampbell\Throttle\Facades\Throttle',
 
 
     ],
