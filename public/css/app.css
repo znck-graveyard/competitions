@@ -7479,5 +7479,21 @@ label {
   align-items: flex-end;
   margin: 0;
 }
+.profile .name {
+  color: #ef752a;
+  font-size: 22px;
+}
+.profile .bio {
+  color: #000;
+  margin-bottom: 8px;
+}
+.profile .social {
+  display: inline-block;
+}
+.profile .stats {
+  padding-left: 10px;
+  display: inline-block;
+  color: #999;
+}
 
 /*# sourceMappingURL=app.css.map */

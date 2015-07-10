@@ -26,7 +26,7 @@ class CreateEntriesTable extends Migration
 
             $table->integer('contest_id')->unsigned()->index();
             $table->integer('entryable_id')->unsigned();
-            $table->string('entryable_type')->unsigned();
+            $table->string('entryable_type');
 
             $table->double('score')->default(0);
             $table->integer('views')->default(0);

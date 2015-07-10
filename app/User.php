@@ -139,6 +139,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasMany(Contest::class, 'maintainer_id');
     }
 
+    /**
+     * Polymorphic relation to determine winning users of a contest
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function wins()
+    {
+        return $this->morphMany(ContestWinners::class, 'winnerable');
+    }
+
     /*
      * Setters and Getters.
      */
@@ -251,7 +261,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function getStatWinsAttribute()
     {
         return $this->getStat('wins', function () {
-            return 2; // TODO: create contest_winner table.
+            return $this->wins()->count();
         });
     }
 
