@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Whizzspace is an online talent platform where people can showcase their skills and compete to win fame and fortune."/>
 
     <title>@yield('title',  'Whizzspace')</title>
 
