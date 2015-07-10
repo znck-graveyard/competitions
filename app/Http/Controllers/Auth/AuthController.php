@@ -6,8 +6,8 @@ use App\User;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Http\Request;
-use Input;
 use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Two\InvalidStateException;
 use Validator;
 
 class AuthController extends Controller
@@ -89,31 +89,33 @@ class AuthController extends Controller
         return Socialite::with('facebook')->redirect();
     }
 
+    public function googleLogin()
+    {
+        return Socialite::with('google')->redirect();
+    }
+
+    public function googleLoginHandle()
+    {
+        try {
+            $provider = Socialite::driver('google')->user();
+        } catch (InvalidStateException $e) {
+            return redirect()->route('auth.login');
+        }
+        $user = User::where('email', '=', $provider->email)->first();
+
+        return $this->providerCallback($user, $provider);
+    }
+
     public function facebookLoginHandle()
     {
-        $code = Input::get('code');
-
-        if (!$code) {
-            flash()->error('Cannot login with Facebook.');
-
-            return redirect('/auth/login');
+        try {
+            $provider = Socialite::driver('facebook')->user();
+        } catch (InvalidStateException $e) {
+            return redirect()->route('auth.login');
         }
+        $user = User::where('email', '=', $provider->email)->first();
 
-        $user = Socialite::driver('facebook')->user();
-        $facebookUser = User::where('email', '=', $user->email)->first();
-
-        if (empty($facebookUser)) {
-            $facebookUser = User::create([
-                'first_name' => $user->offsetGet('first_name'),
-                'last_name'  => $user->offsetGet('last_name'),
-                'email'      => $user->email,
-            ]);
-
-            $facebookUser->attributes()->create(['key' => 'profile_pic', 'value' => $user->avatar]);
-        }
-        $this->auth->login($facebookUser, true);
-
-        return redirect()->intended($this->redirectPath());
+        return $this->providerCallback($user, $provider);
     }
 
     /**
@@ -152,5 +154,27 @@ class AuthController extends Controller
         ]);
 
         return $this->origPostLogin($request);
+    }
+
+    /**
+     * @param $user
+     * @param $provider
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function providerCallback($user, $provider)
+    {
+        if (empty($user)) {
+            $user = User::create([
+                'first_name' => $provider->offsetGet('first_name'),
+                'last_name'  => $provider->offsetGet('last_name'),
+                'email'      => $provider->email,
+            ]);
+
+            $user->attributes()->create(['key' => 'profile_pic', 'value' => $provider->avatar]);
+        }
+        $this->auth->login($user, true);
+
+        return redirect()->intended($this->redirectPath());
     }
 }

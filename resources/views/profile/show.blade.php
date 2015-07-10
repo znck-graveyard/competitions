@@ -83,7 +83,7 @@
                     </a>
                 </div>
             </div>
-            <div class="row text-center">
+            <div class="row text-center" v-if="$data.totalPages > 0">
                 <nav>
                     <ul class="pagination">
                         <li v-class="disabled: $data.currentPage == 1">
@@ -99,6 +99,15 @@
                         </li>
                     </ul>
                 </nav>
+            </div>
+
+            <div class="row text-center" v-if="$data.totalPages == 0">
+                <div class="col-xs-12 empty-state">
+                    <img src="{{ asset('image/placeholder-slim.jpg') }}"/>
+                    <h4>
+                        No submissions.
+                    </h4>
+                </div>
             </div>
         </div>
     </div>

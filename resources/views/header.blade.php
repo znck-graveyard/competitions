@@ -8,8 +8,8 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ url('/') }}" style="padding: 22px 15px">
-                <img src="{{ asset('image/logo.jpg') }}" alt="Whizzspace Logo"/>
+            <a class="navbar-brand" href="{{ url('/') }}" >
+                <img src="{{ asset('image/logo-alt.svg') }}" alt="Whizzspace Logo"/>
             </a>
         </div>
 
@@ -25,15 +25,16 @@
                            aria-expanded="false">{{ Auth::user()->first_name }} <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="{{ route('me') }}">Profile</a></li>
+                            <li><a href="{{ route('me.preferences') }}">Preferences</a></li>
                             <li><a href="{{ route('auth.login') }}">Logout</a></li>
                         </ul>
                     </li>
                 @endif
-                <li>
-                    <p class="navbar-btn">
-                        <a class="btn btn-white text-uppercase" href="{{ route('contest.create') }}">create contest</a>
-                    </p>
-                </li>
+                {{--<li>--}}
+                    {{--<p class="navbar-btn">--}}
+                        {{--<a class="btn btn-white text-uppercase" href="{{ route('contest.create') }}">create contest</a>--}}
+                    {{--</p>--}}
+                {{--</li>--}}
             </ul>
         </div>
     </div>

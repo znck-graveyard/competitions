@@ -13,8 +13,9 @@ Route::group([], function () {
      */
     Route::get('login', ['as' => 'auth.login', 'uses' => 'Auth\AuthController@getLogin']);
     Route::get('login/facebook', ['as' => 'auth.facebook', 'uses' => 'Auth\AuthController@facebookLogin']);
-    Route::get('login/facebook/callback',
-        ['as' => 'auth.facebook.callback', 'uses' => 'Auth\AuthController@facebookLoginHandle']);
+    Route::get('login/facebook/callback', ['as' => 'auth.facebook.callback', 'uses' => 'Auth\AuthController@facebookLoginHandle']);
+    Route::get('login/google', ['as' => 'auth.google', 'uses' => 'Auth\AuthController@googleLogin']);
+    Route::get('login/google/callback', ['as' => 'auth.google.callback', 'uses' => 'Auth\AuthController@googleLoginHandle']);
     Route::get('logout', ['as' => 'auth.logout', 'uses' => 'Auth\AuthController@getLogout']);
     Route::get('register', ['as' => 'auth.signup', 'uses' => 'Auth\AuthController@getRegister']);
 
@@ -60,6 +61,7 @@ Route::group(['prefix' => 'submission'], function () {
 Route::resource('submission', 'EntriesController', ['except' => ['store']]);
 
 Route::get('me', ['as' => 'me', 'uses' => 'ProfileController@me']);
+Route::get('preferences', ['as' => 'me.preferences', 'uses' => 'ProfileController@preferences']);
 Route::post('contestant/update', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
 Route::group(['prefix' => 'contestant/{username}'], function () {
     Route::get('/', ['as' => 'user.profile', 'uses' => 'ProfileController@show']);

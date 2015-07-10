@@ -35,7 +35,7 @@ class ProfileController extends Controller
      */
     function __construct(Guard $auth)
     {
-        $this->middleware('auth', ['only' => ['update', 'me']]);
+        $this->middleware('auth', ['only' => ['update', 'me', 'preferences']]);
         $this->user = $auth->user();
     }
 
@@ -88,6 +88,13 @@ class ProfileController extends Controller
         return view('profile.show', compact('user'));
     }
 
+    public function preferences()
+    {
+        $user = $this->user;
+
+        return view('profile.preferences', compact('user'));
+    }
+
     /**
      * @param \Illuminate\Http\Request $request
      *
@@ -95,6 +102,7 @@ class ProfileController extends Controller
      */
     public function update(Request $request)
     {
+        $this->validate($request, ['profile_photo' => 'image','cover_photo' => 'image',]);
         /*
         |--------------------------------------------------------------------------
         | Update user profile.
@@ -117,7 +125,7 @@ class ProfileController extends Controller
         }
 
         if ($request->hasFile('cover_photo')) {
-            $file = $request->file('profile_photo');
+            $file = $request->file('cover_photo');
             $filename = $this->moveFile($file);
             // TODO: Resize image in largest resolution required.
             $tmp = $this->user->cover_photo;
@@ -135,6 +143,8 @@ class ProfileController extends Controller
             $this->user->is_maintainer = true;
             $this->user->save();
         }
+
+        flash('Changes saved.');
 
         return redirect()->back();
     }

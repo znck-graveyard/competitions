@@ -896,7 +896,7 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
   color: #333333;
@@ -5516,7 +5516,7 @@ button.close {
   z-index: 1070;
   display: block;
   visibility: visible;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 12px;
   font-weight: normal;
   line-height: 1.4;
@@ -5623,7 +5623,7 @@ button.close {
   display: none;
   max-width: 276px;
   padding: 1px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   font-weight: normal;
   line-height: 1.42857143;
@@ -6475,6 +6475,51 @@ fieldset[disabled] .btn-facebook.active {
   color: #3b579d;
   background-color: #ffffff;
 }
+.btn-google {
+  color: #ffffff;
+  background-color: #d62020;
+  border-color: #d62020;
+}
+.btn-google:hover,
+.btn-google:focus,
+.btn-google.focus,
+.btn-google:active,
+.btn-google.active,
+.open > .dropdown-toggle.btn-google {
+  color: #ffffff;
+  background-color: #aa1919;
+  border-color: #a11818;
+}
+.btn-google:active,
+.btn-google.active,
+.open > .dropdown-toggle.btn-google {
+  background-image: none;
+}
+.btn-google.disabled,
+.btn-google[disabled],
+fieldset[disabled] .btn-google,
+.btn-google.disabled:hover,
+.btn-google[disabled]:hover,
+fieldset[disabled] .btn-google:hover,
+.btn-google.disabled:focus,
+.btn-google[disabled]:focus,
+fieldset[disabled] .btn-google:focus,
+.btn-google.disabled.focus,
+.btn-google[disabled].focus,
+fieldset[disabled] .btn-google.focus,
+.btn-google.disabled:active,
+.btn-google[disabled]:active,
+fieldset[disabled] .btn-google:active,
+.btn-google.disabled.active,
+.btn-google[disabled].active,
+fieldset[disabled] .btn-google.active {
+  background-color: #d62020;
+  border-color: #d62020;
+}
+.btn-google .badge {
+  color: #d62020;
+  background-color: #ffffff;
+}
 .btn-blue {
   color: #ffffff;
   background-color: #223577;
@@ -6568,6 +6613,12 @@ label,
 }
 img {
   max-width: 100%;
+}
+.navbar-brand {
+  padding: 15px 10px;
+}
+.navbar-brand img {
+  height: 48px;
 }
 .nav > li > p.navbar-btn {
   padding-left: 15px;
@@ -6990,6 +7041,29 @@ img {
   -webkit-flex: 0 0 160px;
   -ms-flex: 0 0 160px;
   flex: 0 0 160px;
+}
+.banner-slim {
+  background-position: center center;
+  background-image: url('/image/placeholder-wide.png');
+  background-repeat: no-repeat no-repeat;
+  background-size: 100%;
+  background-size: cover;
+  min-height: 320px;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+.empty-state {
+  background-color: #e7e7e7;
+}
+.empty-state > *:not(img) {
+  color: #999;
 }
 .footer {
   padding-bottom: 6px;

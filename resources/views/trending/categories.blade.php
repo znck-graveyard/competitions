@@ -22,11 +22,11 @@
 @empty
     <div class="container text-center">
         <div class="row">
-            <div class="col-xs-12">
-                <img src="{{ asset('image/placeholder-wide.png') }}"/>
-                <h2 style="color: #bbb">
+            <div class="col-xs-12 empty-state">
+                <img src="{{ asset('image/placeholder-slim.jpg') }}"/>
+                <h4>
                     There are no contests as of now!<br/>Keep looking this space for more updates.
-                </h2>
+                </h4>
             </div>
         </div>
     </div>

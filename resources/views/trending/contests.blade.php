@@ -1,4 +1,4 @@
-@if(!empty($trendingContests))
+@if(count($trendingContests))
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
@@ -9,7 +9,7 @@
             <div id="trending-contest" class="slider">
                 <!-- Wrapper for slides -->
                 <ul class="items" role="listbox">
-                    @foreach ($trendingContests as $contest)
+                    @foreach($trendingContests as $contest)
                         <li class="item">
                             <a href="{{ route('contest.show', $contest->slug) }}">
                                 <div class="card overlay-caption trending"

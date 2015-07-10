@@ -14,9 +14,14 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-12">
+                            <div class="col-xs-6" style="padding-right: 7.5px">
                                 <a class="btn btn-facebook text-uppercase btn-huge btn-block" href="{{ route('auth.facebook') }}">
-                                    Login Up With Facebook
+                                    Facebook
+                                </a>
+                            </div>
+                            <div class="col-xs-6" style="padding-left: 7.5px">
+                                <a class="btn btn-google text-uppercase btn-huge btn-block" href="{{ route('auth.google') }}">
+                                    Google
                                 </a>
                             </div>
                         </div>
