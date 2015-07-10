@@ -9,8 +9,8 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-xs-12 text-center">
-                                <img src="{{ url('image/logo.svg') }}" alt="Whizzspace Logo"
-                                    style="height: 96px; margin-bottom: 15px"/>
+                                <h3>Create account</h3>
+                                <hr/>
                             </div>
                         </div>
                         <div class="row">
