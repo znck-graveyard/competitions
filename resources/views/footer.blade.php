@@ -18,7 +18,7 @@
 {{--                <li><a href="{{ url('support') }}">Support</a></li>--}}
                 <li><a href="{{ url('terms') }}">Terms of Service</a></li>
 {{--                <li><a href="{{ url('privacy') }}">Privacy Policy</a></li>--}}
-                <li><a href="{{ url('copyright') }}">&copy; Whizzspace</a></li>
+                <li>Whizzspace &copy; 2015</li>
             </ul>
             <ul class="list-inline center-block">
                 <li><a href="https://twitter.com/#" title="Follow us on Twitter">
