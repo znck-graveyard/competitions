@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
-use App\Http\Requests\UserDetailsRequest;
+use App\Entry;
+use App\Transformer\EntryTransformer;
 use App\User;
 use Carbon\Carbon;
 use File;
@@ -8,8 +9,11 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Image;
+use League\Fractal\Manager;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use Rhumsaa\Uuid\Uuid;
 use Storage;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * This file belongs to competitions.
@@ -31,43 +35,63 @@ class ProfileController extends Controller
      */
     function __construct(Guard $auth)
     {
-        $this->middleware('auth', ['only' => 'update']);
+        $this->middleware('auth', ['only' => ['update', 'me']]);
         $this->user = $auth->user();
-
-        $this->rules = [
-            'first_name'         => 'required',
-            'last_name'          => 'required',
-            'email'              => 'required|email|unique:users,email,' . $this->user->id,
-            'username'           => 'alpha_dash|unique:users,username,' . $this->user->id,
-            'date_of_birth'      => 'required|date',
-            'gender'             => 'required',
-            'bio'                => 'required',
-            'profile_photo_link' => 'url',
-            'cover_photo_link'   => 'url',
-        ];
     }
 
-    public function photo(User $user, $width = null, $height = null)
+    public function photo(User $user, $width = 196, $height = 196)
     {
         $path = $user->profile_photo;
-        $filename = $path && Storage::exists($path) ? Storage::get($path) : public_path('image/placeholder.jpg');
+        $filename = $path && Storage::disk()->exists($path) ? Storage::disk()->get($path) : public_path('image/placeholder.jpg');
 
         return $this->sendImageResponse($width, $height, $filename,
-            Storage::exists($path) ? Storage::lastModified($path) : -86400);
+            Storage::disk()->exists($path) ? Storage::disk()->lastModified($path) : -86400);
     }
 
     public function cover(User $user, $width = null, $height = null)
     {
         $path = $user->cover_photo;
-        $filename = $path && Storage::exists($path) ? Storage::get($path) : public_path('image/placeholder.jpg');
+        $filename = $path && Storage::disk()->exists($path) ? Storage::disk()->get($path) : public_path('image/placeholder-wide.png');
+
         return $this->sendImageResponse($width, $height, $filename,
-            Storage::exists($path) ? Storage::lastModified($path) : -86400);
+            Storage::disk()->exists($path) ? Storage::disk()->lastModified($path) : -86400);
+    }
+
+    public function show(User $user)
+    {
+        return view('profile.show', compact('user'));
+    }
+
+    public function entries(Request $request, User $user)
+    {
+        if (!$request->ajax()) {
+            abort(403);
+        }
+
+        $entries = Entry::with(['contest'])
+            ->whereEntryableId($user->id)
+            ->whereEntryableType(User::class)
+            ->orderBy('created_at')
+            ->paginate(16);
+
+        $fractal = new Manager();
+        $resource = new \League\Fractal\Resource\Collection($entries, new EntryTransformer());
+        $resource->setPaginator(new IlluminatePaginatorAdapter($entries));
+
+        return \Response::json($fractal->createData($resource)->toArray());
+    }
+
+    public function me()
+    {
+        $user = $this->user;
+
+        return view('profile.show', compact('user'));
     }
 
     /**
      * @param \Illuminate\Http\Request $request
      *
-     * @return void
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request)
     {
@@ -88,7 +112,7 @@ class ProfileController extends Controller
             $tmp = $this->user->profile_photo;
             $this->user->profile_photo = $filename;
             if (File::exists($tmp)) {
-                Storage::delete($tmp);
+                Storage::disk()->delete($tmp);
             }
         }
 
@@ -99,11 +123,11 @@ class ProfileController extends Controller
             $tmp = $this->user->cover_photo;
             $this->user->cover_photo = $filename;
             if (File::exists($tmp)) {
-                Storage::delete($tmp);
+                Storage::disk()->delete($tmp);
             }
         }
 
-        $this->validate($request, $this->rules);
+        $this->validate($request, $this->getRules());
 
         $this->user->update($request->except(['profile_photo_link', 'cover_photo_link']));
 
@@ -116,42 +140,16 @@ class ProfileController extends Controller
     }
 
     /**
-     * @param UserDetailsRequest $request
      *
-     * @return \Illuminate\View\View
-
-    public function storeFirstTimeContest(UserDetailsRequest $request)
-     * {
-     *
-     * $id = $this->user->id;
-     * $moderator = User::find($id);
-     * $moderator->first_name = ucfirst($request->get('first_name'));
-     * $moderator->last_name = ucfirst($request->get('last_name'));
-     * $moderator->email = $request->get('email');
-     * $moderator->date_of_birth = $request->get('date_of_birth');
-     * $moderator->gender = $request->get('gender');
-     *
-     * $this->userAttributes($request, $id);
-     * $moderator->save();
-     *
-     * $contest = new Contest();
-     * $types = $contest->getTypes();
-     * $submission_types = $contest->getSubmissionTypes();
-     *
-     * return view('contest.create')->with(['types' => $types, 'submission_types' => $submission_types]);
-     * }
-     */
-
-    /**
-     * @param $file
+     * @param \Symfony\Component\HttpFoundation\File\UploadedFile $file
      *
      * @return string
      */
-    public function moveFile($file)
+    public function moveFile(UploadedFile $file)
     {
         $extension = $file->getClientOriginalExtension();
         $filename = Uuid::uuid4()->toString() . '.' . $extension;
-        Storage::put($filename, File::get($file));
+        Storage::disk()->put($filename, File::get($file));
 
         return $filename;
     }
@@ -239,5 +237,24 @@ class ProfileController extends Controller
         }
 
         return $response;
+    }
+
+    private function getRules()
+    {
+        if (empty($this->rules)) {
+            $this->rules = [
+                'first_name'         => 'required',
+                'last_name'          => 'required',
+                'email'              => 'required|email|unique:users,email,' . $this->user->id,
+                'username'           => 'alpha_dash|unique:users,username,' . $this->user->id,
+                'date_of_birth'      => 'required|date',
+                'gender'             => 'required',
+                'bio'                => 'required',
+                'profile_photo_link' => 'url',
+                'cover_photo_link'   => 'url',
+            ];
+        }
+
+        return $this->rules;
     }
 }

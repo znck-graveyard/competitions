@@ -13,7 +13,7 @@
                         <li class="item">
                             <a href="{{ route('contest.show', $contest->slug) }}">
                                 <div class="card overlay-caption trending"
-                                     style="background-image: url('{{ $contest->image or 'https://unsplash.it/248/?random&' . str_random(4) }}')">
+                                     style="background-image: url('{{ $contest->image or asset('image/placeholder.jpg') }}')">
                                     <div class="caption text-left">
                                         <div>{{ $contest->name }}</div>
                                     </div>

@@ -1,4 +1,3 @@
-<?php $categories = []; ?>
 @forelse($categories as $type => $contests)
     <div class="panel panel-contests">
         <div class="panel-heading" style="background-color: {{ config('colors.'.str_slug($type), '#000') }}">

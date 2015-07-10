@@ -1,5 +1,6 @@
 <?php namespace App;
 
+use Closure;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -41,14 +42,14 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
  * @method static \Illuminate\Database\Query\Builder|\App\User whereDeletedAt($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|Entry[]         $entries
  * @property-read mixed                                                    $name
- * @property string $remember_token 
- * @property-read \Illuminate\Database\Eloquent\Collection|UserAttribute[] $extras 
- * @property mixed $profile_photo 
- * @property mixed $cover_photo 
- * @property mixed $connection_facebook 
- * @property mixed $connection_twitter 
- * @property mixed $connection_instagram 
- * @property mixed $bio 
+ * @property string                                                        $remember_token
+ * @property-read \Illuminate\Database\Eloquent\Collection|UserAttribute[] $extras
+ * @property mixed                                                         $profile_photo
+ * @property mixed                                                         $cover_photo
+ * @property mixed                                                         $connection_facebook
+ * @property mixed                                                         $connection_twitter
+ * @property mixed                                                         $connection_instagram
+ * @property mixed                                                         $bio
  * @method static \Illuminate\Database\Query\Builder|\App\User whereRememberToken($value)
  */
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
@@ -65,7 +66,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     protected $table = 'users';
 
     protected $appended = [];
-
+    protected $stats    = [];
     /**
      * The attributes excluded from the model's JSON form.
      *
@@ -99,20 +100,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
 
-    public function participatedContests()
+    public function participating()
     {
         return $this->belongsToMany(Contest::class, "contestants");
-    }
-
-    /**
-     * Entries Submitted by the User
-     * Polymorphic relation
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function entriesSubmitted()
-    {
-        return $this->entries();
     }
 
     /**
@@ -139,9 +129,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function entries()
+    public function submissions()
     {
         return $this->morphMany(Entry::class, 'entryable');
+    }
+
+    public function maintaining()
+    {
+        return $this->hasMany(Contest::class, 'maintainer_id');
     }
 
     /*
@@ -230,6 +225,50 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function getBioAttribute()
     {
         return $this->loadAttribute('bio');
+    }
+
+    public function getStatSubmissionsAttribute()
+    {
+        return $this->getStat('submissions', function () {
+            return $this->submissions()->count();
+        });
+    }
+
+    public function getStatViewsAttribute()
+    {
+        return $this->getStat('views', function () {
+            return $this->submissions()->sum('views');
+        });
+    }
+
+    public function getStatUpvotesAttribute()
+    {
+        return $this->getStat('upvotes', function () {
+            return $this->submissions()->sum('upvotes');
+        });
+    }
+
+    public function getStatWinsAttribute()
+    {
+        return $this->getStat('wins', function () {
+            return 2; // TODO: create contest_winner table.
+        });
+    }
+
+    public function getStatCreationsAttribute()
+    {
+        return $this->getStat('creations', function () {
+            return $this->maintaining()->count();
+        });
+    }
+
+    public function getStat($key, Closure $callback)
+    {
+        if (!array_key_exists($key, $this->stats)) {
+            $this->stats[$key] = $callback();
+        }
+
+        return $this->stats[$key];
     }
 
     /**

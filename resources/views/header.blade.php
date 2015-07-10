@@ -24,16 +24,16 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                            aria-expanded="false">{{ Auth::user()->first_name }} <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="{{ url('/auth/profile') }}">Profile</a></li>
+                            <li><a href="{{ route('me') }}">Profile</a></li>
                             <li><a href="{{ route('auth.login') }}">Logout</a></li>
                         </ul>
                     </li>
                 @endif
-                {{--<li>--}}
-                    {{--<p class="navbar-btn">--}}
-                        {{--<a class="btn btn-white text-uppercase" href="{{ route('contest.create') }}">create contest</a>--}}
-                    {{--</p>--}}
-                {{--</li>--}}
+                <li>
+                    <p class="navbar-btn">
+                        <a class="btn btn-white text-uppercase" href="{{ route('contest.create') }}">create contest</a>
+                    </p>
+                </li>
             </ul>
         </div>
     </div>

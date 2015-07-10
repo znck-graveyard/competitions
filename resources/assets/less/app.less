@@ -38,6 +38,10 @@ body, label, .checkbox label {
   .button-variant(#000, #fff, #fff);
 }
 
+.btn-gray {
+  .button-variant(#808080, #dadada, #dadada)
+}
+
 .btn-transparent-border {
   .button-variant(#000, #fff, rgba(0, 0, 0, 0.4));
   border-width: 3px;
@@ -50,8 +54,13 @@ body, label, .checkbox label {
 .btn-blue {
   .button-variant(#fff, #223577, #223577)
 }
+
 .btn-huge {
   .button-size(10px; 24px; @font-size-base; @line-height-base; @border-radius-base);
+}
+
+.btn-icon {
+  .button-size(4px; 10px; @font-size-base; @line-height-base; @border-radius-base);
 }
 
 .panel-contests {
@@ -101,3 +110,4 @@ img {
 @import 'contest';
 @import 'comparator';
 @import 'helpers';
+@import 'profile';

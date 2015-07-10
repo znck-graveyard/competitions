@@ -59,11 +59,13 @@ Route::group(['prefix' => 'submission'], function () {
 
 Route::resource('submission', 'EntriesController', ['except' => ['store']]);
 
+Route::get('me', ['as' => 'me', 'uses' => 'ProfileController@me']);
 Route::post('contestant/update', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
 Route::group(['prefix' => 'contestant/{username}'], function () {
-    Route::get('/', 'HomeController@userProfile');
+    Route::get('/', ['as' => 'user.profile', 'uses' => 'ProfileController@show']);
     Route::get('photo/{width?}/{height?}', ['as' => 'user.photo', 'uses' => 'ProfileController@photo']);
     Route::get('cover/{width?}/{height?}', ['as' => 'user.cover', 'uses' => 'ProfileController@cover']);
+    Route::get('entries', ['as' => 'user.entries', 'uses' => 'ProfileController@entries']);
 });
 Route::bind('username', function ($value) {
     if (is_numeric($value)) {

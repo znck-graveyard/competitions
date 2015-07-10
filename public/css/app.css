@@ -6339,6 +6339,51 @@ fieldset[disabled] .btn-white.active {
   color: #ffffff;
   background-color: #000000;
 }
+.btn-gray {
+  color: #808080;
+  background-color: #dadada;
+  border-color: #dadada;
+}
+.btn-gray:hover,
+.btn-gray:focus,
+.btn-gray.focus,
+.btn-gray:active,
+.btn-gray.active,
+.open > .dropdown-toggle.btn-gray {
+  color: #808080;
+  background-color: #c1c1c1;
+  border-color: #bbbbbb;
+}
+.btn-gray:active,
+.btn-gray.active,
+.open > .dropdown-toggle.btn-gray {
+  background-image: none;
+}
+.btn-gray.disabled,
+.btn-gray[disabled],
+fieldset[disabled] .btn-gray,
+.btn-gray.disabled:hover,
+.btn-gray[disabled]:hover,
+fieldset[disabled] .btn-gray:hover,
+.btn-gray.disabled:focus,
+.btn-gray[disabled]:focus,
+fieldset[disabled] .btn-gray:focus,
+.btn-gray.disabled.focus,
+.btn-gray[disabled].focus,
+fieldset[disabled] .btn-gray.focus,
+.btn-gray.disabled:active,
+.btn-gray[disabled]:active,
+fieldset[disabled] .btn-gray:active,
+.btn-gray.disabled.active,
+.btn-gray[disabled].active,
+fieldset[disabled] .btn-gray.active {
+  background-color: #dadada;
+  border-color: #dadada;
+}
+.btn-gray .badge {
+  color: #dadada;
+  background-color: #808080;
+}
 .btn-transparent-border {
   color: #000000;
   background-color: #ffffff;
@@ -6477,6 +6522,12 @@ fieldset[disabled] .btn-blue.active {
 }
 .btn-huge {
   padding: 10px 24px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+}
+.btn-icon {
+  padding: 4px 10px;
   font-size: 14px;
   line-height: 1.42857143;
   border-radius: 4px;
@@ -7390,6 +7441,43 @@ label.required:after {
 }
 label {
   font-weight: 400;
+}
+.profile .cover {
+  background-position: center center;
+  background-image: url('/image/placeholder-wide.png');
+  background-repeat: no-repeat no-repeat;
+  background-size: 100%;
+  background-size: cover;
+  height: 400px;
+  margin-bottom: -98px;
+}
+.profile .photo-wrapper {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+.profile .photo-wrapper .photo {
+  -webkit-flex: 0 0 196px;
+  -ms-flex: 0 0 196px;
+  flex: 0 0 196px;
+  height: 196px;
+  width: 196px;
+  margin: 0;
+}
+.profile .photo-wrapper .row {
+  -webkit-flex: 1 1;
+  -ms-flex: 1 1;
+  flex: 1 1;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: flex-end;
+  -ms-flex-align: end;
+  align-items: flex-end;
+  margin: 0;
 }
 
 /*# sourceMappingURL=app.css.map */

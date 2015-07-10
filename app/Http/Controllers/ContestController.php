@@ -45,7 +45,6 @@ class ContestController extends Controller
      */
     public function create()
     {
-        abort(404);
         $user = User::find($this->user->id);
 
         $contest = new Contest();

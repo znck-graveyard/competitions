@@ -130,37 +130,6 @@ class Contest extends \Eloquent
      */
     public function registeredTeams()
     {
-
         return $this->hasMany(Team::class);
-
-    }
-
-    protected $submission_type = ['pdf', 'mp3', 'mp4', 'png', 'jpeg', 'jpg'];
-    public    $type            = [
-        'PHOTOGRAPHY',
-        'ART',
-        'SINGING',
-        'DANCE',
-        'MUSIC',
-        'SHORT FILMS',
-        'CONTENT WRITING',
-        'BUSINESS IDEA'
-    ];
-
-
-    /**
-     * @return array
-     */
-    public function getTypes()
-    {
-        return $this->type;
-    }
-
-    /**
-     * @return array
-     */
-    public function getSubmissionTypes()
-    {
-        return $this->submission_type;
     }
 }

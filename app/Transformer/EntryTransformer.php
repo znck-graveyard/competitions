@@ -16,13 +16,19 @@ class EntryTransformer extends TransformerAbstract
         return [
             'uuid'    => $entry->uuid,
             'title'   => $entry->title,
-            'image'   => $entry->image ?: 'https://unsplash.it/256/?random&' . str_random(4),
+            'image'   => $entry->image ?: asset('image/placeholder.jpg'),
             'upvotes' => $entry->upvotes,
             'views'   => $entry->views ?: 0,
+            'link' => route('contest.entry.show', [$entry->contest->slug, $entry->uuid]),
             'owner'   => [
-                'image' => $entry->entryable->image ?: 'https://unsplash.it/40/?random&' . str_random(4),
+                'image' => $entry->entryable->image ?: asset('image/placeholder.jpg'),
                 'name'  => $entry->entryable->name,
                 'link'  => $entry->entryable->link,
+            ],
+            'contest' => [
+                'image' => $entry->contest->image ?: asset('image/placeholder.jpg'),
+                'name'  => $entry->contest->name,
+                'type'  => ucwords($entry->contest->contest_type),
             ]
         ];
     }
