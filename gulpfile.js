@@ -12,5 +12,5 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function (mix) {
-    mix.coffee().less('app.less');
+    mix.coffee().less('app.less').version(['css/app.css', 'js/app.js']);
 });

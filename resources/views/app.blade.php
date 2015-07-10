@@ -18,7 +18,7 @@
     <![endif]-->
     <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
     <link href="{{ asset('/css/font-awesome.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+    <link href="{{ elixir('css/app.css') }}" rel="stylesheet">
     @yield('styles')
     <link rel="stylesheet" href="http://brevelabs.com/css/badge.css">
 
@@ -40,7 +40,7 @@
 @include('footer')
 
 <script type="text/javascript" src="{{ asset('/javascript/app.js') }}"></script>
-<script type="text/javascript" src="{{ asset('/js/app.js') }}"></script>
+<script type="text/javascript" src="{{ elixir('js/app.js') }}"></script>
 @yield('scripts')
 <script>
     var $buoop = {c: 2};
