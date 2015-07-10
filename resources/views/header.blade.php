@@ -26,7 +26,7 @@
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="{{ route('me') }}">Profile</a></li>
                             <li><a href="{{ route('me.preferences') }}">Preferences</a></li>
-                            <li><a href="{{ route('auth.login') }}">Logout</a></li>
+                            <li><a href="{{ route('auth.logout') }}">Logout</a></li>
                         </ul>
                     </li>
                 @endif
