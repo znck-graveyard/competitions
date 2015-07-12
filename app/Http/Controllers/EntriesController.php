@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use Log;
 use App\Contest;
 use App\Entry;
 use App\Http\Controllers\Auth;
@@ -27,14 +28,14 @@ class EntriesController extends Controller
     {
         $this->user = $auth->user();
         $this->middleware('auth', ['only' => ['create', 'update', 'edit', 'storeFirstTimeEntry', 'store']]);
-        $this->middleware('countView',['only' => ['show']]);
+        $this->middleware('countView', ['only' => ['show']]);
     }
 
     /**
      * Display a listing of the resource.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Contest             $contest
+     * @param \App\Contest $contest
      *
      * @return \App\Http\Controllers\Response
      */
@@ -61,109 +62,24 @@ class EntriesController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(Request $request)
     {
         $id = $this->user->id;
-        $contestant = User::find($id);
-        $entries = $contestant->contestantEntries;
+        $user = User::find($id);
+        $entries = $user->contestantEntries;
+
         if (is_null($entries)) {
-            return $this->entryFirstTime();
-        } else {
+            session(['profile_redirect_path' => $request->getRequestUri()]);
+            session(['entry-request' => true]);
+            return view('entries.new', compact('user'));
+
+        } else //TODO condition not right
+         {
             return view('entries.create');
         }
-    }
-
-    public function entryFirstTime()
-    {
-        return view('entries.entry_first_time');
-    }
-
-    public function storeFirstTimeEntry(Requests\UserDetailsRequest $request)
-    {
-        $id = $this->user->id();
-        $contestant = User::find($id);
-        $contestant->first_name = ucfirst($request->get('first_name'));
-        $contestant->last_name = $request->get('last_name');
-        $contestant->username = $request->get('username');
-        $contestant->email = $request->get('email');
-        $contestant->date_of_birth = $request->get('date_of_birth');
-        $contestant->gender = $request->get('gender');
-        $this->userAttributes($request, $id);
-
-        return view('entries.create');
 
     }
 
-    public function userAttributes(Requests\UserDetailsRequest $request, $id)
-    {
-        $user_attributes = [];
-        $short_bio = $request->get('short_bio');
-
-        $user_attribute_short_bio = [
-            'user_id' => $id,
-            'key'     => 'short_bio',
-            'value'   => $short_bio
-        ];
-
-        $user_attributes[] = $user_attribute_short_bio;
-
-        if ($request->hasFile('profile_pic')) {
-            $file = $request->file('profile_pic');
-            $extension = $file->getClientOriginalExtension();
-            $filename = $file->getFilename() . '.' . $extension;
-            Storage::disk('local')->put($filename, File::get($file));
-            $user_attribute_profile_pic = [
-                'user_id' => $id,
-                'key'     => 'profile_pic',
-                'value'   => $filename
-            ];
-            $user_attributes[] = $user_attribute_profile_pic;
-        }
-        if ($request->hasFile('cover_image')) {
-            $file = $request->file('cover_image');
-            $extension = $file->getClientOriginalExtension();
-            $filename = $file->getFilename() . '.' . $extension;
-            Storage::disk('local')->put($filename, File::get($file));
-            $user_attribute_cover_image = [
-                'user_id' => $id,
-                'key'     => 'cover_image',
-                'value'   => $filename
-            ];
-            $user_attributes[] = $user_attribute_cover_image;
-        }
-
-        if ($request->has('facebook_username')) {
-            $user_attribute_facebook = [
-                'user_id' => $id,
-                'key'     => 'facebook_username',
-                'value'   => $request->get('facebook_username')
-            ];
-            $user_attributes[] = $user_attribute_facebook;
-
-        }
-        if ($request->has('twitter_username')) {
-            $user_attribute_twitter = [
-                'user_id' => $id,
-                'key'     => 'twitter_username',
-                'value'   => $request->get('twitter_username')
-            ];
-            $user_attributes[] = $user_attribute_twitter;
-        }
-        if ($request->has('instagram_username')) {
-            $user_attribute_instagram = [
-                'user_id' => $id,
-                'key'     => 'instagram_username',
-                'value'   => $request->get('instagram_username')
-            ];
-            $user_attributes[] = $user_attribute_instagram;
-
-        }
-        foreach ($user_attributes as $attribute) {
-            UserAttribute::create($attribute);
-        }
-
-        return;
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -194,7 +110,7 @@ class EntriesController extends Controller
      * Display the specified resource.
      *
      * @param \App\Contest $contest
-     * @param \App\Entry   $entry
+     * @param \App\Entry $entry
      *
      * @return \App\Http\Controllers\Response
      */

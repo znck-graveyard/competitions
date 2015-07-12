@@ -51,12 +51,13 @@ Route::resource('contest.entry', 'EntriesController');
 Route::bind('entry', function ($uuid) {
     return \App\Entry::whereUuid($uuid)->firstOrFail();
 });
-
+/*
 Route::group(['prefix' => 'submission'], function () {
     Route::get('create', ['uses' => 'EntriesController@create', 'as' => 'submission.create']);
     Route::post('entryFirstTime', 'EntriesController@storeFirstTimeEntry');
     Route::post('create', 'EntriesController@store');
 });
+*/
 
 Route::resource('submission', 'EntriesController', ['except' => ['store']]);
 
