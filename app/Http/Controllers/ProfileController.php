@@ -15,6 +15,7 @@ use Rhumsaa\Uuid\Uuid;
 use Storage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+
 /**
  * This file belongs to competitions.
  *
@@ -24,6 +25,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class ProfileController extends Controller
 {
     protected $rules;
+
+    protected $redirectPath;
 
     /**
      * @type \App\User
@@ -38,6 +41,7 @@ class ProfileController extends Controller
         $this->middleware('auth', ['only' => ['update', 'me', 'preferences']]);
         $this->user = $auth->user();
     }
+
 
     public function photo(User $user, $width = 196, $height = 196)
     {
@@ -91,6 +95,7 @@ class ProfileController extends Controller
     public function preferences()
     {
         $user = $this->user;
+        session(['profile_redirect_path' => '/']);
 
         return view('profile.preferences', compact('user'));
     }
@@ -102,7 +107,7 @@ class ProfileController extends Controller
      */
     public function update(Request $request)
     {
-        $this->validate($request, ['profile_photo' => 'image','cover_photo' => 'image',]);
+        $this->validate($request, ['profile_photo' => 'image', 'cover_photo' => 'image',]);
         /*
         |--------------------------------------------------------------------------
         | Update user profile.
@@ -145,8 +150,9 @@ class ProfileController extends Controller
         }
 
         flash('Changes saved.');
+        $this->redirectPath = session('profile_redirect_path');
 
-        return redirect()->back();
+        return redirect()->intended($this->redirectPath);
     }
 
     /**
@@ -197,9 +203,9 @@ class ProfileController extends Controller
      * Send image function with headers
      *
      * @param \Illuminate\Http\Response $response
-     * @param string                    $etag
-     * @param string                    $modified
-     * @param string                    $browserCache
+     * @param string $etag
+     * @param string $modified
+     * @param string $browserCache
      *
      * @return bool
      */
@@ -253,15 +259,15 @@ class ProfileController extends Controller
     {
         if (empty($this->rules)) {
             $this->rules = [
-                'first_name'         => 'required',
-                'last_name'          => 'required',
-                'email'              => 'required|email|unique:users,email,' . $this->user->id,
-                'username'           => 'alpha_dash|unique:users,username,' . $this->user->id,
-                'date_of_birth'      => 'required|date',
-                'gender'             => 'required',
-                'bio'                => 'required',
+                'first_name' => 'required',
+                'last_name' => 'required',
+                'email' => 'required|email|unique:users,email,' . $this->user->id,
+                'username' => 'alpha_dash|unique:users,username,' . $this->user->id,
+                'date_of_birth' => 'required|date',
+                'gender' => 'required',
+                'bio' => 'required',
                 'profile_photo_link' => 'url',
-                'cover_photo_link'   => 'url',
+                'cover_photo_link' => 'url',
             ];
         }
 

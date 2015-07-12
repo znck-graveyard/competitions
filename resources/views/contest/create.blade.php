@@ -52,7 +52,7 @@
                             <select class="input-large form-control" id="type" name="type">
                                 <option value="" selected="selected">Select anyone Type</option>
                                 @foreach($contestTypes as $type)
-                                    <option value="{{ $type }}">{{ $type }}</option>
+                                    <option value="{{ $type }}">{{ strtoupper($type) }}</option>
 
                                 @endforeach
 
@@ -63,7 +63,7 @@
                     </div>
                     <div class="col-md-6">
                         <label for="submission_type">Submission Format*</label>
-                        <select class="input-large form-control" id="submission_type" name="submission_type">
+                        <select class="input-large form-control " id="submission_type" name="submission_type">
                             <option value="" selected="selected">Select format</option>
                             @foreach($submissionTypes as $type)
                                 <option value="{{ $type }}">{{ $type }}</option>
