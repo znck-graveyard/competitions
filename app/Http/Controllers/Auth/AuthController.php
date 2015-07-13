@@ -6,8 +6,8 @@ use App\User;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Http\Request;
-use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\InvalidStateException;
+use Socialize;
 use Validator;
 
 class AuthController extends Controller
@@ -86,18 +86,21 @@ class AuthController extends Controller
 
     public function facebookLogin()
     {
-        return Socialite::with('facebook')->redirect();
+        return Socialize::with('facebook')->redirect();
     }
 
     public function googleLogin()
     {
-        return Socialite::with('google')->redirect();
+        return Socialize::with('google')->redirect();
     }
 
     public function googleLoginHandle()
     {
         try {
-            $provider = Socialite::driver('google')->user();
+            $provider = Socialize::driver('google')->user();
+            if (!$provider->email) {
+                throw new InvalidStateException;
+            }
         } catch (InvalidStateException $e) {
             return redirect()->route('auth.login');
         }
@@ -109,7 +112,11 @@ class AuthController extends Controller
     public function facebookLoginHandle()
     {
         try {
-            $provider = Socialite::driver('facebook')->user();
+            $driver = Socialize::driver('facebook');
+            $provider = $driver->user();
+            if (!$provider->email) {
+                throw new InvalidStateException;
+            }
         } catch (InvalidStateException $e) {
             return redirect()->route('auth.login');
         }

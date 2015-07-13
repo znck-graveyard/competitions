@@ -30,11 +30,11 @@
                         </ul>
                     </li>
                 @endif
-                {{--<li>--}}
-                    {{--<p class="navbar-btn">--}}
-                        {{--<a class="btn btn-white text-uppercase" href="{{ route('contest.create') }}">create contest</a>--}}
-                    {{--</p>--}}
-                {{--</li>--}}
+                <li>
+                    <p class="navbar-btn">
+                        <a class="btn btn-white text-uppercase" href="{{ route('contest.create') }}">create contest</a>
+                    </p>
+                </li>
             </ul>
         </div>
     </div>

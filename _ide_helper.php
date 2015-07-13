@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.1.6 (LTS) on 2015-07-07.
+ * Generated for Laravel 5.1.6 (LTS) on 2015-07-13.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -12719,7 +12719,7 @@ namespace {
          * Get a driver instance.
          *
          * @param string $driver
-         * @return mixed 
+         * @return \Laravel\Socialite\Two\AbstractProvider|\Laravel\Socialite\One\AbstractProvider
          * @static 
          */
         public static function driver($driver = null){
@@ -12802,6 +12802,45 @@ namespace {
          */
         public static function cache($callback, $lifetime = null, $returnObj = false){
             return \Intervention\Image\ImageManager::cache($callback, $lifetime, $returnObj);
+        }
+        
+    }
+
+
+    class Throttle extends \GrahamCampbell\Throttle\Facades\Throttle{
+        
+        /**
+         * Get a new throttler.
+         *
+         * @param array|\Illuminate\Http\Request $data
+         * @param int $limit
+         * @param int $time
+         * @return \GrahamCampbell\Throttle\Throttlers\ThrottlerInterface 
+         * @static 
+         */
+        public static function get($data, $limit = 10, $time = 60){
+            return \GrahamCampbell\Throttle\Throttle::get($data, $limit, $time);
+        }
+        
+        /**
+         * Get the cache instance.
+         *
+         * @return \GrahamCampbell\Throttle\Factories\FactoryInterface 
+         * @static 
+         */
+        public static function getFactory(){
+            return \GrahamCampbell\Throttle\Throttle::getFactory();
+        }
+        
+        /**
+         * Get the transformer instance.
+         *
+         * @codeCoverageIgnore 
+         * @return \GrahamCampbell\Throttle\Transformers\TransformerFactory 
+         * @static 
+         */
+        public static function getTransformer(){
+            return \GrahamCampbell\Throttle\Throttle::getTransformer();
         }
         
     }
