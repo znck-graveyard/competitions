@@ -64,7 +64,7 @@ class TrendingContest
      */
     protected function calculatedTrendingContests()
     {
-        return $this->contests->leftJoin('contestants', 'contestants.contest_id', '=', 'contests.id')
+        return $this->contests->wherePublic(true)->leftJoin('contestants', 'contestants.contest_id', '=', 'contests.id')
             ->select('contests.*', \DB::raw('count(contestants.*) as aggregate'))
             ->groupBy('contests.id')
             ->orderBy('aggregate', 'desc')
