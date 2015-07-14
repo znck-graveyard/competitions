@@ -137,7 +137,7 @@ class ContestController extends Controller
             flash('Contest is unpublished. If it was in trending contests, then may take 15-30 minutes to remove from trending contest.');
         }
 
-        return redirect()->route('contest.show', $contest->slug);
+        return redirect()->back();
     }
 
     /**
