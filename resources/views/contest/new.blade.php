@@ -12,6 +12,6 @@
     <div class="container">
         <p><b>Before Creating contest please enter some information below.</b></p>
 
-        @include('profile.create')
+        @include('profile.create', compact('user'))
     </div>
 @endsection

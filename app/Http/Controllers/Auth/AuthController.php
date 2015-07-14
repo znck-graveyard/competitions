@@ -178,7 +178,7 @@ class AuthController extends Controller
                 'email'      => $provider->email,
             ]);
 
-            $user->attributes()->create(['key' => 'profile_pic', 'value' => $provider->avatar]);
+            $user->extras()->create(['key' => 'profile_pic', 'value' => $provider->avatar]);
         }
         $this->auth->login($user, true);
 

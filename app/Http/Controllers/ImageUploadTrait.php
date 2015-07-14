@@ -38,7 +38,11 @@ trait ImageUploadTrait
      */
     protected function downloadFile($url)
     {
-        $file = file_get_contents($url);
+        try {
+            $file = file_get_contents($url);
+        } catch (\Exception $e) {
+            throw new HttpResponseException(redirect()->back()->withInput()->withErrors('File not found at the given url.'));
+        }
         $detector = new finfo(FILEINFO_MIME_TYPE);
         $extension = $this->getExtensionFromMimeType($detector->buffer($file));
         if (null === $extension) {
