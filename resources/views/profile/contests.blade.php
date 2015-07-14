@@ -10,9 +10,16 @@
             </div>
             <div class="panel-body">
                 <div class="row categories">
-                    @foreach($contests as $contest)
+                    @forelse($contests as $contest)
                         @include('profile.partial.thumbnail', compact('contest'))
-                    @endforeach
+                    @empty
+                        <div class="col-xs-12 empty-state text-center">
+                            <img src="{{ asset('image/placeholder-slim.jpg') }}"/>
+                            <h4>
+                                There are no contests as of now!<br/>Keep looking this space for more updates.
+                            </h4>
+                        </div>
+                    @endforelse
                 </div>
 
                 <div class="row">
