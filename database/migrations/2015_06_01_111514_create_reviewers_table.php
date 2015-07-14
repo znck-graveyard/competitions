@@ -21,10 +21,7 @@ class CreateReviewersTable extends Migration
             $table->integer('entry_id')->unsigned();
 
             $table->foreign('contest_id')->references('id')->on('contests')->onDelete('cascade');
-            /*
-             * TODO: Move this to entries table migration.
-             * $table->foreign('entry_id')->references('id')->on('entries')->onDelete('cascade');
-             */
+
         });
     }
 
@@ -36,7 +33,7 @@ class CreateReviewersTable extends Migration
     public function down()
     {
         Schema::table('reviewers', function (Blueprint $table) {
-            // $table->dropForeign('reviewers_user_id_foreign');
+
             $table->dropForeign('reviewers_contest_id_foreign');
         });
         Schema::drop('reviewers');

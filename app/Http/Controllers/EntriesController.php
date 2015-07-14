@@ -1,5 +1,7 @@
 <?php namespace App\Http\Controllers;
 
+use App\Reviewer;
+use Log;
 use App\Contest;
 use App\Entry;
 use App\Http\Controllers\Auth;
@@ -19,15 +21,18 @@ class EntriesController extends Controller
      * @type \App\User|null
      */
     private $user;
+    protected $contest;
 
     /**
      * @param Guard $auth
      */
     function __construct(Guard $auth)
     {
+        $this->auth = $auth;
         $this->user = $auth->user();
         $this->middleware('auth', ['only' => ['create', 'update', 'edit', 'store',]]);
         $this->middleware('countView', ['only' => ['show']]);
+        $this->middleware('vote', ['only' => ['upVotes', 'downVotes']]);
     }
 
     /**
@@ -203,10 +208,43 @@ class EntriesController extends Controller
         return [$entry];
     }
 
-    public function voteEntry()
+    /**
+     * @param Entry $entry_up_voted
+     * @param Entry $entry_down_voted
+     */
+    public function upVotes($contest_uuid, $entry_up_voted_uuid)
     {
+        $entry_up_voted = Entry::whereUuid($entry_up_voted_uuid)->first();
+        $entry_up_voted->upvotes += 1;
+        $entry_up_voted->save();
+
+
+        $reviewer = new Reviewer();
+        if (!($this->auth->guest())) {
+            $reviewer->contest_id = $entry_up_voted->contest->id;
+            $reviewer->voted_at = Carbon::now();
+            $reviewer->entry_id = $entry_up_voted->id;
+            $reviewer->user_id = $this->user->id;
+            $reviewer->save();
+        }
+
+        flash('Thank You for Voting!!');
+        return redirect('/contest/' . $entry_up_voted->contest->slug);
 
     }
+
+    public function downVotes($contest_uuid, $entry_down_voted_uuid)
+    {
+        $entry_down_voted = Entry::whereUuid($entry_down_voted_uuid)->first();
+
+        $entry_down_voted->downvotes += 1;
+        $entry_down_voted->save();
+
+        //TODO check this not sure for downvote response
+        return redirect('/contest/' . $entry_down_voted->contest->slug);
+
+    }
+
 
 }
 

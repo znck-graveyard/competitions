@@ -17,13 +17,15 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\Reviewer whereVotedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Reviewer whereEntryId($value)
  */
-class Reviewer extends Model {
+class Reviewer extends Model
+{
 
-	protected $table = 'reviewers';
-	protected $fillable = ['voted_at'];
-	protected $guarded = ['id'];
+    protected $table = 'reviewers';
+    protected $fillable = ['voted_at'];
+    protected $guarded = ['id'];
+    public $timestamps = false;
 
-	public function contests()
+    public function contests()
     {
         return $this->belongsToMany(Contest::class);
     }
