@@ -46,7 +46,8 @@ Route::resource('contest', 'ContestController');
 Route::bind('contest', function ($slug) {
     return \App\Contest::whereSlug($slug)->firstOrFail();
 });
-
+Route::get('contest/{contest}/entry/{uuid}/upvote','EntriesController@upVotes');
+Route::get('contest/{contest}/entry/{uuid}/downvote','EntriesController@downVotes');
 Route::resource('contest.entry', 'EntriesController');
 Route::bind('entry', function ($uuid) {
     return \App\Entry::whereUuid($uuid)->firstOrFail();

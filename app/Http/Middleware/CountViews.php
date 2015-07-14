@@ -30,7 +30,6 @@ class CountViews
             if ($request->is('contest/'.$slug.'/entry/*')) {
                 $uuid = $uri[3];
                 $entry = Entry::whereUuid($uuid)->first();
-                Log::info($entry->name);
                 $entry->views += 1;
                 $entry->save();
 
