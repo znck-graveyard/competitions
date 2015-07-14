@@ -162,6 +162,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * Setters and Getters.
      */
 
+    public function getUsernameAttribute($value) {
+        if (!$value) {
+            return $this->id;
+        }
+
+        return $value;
+    }
+
     public function getNameAttribute()
     {
         return ucfirst($this->attributes['first_name'] . ' ' . $this->attributes['last_name']);
