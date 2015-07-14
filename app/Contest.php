@@ -73,8 +73,12 @@ use Illuminate\Database\Query\Builder;
  * @method static \Illuminate\Database\Query\Builder|\App\Contest wherePrize2($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Contest wherePrize3($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Contest whereAdminToken($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|Team[] $teams 
+ * @property-read \Illuminate\Database\Eloquent\Collection|Team[]       $teams
  * @method static \Illuminate\Database\Query\Builder|\App\Contest published()
+ * @property string                                                     $description_html
+ * @property string                                                     $rules_html
+ * @method static \Illuminate\Database\Query\Builder|\App\Contest whereDescriptionHtml($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Contest whereRulesHtml($value)
  */
 class Contest extends \Eloquent
 {
@@ -166,6 +170,20 @@ class Contest extends \Eloquent
         if ($this->start_date) {
             return $this->start_date->format('h:i a');
         }
+    }
+
+    public function setDescriptionAttribute($value)
+    {
+        $this->description_html = \Markdown::convertToHtml($value);
+
+        $this->attributes['description'] = $value;
+    }
+
+    public function setRulesAttribute($value)
+    {
+        $this->rules_html = \Markdown::convertToHtml($value);
+
+        $this->attributes['rules'] = $value;
     }
 
     public function getEndTimeAttribute()

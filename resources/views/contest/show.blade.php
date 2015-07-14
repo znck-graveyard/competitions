@@ -8,6 +8,14 @@
     <script src="{{ asset('javascript/vue-resource.min.js') }}"></script>
 @endsection
 
+@section('scripts')
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+@endsection
+
 @section('meta')
     @parent
     <meta name="ws::contest" content="{{ $contest->slug }}"/>
@@ -21,7 +29,7 @@
             <div class="col-xs-12 col-md-9 col-margin-bottom">
                 <div class="cover overlay overlay-gradient"
                     style="background-image: url('{{ route('contest.cover', [$contest->slug,1200,500]) }}')">
-                    <h1 class="title">{{ $contest->name }} <br/> <small>{{ ucfirst($contest->contest_type) }}</small></h1>
+                    <h1 class="title">{{ $contest->name }}<br/> <small>{{ ucfirst($contest->contest_type) }}</small></h1>
 
                     <div class="btn btn-transparent-border deadline text-uppercase">Ends {{ Carbon\Carbon::now()->diffForHumans($contest->end_date) }}</div>
                     @if($editable)
@@ -29,9 +37,8 @@
                     @elseif($publisher)
                         <a href="{{ route('contest.publish', [$contest->slug, $token]) }}" class="btn btn-transparent-border submit text-uppercase">Publish Contest</a>
                     @else
-                        <a href="#" class="btn btn-transparent-border submit text-uppercase">Submit Entry</a>
+                        <a href="{{ route('contest.entry.create', $contest->slug) }}" class="btn btn-transparent-border submit text-uppercase" @if(\Carbon\Carbon::now()->gt($contest->start_date))data-toggle="tooltip" title="Submissions are not open yet."@endif>Submit Entry</a>
                     @endif
-
                 </div>
             </div>
 
@@ -69,8 +76,8 @@
                     </div>
                     <div class="panel-body">
                         <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane active" id="description">{!! nl2br($contest->description) !!}</div>
-                            <div role="tabpanel" class="tab-pane" id="rules">{!! nl2br($contest->rules) !!}</div>
+                            <div role="tabpanel" class="tab-pane active" id="description">{!! $contest->description_html !!}</div>
+                            <div role="tabpanel" class="tab-pane" id="rules">{!! $contest->rules_html !!}</div>
                             @if($contest->manual_review_enabled)
                                 <div role="tabpanel" class="tab-pane" id="judges">-- YET --</div>
                             @endif

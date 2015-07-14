@@ -34,7 +34,7 @@ trait ImageResponseTrait
         $image = Image::make($filename);
 
         if ($width !== null) {
-            $image->resize($width, $height);
+            $image->fit($width, $height);
         }
 
         return $this->sendImage($image->response(), md5($filename), $modified);

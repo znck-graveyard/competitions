@@ -33,13 +33,15 @@
 
 @include('header')
 
+@include('notifications')
+
 <div id="content-wrapper">
     @yield('content')
 </div>
 
 @include('footer')
 
-<script async src="{{ asset('javascript/bootstrap.min.js') }}"></script>
+<script src="{{ asset('javascript/bootstrap.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('/javascript/app.js') }}"></script>
 <script type="text/javascript" src="{{ elixir('js/app.js') }}"></script>
 @yield('scripts')

@@ -145,7 +145,8 @@ return [
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
         'Laravel\Socialite\SocialiteServiceProvider',
         Intervention\Image\ImageServiceProvider::class,
-        Znck\Flash\FlashServiceProvider::class
+        Znck\Flash\FlashServiceProvider::class,
+        GrahamCampbell\Markdown\MarkdownServiceProvider::class,
     ],
     /*
     |--------------------------------------------------------------------------
@@ -199,6 +200,7 @@ return [
         'Image'     => Intervention\Image\Facades\Image::class,
         'Throttle'  => 'GrahamCampbell\Throttle\Facades\Throttle',
         'Flash'     => Znck\Flash\Flash::class,
+        'Markdown'  => GrahamCampbell\Markdown\Facades\Markdown::class,
     ],
 
 ];

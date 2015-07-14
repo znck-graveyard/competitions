@@ -9,6 +9,7 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Message;
 use Mail;
+use Session;
 use Storage;
 
 /**
@@ -68,8 +69,9 @@ class ContestController extends Controller
          * If use is not a maintainer.
          */
         if (!$this->user->is_maintainer) {
-            session(['maintainer-request' => true]);
-            session(['profile_redirect_path' => 'contest/create']);
+            Session::put('maintainer-request', true);
+            Session::put('profile_redirect_path', route('contest.create'));
+            flash('Before creating contest, please enter some information below.');
 
             return view('contest.new', compact('user'));
         }
@@ -87,7 +89,7 @@ class ContestController extends Controller
                 'slug'        => $contest->slug,
                 'token'       => $contest->admin_token,
                 'maintainer'  => $contest->maintainer->name,
-                'description' => $contest->description,
+                'description' => $contest->description_html,
             ], function (Message $message) {
                 $message->from(config('publish.from.email'), config('publish.from.name'));
                 $message->to(config('publish.to.email'), config('publish.to.name'));
@@ -189,7 +191,8 @@ class ContestController extends Controller
 
         if (!$contest->public) {
             if ($this->authorized($contest)) {
-                flash('This contest is not published.');
+                flash()->warning('This contest is not public. Request administrator to publish this contests. <a href="' . route('contest.request',
+                        $contest->slug) . '">Send request</a> now.');
             } else {
                 abort(404);
             }
@@ -309,7 +312,9 @@ class ContestController extends Controller
         $contest->public = false;
         $contest->team_entry_enabled = false;
         $contest->team_size = 1;
-        $contest->admin_token = str_random(60);
+        if (!$contest->admin_token) {
+            $contest->admin_token = str_random(60);
+        }
     }
 
     /**

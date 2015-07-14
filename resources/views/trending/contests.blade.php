@@ -13,7 +13,7 @@
                         <li class="item">
                             <a href="{{ route('contest.show', $contest->slug) }}">
                                 <div class="card overlay-caption trending"
-                                     style="background-image: url('{{ $contest->image or asset('image/placeholder.jpg') }}')">
+                                     style="background-image: url('{{ route('contest.cover', [$contest->slug, 196]) }}')">
                                     <div class="caption text-left">
                                         <div>{{ $contest->name }}</div>
                                     </div>

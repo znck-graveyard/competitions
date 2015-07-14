@@ -12850,5 +12850,23 @@ namespace {
     }
 
 
+    class Markdown extends \GrahamCampbell\Markdown\Facades\Markdown{
+        
+        /**
+         * Converts CommonMark to HTML.
+         *
+         * @param string $commonMark
+         * @return string 
+         * @api 
+         * @static 
+         */
+        public static function convertToHtml($commonMark){
+            //Method inherited from \League\CommonMark\Converter            
+            return \League\CommonMark\CommonMarkConverter::convertToHtml($commonMark);
+        }
+        
+    }
+
+
 }
 

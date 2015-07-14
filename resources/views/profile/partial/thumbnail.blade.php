@@ -5,7 +5,10 @@
             <div class="caption text-left">
                 <div>{{ $contest->name }}</div>
                 <div>
-                    <small><?php $c = $contest->entries()->count(); echo $c . ($c == 1 ? ' entry' : ' entries') ?></small>
+                    <small>
+                        <?php $c = $contest->entries()->count(); echo $c . ($c == 1 ? ' entry' : ' entries') ?>
+                        <span class="badge pull-right" style="font-weight: 200">{{ $contest->public ? 'published' : 'draft' }}</span>
+                    </small>
                 </div>
             </div>
         </div>

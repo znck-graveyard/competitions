@@ -1,25 +1,24 @@
 <?php namespace App\Http\Controllers;
 
-use Log;
 use App\Contest;
 use App\Entry;
 use App\Http\Controllers\Auth;
 use App\Http\Requests;
 use App\Transformer\EntryTransformer;
-use App\User;
-use App\UserAttribute;
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Session;
 use League\Fractal\Manager;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class EntriesController extends Controller
 {
 
+    /**
+     * @type \App\User|null
+     */
     private $user;
-    protected $contest;
 
     /**
      * @param Guard $auth
@@ -27,7 +26,7 @@ class EntriesController extends Controller
     function __construct(Guard $auth)
     {
         $this->user = $auth->user();
-        $this->middleware('auth', ['only' => ['create', 'update', 'edit', 'storeFirstTimeEntry', 'store']]);
+        $this->middleware('auth', ['only' => ['create', 'update', 'edit', 'store',]]);
         $this->middleware('countView', ['only' => ['show']]);
     }
 
@@ -35,7 +34,7 @@ class EntriesController extends Controller
      * Display a listing of the resource.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Contest $contest
+     * @param \App\Contest             $contest
      *
      * @return \App\Http\Controllers\Response
      */
@@ -60,24 +59,27 @@ class EntriesController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @param \App\Contest $contest
+     *
+     * @return \App\Http\Controllers\Response
      */
-    public function create(Request $request)
+    public function create(Contest $contest)
     {
-        $id = $this->user->id;
-        $user = User::find($id);
-        $entries = $user->contestantEntries;
+        if (Carbon::now()->gt($contest->start_date)) {
+            abort(404);
+        }
+        if (Carbon::now()->gt($contest->end_date)) {
+            
+        }
+        $user = $this->user;
+        if (!$user->date_of_birth) {
+            Session::put('profile_redirect_path', route('contest.entry.create', $contest->slug));
+            flash('Before submitting your entry, please enter some information below.');
 
-        if (is_null($entries)) {
-            session(['profile_redirect_path' => $request->getRequestUri()]);
-            session(['entry-request' => true]);
             return view('entries.new', compact('user'));
-
-        } else //TODO condition not right
-         {
-            return view('entries.create');
         }
 
+        return view('entries.create');
     }
 
 
@@ -110,7 +112,7 @@ class EntriesController extends Controller
      * Display the specified resource.
      *
      * @param \App\Contest $contest
-     * @param \App\Entry $entry
+     * @param \App\Entry   $entry
      *
      * @return \App\Http\Controllers\Response
      */

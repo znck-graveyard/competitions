@@ -2,12 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use App\Contest;
-use App\Entry;
 use Closure;
-use GrahamCampbell\Throttle\Facades\Throttle;
-use Illuminate\Support\Facades\Request;
-use Log;
+use Throttle;
 
 class CountViews
 {
@@ -22,36 +18,22 @@ class CountViews
     public function handle($request, Closure $next)
     {
 
-        $throttler = Throttle::get(Request::instance(), 1, 60);
-        $uri = explode('/', $request->path());
-        $slug = $uri[1];
-        $contest = Contest::whereSlug($slug)->first();
+        $throttler = Throttle::get($request, 1, 10);
 
-        if ($throttler->check()) {
-            if ($request->is('contest/' . $slug . '/entry/*')) {
-                $uuid = $uri[3];
-                $entry = Entry::whereUuid($uuid)->first();
-                Log::info($entry->name);
-                $entry->views += 1;
-                $entry->save();
+        /** @type \App\Contest|null $contest */
+        $contest = $request->route('contest');
 
-                $contest->page_view += 1;
-                $contest->save();
+        if ($contest && $contest->public) {
+            $contest->increment('page_view');
+            $throttler->hit();
+        }
 
-                $throttler->hit();
+        /** @type \App\Entry|null $entry */
+        $entry = $request->route('uuid');
 
-                return $next($request);
-            }
-
-            if ($request->is('contest/*')) {
-
-                $contest->page_view += 1;
-                $contest->save();
-
-                $throttler->hit();
-
-                return $next($request);
-            }
+        if ($entry) {
+            $entry->increment('views');
+            $throttler->hit();
         }
 
         return $next($request);

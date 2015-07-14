@@ -63,6 +63,7 @@ Route::group(['prefix' => 'submission'], function () {
 Route::resource('submission', 'EntriesController', ['except' => ['store']]);
 
 Route::get('me', ['as' => 'me', 'uses' => 'ProfileController@me']);
+Route::get('me/contests', ['as' => 'me.contests', 'uses' => 'ProfileController@contests']);
 Route::get('preferences', ['as' => 'me.preferences', 'uses' => 'ProfileController@preferences']);
 Route::post('contestant/update', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
 Route::group(['prefix' => 'contestant/{username}'], function () {

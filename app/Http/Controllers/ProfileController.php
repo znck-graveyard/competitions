@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 use League\Fractal\Manager;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
+use Session;
 use Storage;
 
 
@@ -41,7 +42,7 @@ class ProfileController extends Controller
      */
     function __construct(Guard $auth)
     {
-        $this->middleware('auth', ['only' => ['update', 'me', 'preferences']]);
+        $this->middleware('auth', ['only' => ['update', 'me', 'preferences', 'contests']]);
         $this->user = $auth->user();
     }
 
@@ -114,6 +115,19 @@ class ProfileController extends Controller
     }
 
     /**
+     * @middleware auth
+     * @return void
+     */
+    public function contests()
+    {
+        $user = $this->user;
+        $contests = $user->maintaining()->paginate(16);
+
+        return view('profile.contests', compact('user', 'contests'));
+    }
+
+    /**
+     * @middleware auth
      * @return \Illuminate\View\View
      */
     public function me()
@@ -129,7 +143,6 @@ class ProfileController extends Controller
     public function preferences()
     {
         $user = $this->user;
-        session(['profile_redirect_path' => '/']);
 
         return view('profile.preferences', compact('user'));
     }
@@ -181,12 +194,11 @@ class ProfileController extends Controller
         if (session('maintainer-request') === true) {
             $this->user->is_maintainer = true;
             $this->user->save();
-        }
+        };
 
-        flash('Changes saved.');
-        $this->redirectPath = session('profile_redirect_path');
+        $url = Session::pull('profile_redirect_path', route('me'));
 
-        return redirect()->intended($this->redirectPath);
+        return redirect()->to($url);
     }
 
     /**

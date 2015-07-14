@@ -81,7 +81,7 @@
                                     <label for="type" class="text-uppercase required">Contest Type</label>
                                     {!! Form::select('contest_type', $contestTypes, null, ['class' => 'input-lg form-control', 'required' => '', 'id' => 'type']) !!}
                                 </div>
-                                @if($errors->has('contest_type')) <div class="alert alert-danger"> {{ $errors->first('type') }} </div> @endif
+                                @if($errors->has('contest_type')) <div class="alert alert-danger"> {{ $errors->first('contest_type') }} </div> @endif
                             </div>
                             <div class="col-xs-12 col-sm-6">
                                 <div class="form-group">
