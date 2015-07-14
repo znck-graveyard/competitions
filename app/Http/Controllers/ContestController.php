@@ -68,7 +68,8 @@ class ContestController extends Controller
         /**
          * If use is not a maintainer.
          */
-        if (!$this->user->is_maintainer) {
+        $user = $this->user;
+        if (!$user->is_maintainer) {
             Session::put('maintainer-request', true);
             Session::put('profile_redirect_path', route('contest.create'));
             flash('Before creating contest, please enter some information below.');

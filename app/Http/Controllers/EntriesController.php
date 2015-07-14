@@ -69,7 +69,7 @@ class EntriesController extends Controller
             abort(404);
         }
         if (Carbon::now()->gt($contest->end_date)) {
-            
+
         }
         $user = $this->user;
         if (!$user->date_of_birth) {
