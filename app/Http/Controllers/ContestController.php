@@ -31,7 +31,7 @@ class ContestController extends Controller
     function __construct(Guard $auth)
     {
         $this->user = $auth->user();
-        $this->middleware('auth', ['except' => ['show']]);
+        $this->middleware('auth', ['except' => ['show', 'category', 'cover']]);
         $this->middleware('countView', ['only' => ['show']]);
     }
 
