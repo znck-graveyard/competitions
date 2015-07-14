@@ -1,18 +1,17 @@
 <?php namespace App\Http\Controllers;
 
-use App\Reviewer;
-use Log;
 use App\Contest;
 use App\Entry;
 use App\Http\Controllers\Auth;
 use App\Http\Requests;
+use App\Reviewer;
 use App\Transformer\EntryTransformer;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use League\Fractal\Manager;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
+use Session;
 
 class EntriesController extends Controller
 {
@@ -20,7 +19,7 @@ class EntriesController extends Controller
     /**
      * @type \App\User|null
      */
-    private $user;
+    protected $user;
     protected $contest;
 
     /**
@@ -28,7 +27,6 @@ class EntriesController extends Controller
      */
     function __construct(Guard $auth)
     {
-        $this->auth = $auth;
         $this->user = $auth->user();
         $this->middleware('auth', ['only' => ['create', 'update', 'edit', 'store',]]);
         $this->middleware('countView', ['only' => ['show']]);
@@ -41,7 +39,7 @@ class EntriesController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param \App\Contest             $contest
      *
-     * @return \App\Http\Controllers\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request, Contest $contest)
     {
@@ -66,7 +64,7 @@ class EntriesController extends Controller
      *
      * @param \App\Contest $contest
      *
-     * @return \App\Http\Controllers\Response
+     * @return \Illuminate\View\View
      */
     public function create(Contest $contest)
     {
@@ -99,7 +97,7 @@ class EntriesController extends Controller
      *
      * @param \App\Http\Requests\CreateEntryRequest $request
      *
-     * @return \App\Http\Controllers\Response
+     * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
     public function store(Requests\CreateEntryRequest $request)
@@ -125,7 +123,7 @@ class EntriesController extends Controller
      * @param \App\Contest $contest
      * @param \App\Entry   $entry
      *
-     * @return \App\Http\Controllers\Response
+     * @return \Illuminate\View\View
      */
     public function show(Contest $contest, Entry $entry)
     {
@@ -140,7 +138,7 @@ class EntriesController extends Controller
      *
      * @param  int $id
      *
-     * @return Response
+     * @return \Illuminate\View\View
      */
     public function edit($id)
     {
@@ -150,9 +148,12 @@ class EntriesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $id
+     * @param \App\Http\Requests\CreateEntryRequest $request
+     * @param \App\Entry                            $entry
      *
-     * @return Response
+     * @return \App\Http\Controllers\Response
+     * @throws \Exception
+     *
      */
     public function update(Requests\CreateEntryRequest $request, Entry $entry)
     {
@@ -181,7 +182,7 @@ class EntriesController extends Controller
      */
     public function destroy($id)
     {
-        Entry::destroy(id);
+        Entry::destroy($id);
 
         return redirect()->home();
     }
@@ -229,6 +230,7 @@ class EntriesController extends Controller
         }
 
         flash('Thank You for Voting!!');
+
         return redirect('/contest/' . $entry_up_voted->contest->slug);
 
     }
