@@ -36,7 +36,7 @@
             @forelse($contests as $contest)
                 @include('contest.partial.thumbnail', compact('contest'))
             @empty
-                <div class="col-xs-12 empty-state">
+                <div class="col-xs-12 empty-state text-center">
                     <img src="{{ asset('image/placeholder-slim.jpg') }}"/>
                     <h4>
                         There are no contests as of now!<br/>Keep looking this space for more updates.
