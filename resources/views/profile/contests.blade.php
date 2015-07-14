@@ -19,6 +19,7 @@
                                 There are no contests as of now!<br/>Keep looking this space for more updates.
                             </h4>
                         </div>
+                        <br>
                     @endforelse
                 </div>
 
