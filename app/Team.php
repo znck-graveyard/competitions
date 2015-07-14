@@ -19,7 +19,7 @@ use App\Entry;
  * @method static \Illuminate\Database\Query\Builder|\App\Team whereContestId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Team whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Team whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|ContestWinners[] $winnerTeam 
+ * @property-read \Illuminate\Database\Eloquent\Collection|ContestWinners[] $winnerTeam
  */
 class Team extends Model
 {

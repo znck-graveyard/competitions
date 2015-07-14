@@ -1,5 +1,7 @@
 <?php namespace App;
 
+use Illuminate\Database\Query\Builder;
+
 /**
  * App\Contest
  *
@@ -60,17 +62,19 @@
  * @method static \Illuminate\Database\Query\Builder|\App\Contest whereSlug($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Contest wherePublic($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Contest wherePrizeDescription($value)
- * @property string $prize_1 
- * @property string $prize_2 
- * @property string $prize_3 
- * @property string $admin_token 
- * @property-read User $maintainer 
- * @property-read mixed $start_time 
- * @property-read mixed $end_time 
+ * @property string                                                     $prize_1
+ * @property string                                                     $prize_2
+ * @property string                                                     $prize_3
+ * @property string                                                     $admin_token
+ * @property-read User                                                  $maintainer
+ * @property-read mixed                                                 $start_time
+ * @property-read mixed                                                 $end_time
  * @method static \Illuminate\Database\Query\Builder|\App\Contest wherePrize1($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Contest wherePrize2($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Contest wherePrize3($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Contest whereAdminToken($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|Team[] $teams 
+ * @method static \Illuminate\Database\Query\Builder|\App\Contest published()
  */
 class Contest extends \Eloquent
 {
@@ -142,15 +146,19 @@ class Contest extends \Eloquent
         return $this->hasMany(Entry::class);
     }
 
-
     /**
      *  Registered teams for a contest
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function registeredTeams()
+    public function teams()
     {
         return $this->hasMany(Team::class);
+    }
+
+    public function scopePublished(Builder $query)
+    {
+        $query->where('public', true);
     }
 
     public function getStartTimeAttribute()

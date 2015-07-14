@@ -2,12 +2,12 @@
 
 namespace App\Http\Middleware;
 
+use App\Contest;
 use App\Entry;
 use Closure;
-use Log;
-use App\Contest;
 use GrahamCampbell\Throttle\Facades\Throttle;
 use Illuminate\Support\Facades\Request;
+use Log;
 
 class CountViews
 {
@@ -15,7 +15,8 @@ class CountViews
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \Closure $next
+     * @param  \Closure                 $next
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -27,7 +28,7 @@ class CountViews
         $contest = Contest::whereSlug($slug)->first();
 
         if ($throttler->check()) {
-            if ($request->is('contest/'.$slug.'/entry/*')) {
+            if ($request->is('contest/' . $slug . '/entry/*')) {
                 $uuid = $uri[3];
                 $entry = Entry::whereUuid($uuid)->first();
                 Log::info($entry->name);
@@ -52,6 +53,7 @@ class CountViews
                 return $next($request);
             }
         }
+
         return $next($request);
 
     }

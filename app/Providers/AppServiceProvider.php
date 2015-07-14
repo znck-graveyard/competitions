@@ -1,7 +1,9 @@
 <?php namespace App\Providers;
 
+use App\Contest;
 use App\Entry;
 use App\Judge;
+use App\PublishedScope;
 use Illuminate\Support\ServiceProvider;
 use Rhumsaa\Uuid\Uuid;
 

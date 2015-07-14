@@ -55,10 +55,10 @@ class StatsComposer
 
         return \Cache::remember('stats.basic', 5, function () use ($self) {
             return (object)[
-                'contests' => number_format($self->contests->count()),
-                'views'    => number_format($self->contests->sum('page_view')),
+                'contests' => number_format($self->contests->wherePublic(true)->count()),
+                'views'    => number_format($self->contests->wherePublic(true)->sum('page_view')),
                 'entries'  => number_format($self->entries->count()),
-                'prize'    => number_format($self->contests->sum('prize')),
+                'prize'    => number_format($self->contests->wherePublic(true)->sum('prize')),
             ];
         });
     }

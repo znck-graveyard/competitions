@@ -28,7 +28,7 @@ class PillComposer
         $self = $this;
 
         return \Cache::remember('contest.pills', 1440, function () use ($self) {
-            return $this->contest->orderBy('contest_type')->groupBy('contest_type')->lists('contest_type')->toArray();
+            return $this->contest->wherePublic(true)->orderBy('contest_type')->groupBy('contest_type')->lists('contest_type')->toArray();
         });
     }
 }
