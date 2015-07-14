@@ -33,22 +33,19 @@ Route::group([], function () {
     Route::post('reset/{token?}', 'Auth\PasswordController@postReset');
 });
 
-Route::group(['prefix' => 'contest'], function () {
-//    Route::get('administration/judge/{id}', 'JudgementController@contestJudge');
-//    Route::get('judge/{uid}', 'JudgementController@checkLink');
-    Route::get('category/{slug}', ['as' => 'contest.category', 'uses' => 'ContestController@category']);
-    Route::get('{contest}/cover/{width?}/{height?}', ['as' => 'contest.cover', 'uses' => 'ContestController@cover']);
-    Route::get('{contest}/request', ['as' => 'contest.request', 'uses' => 'ContestController@request']);
-    Route::get('{contest}/review/{token?}', ['as' => 'contest.review', 'uses' => 'ContestController@review']);
-    Route::get('{contest}/publish/{token?}', ['as' => 'contest.publish', 'uses' => 'ContestController@publish']);
+Route::get('contest/category/{slug}', ['as' => 'contest.category', 'uses' => 'ContestController@category']);
+Route::group(['prefix' => 'contest/{contest}'], function () {
+    Route::get('cover/{width?}/{height?}', ['as' => 'contest.cover', 'uses' => 'ContestController@cover']);
+    Route::get('request', ['as' => 'contest.request', 'uses' => 'ContestController@request']);
+    Route::get('review/{token?}', ['as' => 'contest.review', 'uses' => 'ContestController@review']);
+    Route::get('publish/{token?}', ['as' => 'contest.publish', 'uses' => 'ContestController@publish']);
+    Route::get('entry/{uuid}/upvote', 'EntriesController@upVotes');
+    Route::get('entry/{uuid}/downvote', 'EntriesController@downVotes');
 });
-
 Route::resource('contest', 'ContestController');
 Route::bind('contest', function ($slug) {
     return \App\Contest::whereSlug($slug)->firstOrFail();
 });
-Route::get('contest/{contest}/entry/{uuid}/upvote','EntriesController@upVotes');
-Route::get('contest/{contest}/entry/{uuid}/downvote','EntriesController@downVotes');
 Route::resource('contest.entry', 'EntriesController');
 Route::bind('entry', function ($uuid) {
     return \App\Entry::whereUuid($uuid)->firstOrFail();
