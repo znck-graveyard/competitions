@@ -25,7 +25,6 @@
 
     <script src="{{ asset('javascript/jquery.min.js') }}"></script>
     <script src="{{ asset('javascript/jquery.jcarousel.min.js') }}"></script>
-    <script async src="{{ asset('javascript/bootstrap.min.js') }}"></script>
 
     @yield('head')
     @yield('head.scripts')
@@ -40,6 +39,7 @@
 
 @include('footer')
 
+<script async src="{{ asset('javascript/bootstrap.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('/javascript/app.js') }}"></script>
 <script type="text/javascript" src="{{ elixir('js/app.js') }}"></script>
 @yield('scripts')

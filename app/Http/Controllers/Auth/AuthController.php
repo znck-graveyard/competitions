@@ -102,14 +102,14 @@ class AuthController extends Controller
                 throw new InvalidStateException;
             }
         } catch (InvalidStateException $e) {
-            return redirect()->route('auth.login');
+            return redirect()->route('auth.login')->withErrors(['Failed to connect to Google.']);
         }
         $user = User::where('email', '=', $provider->email)->first();
 
         return $this->providerCallback($user, $provider);
     }
 
-    public function facebookLoginHandle()
+    public function facebookLoginHandle(Request $request)
     {
         try {
             $driver = Socialize::driver('facebook');
@@ -118,7 +118,7 @@ class AuthController extends Controller
                 throw new InvalidStateException;
             }
         } catch (InvalidStateException $e) {
-            return redirect()->route('auth.login');
+            return redirect()->route('auth.login')->withErrors([$request->get('error', 'Failed to connect to Facebook.')]);
         }
         $user = User::where('email', '=', $provider->email)->first();
 

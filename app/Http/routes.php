@@ -13,9 +13,11 @@ Route::group([], function () {
      */
     Route::get('login', ['as' => 'auth.login', 'uses' => 'Auth\AuthController@getLogin']);
     Route::get('login/facebook', ['as' => 'auth.facebook', 'uses' => 'Auth\AuthController@facebookLogin']);
-    Route::get('login/facebook/callback', ['as' => 'auth.facebook.callback', 'uses' => 'Auth\AuthController@facebookLoginHandle']);
+    Route::get('login/facebook/callback',
+        ['as' => 'auth.facebook.callback', 'uses' => 'Auth\AuthController@facebookLoginHandle']);
     Route::get('login/google', ['as' => 'auth.google', 'uses' => 'Auth\AuthController@googleLogin']);
-    Route::get('login/google/callback', ['as' => 'auth.google.callback', 'uses' => 'Auth\AuthController@googleLoginHandle']);
+    Route::get('login/google/callback',
+        ['as' => 'auth.google.callback', 'uses' => 'Auth\AuthController@googleLoginHandle']);
     Route::get('logout', ['as' => 'auth.logout', 'uses' => 'Auth\AuthController@getLogout']);
     Route::get('register', ['as' => 'auth.signup', 'uses' => 'Auth\AuthController@getRegister']);
 
@@ -32,14 +34,13 @@ Route::group([], function () {
 });
 
 Route::group(['prefix' => 'contest'], function () {
-//    Route::get('create', ['uses' => 'ContestController@create', 'as' => 'contest.create']);
-    Route::get('administration/judge/{id}', 'JudgementController@contestJudge');
-    Route::get('judge/{uid}', 'JudgementController@checkLink');
-
-    Route::post('createFirstTime', 'ContestController@storeFirstTimeContest');
-//    Route::post('create', 'ContestController@store');
-
+//    Route::get('administration/judge/{id}', 'JudgementController@contestJudge');
+//    Route::get('judge/{uid}', 'JudgementController@checkLink');
     Route::get('category/{slug}', ['as' => 'contest.category', 'uses' => 'ContestController@category']);
+    Route::get('{contest}/cover/{width?}/{height?}', ['as' => 'contest.cover', 'uses' => 'ContestController@cover']);
+    Route::get('{contest}/request', ['as' => 'contest.request', 'uses' => 'ContestController@request']);
+    Route::get('{contest}/review/{token?}', ['as' => 'contest.request', 'uses' => 'ContestController@request']);
+    Route::get('{contest}/publish/{token?}', ['as' => 'contest.publish', 'uses' => 'ContestController@publish']);
 });
 
 Route::resource('contest', 'ContestController');

@@ -1,284 +1,262 @@
 @extends('app')
-@section('head')
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css" />
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
+@section('styles')
+    @parent
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.14.30/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+@endsection
 
-    <link rel="stylesheet" type="text/css"
-          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.0/jquery.timepicker.min.css">
-    <script type="text/javascript"
-            src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.0/jquery.timepicker.min.js"></script>
+@section('scripts')
+    @parent
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.14.30/js/bootstrap-datetimepicker.min.js"></script>
 
     <script>
         $(document).ready(function() {
-            $("#startdatepicker").datepicker({
-                autoclose: true,
-                todayHighlight: true
-            }).datepicker('update', new Date());
+            $('select option:first').attr('disabled', '');
 
-        });
-        $(document).ready(function() {
-            $("#enddatepicker").datepicker({
-                autoclose: true,
-                todayHighlight: true
-            }).datepicker('update', new Date());
+            $(function () {
+                $('[data-toggle="popover"]').popover({trigger: 'hover'})
+            })
 
+            $('.picker-date, .picker-date > input').datetimepicker({
+                format: 'YYYY-MM-DD',
+                locale: 'en'
+            });
+
+            $('.picker-time, .picker-time > input').datetimepicker({
+                format: 'LT',
+                locale: 'en'
+            });
         });
     </script>
 @endsection
+
 @section('content')
 
-    <div class="jumbotron picCheer darken">
-        <hgroup style="text-align: center">
+    <div class="banner-slim underlay" style="background-image: url('{{ asset('image/banner-preferences.jpg') }}')">
+        <div class="text-white text-center">
             <h1>Create a Contest</h1>
 
-            <h3>Create opportunities, discover amazing talents, stay inspired. </h3>
-        </hgroup>
-
+            <h3>Create opportunities, discover amazing talents, stay inspired.</h3>
+        </div>
     </div>
+
     <div class="container">
-        <p>Please fill all the details regarding the Contest below.. </p>
-
-        {!! Form::open(['url'=>'contest/create','files'=> true]) !!}
-        <div class="row">
-            <div class="col-md-5">
-                <label for="name">Name of the Contest*</label>
-                <input type="text" class="form-control" name="name" placeholder="Enter name of Contest">
-            </div>
-            <div class="col-md-5 col-md-offset-1">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="type">Contest Type*</label>
-                            <select class="input-large form-control" id="type" name="type">
-                                <option value="" selected="selected">Select anyone Type</option>
-                                @foreach($contestTypes as $type)
-                                    <option value="{{ $type }}">{{ strtoupper($type) }}</option>
-
-                                @endforeach
-
-
-                            </select>
-                        </div>
-
+        <br>
+        @if(count($errors))
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="alert alert-danger">
+                        <strong>Whoops!</strong> There were some problems with your input.
                     </div>
-                    <div class="col-md-6">
-                        <label for="submission_type">Submission Format*</label>
-                        <select class="input-large form-control " id="submission_type" name="submission_type">
-                            <option value="" selected="selected">Select format</option>
-                            @foreach($submissionTypes as $type)
-                                <option value="{{ $type }}">{{ $type }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-5">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="start_date">Start Date*</label>
+        @endif
 
-                            <div id="startdatepicker" class="input-group date" data-date-format="mm-dd-yyyy">
-                                <input class="form-control" type="text" readonly placeholder="Select Start Date" name="start_date"/>
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+        {!! Form::model($contest, ['url' => $action,'files' => true,'method' => isset($method) ? $method : 'post']) !!}
+        <div class="row">
+            <div class="col-xs-12 col-md-12">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label for="name" class="text-uppercase required">Name of the Contest</label>
+                            {!! Form::text('name', null, ['class' => 'input-lg form-control', 'required' => '', 'placeholder' => 'enter name of the contest', 'id' => 'name']) !!}
+                        </div>
+                        @if($errors->has('name')) <div class="alert alert-danger"> {{ $errors->first('name') }} </div> @endif
+                    </div>
+
+                    @if($errors->has('slug'))
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-group">
+                                <label for="slug" class="text-uppercase required">URL of the contest</label>
+                                {!! Form::text('slug', null, ['class' => 'input-lg form-control', 'required' => '', 'placeholder' => 'unique url to the contest', 'id' => 'slug']) !!}
+                            </div>
+                            @if($errors->has('slug')) <div class="alert alert-danger"> {{ $errors->first('slug') }} </div> @endif
+                        </div>
+                    @endif
+
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="row row-has-2-children">
+                            <div class="col-xs-12 col-sm-6">
+                                <div class="form-group">
+                                    <label for="type" class="text-uppercase required">Contest Type</label>
+                                    {!! Form::select('contest_type', $contestTypes, null, ['class' => 'input-lg form-control', 'required' => '', 'id' => 'type']) !!}
+                                </div>
+                                @if($errors->has('contest_type')) <div class="alert alert-danger"> {{ $errors->first('type') }} </div> @endif
+                            </div>
+                            <div class="col-xs-12 col-sm-6">
+                                <div class="form-group">
+                                    <label for="submission_type" class="text-uppercase required">Submission Format</label>
+                                    {!! Form::select('submission_type', $submissionTypes, null, ['class' => 'input-lg form-control', 'required' => '', 'id' => 'submission_type']) !!}
+                                </div>
+                                @if($errors->has('submission_type')) <div class="alert alert-danger"> {{ $errors->first('submission_type') }} </div> @endif
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="row row-has-2-children">
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <label for="start_date" class="text-uppercase required">Start Date</label>
+
+                                    <div class="input-group picker-date date input-group-lg">
+                                        {!! Form::text('start_date', null, ['class' => 'input-lg form-control', 'required' => '', 'id' => 'start_date', 'placeholder' => 'select start date']) !!}
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                    </div>
+                                </div>
+                                @if($errors->has('start_date')) <div class="alert alert-danger"> {{ $errors->first('start_date') }} </div> @endif
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <label for="start_time" class="text-uppercase required">Start Time</label>
+
+                                    <div class="input-group date picker-time input-group-lg">
+                                        {!! Form::text('start_time', null, ['class' => 'input-lg form-control', 'required' => '', 'id' => 'start_time', 'placeholder' => 'select start time']) !!}
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                                    </div>
+                                </div>
+                                @if($errors->has('start_time')) <div class="alert alert-danger"> {{ $errors->first('start_time') }} </div> @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="row row-has-2-children">
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <label for="end_date" class="text-uppercase required">end Date</label>
+
+                                    <div class="input-group date picker-date input-group-lg">
+                                        {!! Form::text('end_date', null, ['class' => 'input-lg form-control', 'required' => '', 'id' => 'end_date', 'placeholder' => 'select end date']) !!}
+                                        <span class="input-group-addon"><i
+                                                    class="glyphicon glyphicon-calendar"></i></span>
+                                    </div>
+                                </div>
+                                @if($errors->has('end_date')) <div class="alert alert-danger"> {{ $errors->first('end_date') }} </div> @endif
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <label for="end_time" class="text-uppercase required">end Time</label>
+
+                                    <div class="input-group date picker-time input-group-lg">
+                                        {!! Form::text('end_time', null, ['class' => 'input-lg form-control', 'required' => '', 'id' => 'end_time', 'placeholder' => 'select end time']) !!}
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                                    </div>
+                                </div>
+                                @if($errors->has('end_time')) <div class="alert alert-danger"> {{ $errors->first('end_time') }} </div> @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6">
                         <div class="form-group">
-                            <label for="start_time">Time*</label>
-
-                            <div>
-                                <input type="text" class="form-control time" name="start_time"
-                                       placeholder="hrs:min:sec"/>
-                            </div>
+                            <label for="description" class="text-uppercase required">Description</label>
+                            {!! Form::textarea('description', null, ['class' => 'input-lg form-control', 'required' => '', 'placeholder' => 'tell about the contest (markdown accepted.)', 'id' => 'description']) !!}
                         </div>
+                        @if($errors->has('description')) <div class="alert alert-danger"> {{ $errors->first('description') }} </div> @endif
                     </div>
-                </div>
-            </div>
-            <div class="col-md-5 col-md-offset-1">
-                <div class="row">
-                    <div class="col-md-6">
+
+                    <div class="col-xs-12 col-sm-6">
                         <div class="form-group">
-                            <label for="end_date">End Date*</label>
-
-                            <div id="enddatepicker" class="input-group date" data-date-format="mm-dd-yyyy">
-                                <input class="form-control" type="text" readonly placeholder="Select End Date" name="end_date"/>
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                            </div>
+                            <label for="rules" class="text-uppercase required">Rules and Regulations</label>
+                            {!! Form::textarea('rules', null, ['class' => 'input-lg form-control', 'required' => '', 'placeholder' => 'tell about the contest (markdown accepted.)', 'id' => 'rules']) !!}
                         </div>
+                        @if($errors->has('rules')) <div class="alert alert-danger"> {{ $errors->first('rules') }} </div> @endif
                     </div>
-                    <div class="col-md-6">
+
+                    <div class="col-xs-12 col-sm-6">
                         <div class="form-group">
-                            <label for="end_time">Time*</label>
-                            <input type="text" class="form-control time" name="end_time" placeholder="hrs:min:sec"/>
-
+                            <label for="max_entries" class="text-uppercase required">Maximum submissions pre person</label>
+                            {!! Form::input('number', 'max_entries', null, ['class' => 'input-lg form-control', 'required' => '', 'min' => 1, 'placeholder' => 'max. submissions', 'id' => 'max_entries']) !!}
                         </div>
+                        @if($errors->has('max_entries')) <div class="alert alert-danger"> {{ $errors->first('max_entries') }} </div> @endif
                     </div>
-                </div>
-            </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label for="max_iteration" class="text-uppercase required">Maximum iterations per submission</label>
+                            {!! Form::input('number', 'max_iteration', null, ['class' => 'input-lg form-control', 'required' => '', 'min' => 1, 'placeholder' => 'max. iterations', 'id' => 'max_iteration']) !!}
+                        </div>
+                        @if($errors->has('max_iteration')) <div class="alert alert-danger"> {{ $errors->first('max_iteration') }} </div> @endif
+                    </div>
 
-        </div>
+                    <div class="col-xs-12">
+                        <div class="row row-eq-height">
+                            <div class="col-xs-12 col-sm-6">
+                                <label class="text-uppercase">Contest Banner</label>
+                                <div class="file-input">
+                                    <div class="thumbnail pull-left">
+                                        <img src="{{ $contest->exists ? route('contest.cover', [$contest->slug, 196]) : asset('image/placeholder.jpg') }}"/>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <label>
+                                                    <a class="btn btn-default btn-huge text-uppercase" role="button">upload</a>
+                                                    {!! Form::file('cover_photo', ['class' => 'hidden']) !!}
+                                                    <span style="margin-left: 15px"><b>or</b></span>
+                                                </label>
+                                            </div>
 
-        <div class="row">
-
-            <div class="col-md-5">
-                <label for="description">Description*</label>
-                <textarea class="form-control" rows="6" name="description" style="margin-bottom: 15px;"></textarea>
-            </div>
-
-            <div class="col-md-5 col-md-offset-1">
-                <label for="rules">Rules And Regulations*</label>
-                <textarea class="form-control" rows="6" name="rules" style="margin-bottom: 15px;"></textarea>
-            </div>
-
-
-        </div>
-        <div class="row">
-            <div class="col-md-5">
-                <div class="row">
-                    <table class="table ">
-                        <tr>
-                            <div class="col-md-6">
-                                <label for="max_entries">Max Entries Per Person*</label>
-                                <input type="text" class="form-control" name="max_entries">
+                                            <div>
+                                                {!! Form::text('cover_photo_link', old('cover_link'), ['class' => 'input-lg form-control', 'placeholder' => 'enter link of the photo',]) !!}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p style="margin-bottom: 15px">
+                                    <small>
+                                        Add a nice photo to the event banner.
+                                    </small>
+                                </p>
+                                @if($errors->has('cover_photo')) <div class="alert alert-danger"> {{ $errors->first('cover_photo') }} </div> @endif
+                                @if($errors->has('cover_photo_link')) <div class="alert alert-danger"> {{ $errors->first('cover_photo_link') }} </div> @endif
                             </div>
-                            <div class="col-md-6">
-                                <label for="max_iteration">Max Iteration per Entry*</label>
-                                <input type="text" class="form-control" name="max_iteration">
+
+                            <div class="col-xs-12 col-sm-6">
+                                <label class="text-uppercase required">Prizes</label>
+                                <div class="form-group">
+                                    <div class="input-group input-group-lg">
+                                        <span class="input-group-addon">1st prize</span>
+                                        {!! Form::text('prize_1', null, ['class' => 'input-lg form-control', 'required' => '']) !!}
+                                    </div>
+                                </div>
+                                @if($errors->has('prize_1')) <div class="alert alert-danger"> {{ $errors->first('prize_1') }} </div> @endif
+                                <div class="form-group">
+                                    <div class="input-group input-group-lg">
+                                        <span class="input-group-addon">2nd prize</span>
+                                        {!! Form::text('prize_2', null, ['class' => 'input-lg form-control', 'required' => '']) !!}
+                                    </div>
+                                </div>
+                                @if($errors->has('prize_2')) <div class="alert alert-danger"> {{ $errors->first('prize_2') }} </div> @endif
+                                <div class="form-group">
+                                    <div class="input-group input-group-lg">
+                                        <span class="input-group-addon">3rd prize</span>
+                                        {!! Form::text('prize_3', null, ['class' => 'input-lg form-control', 'required' => '']) !!}
+                                    </div>
+                                </div>
+                                @if($errors->has('prize_3')) <div class="alert alert-danger"> {{ $errors->first('prize_3') }} </div> @endif
+                                <div class="form-group">
+                                    <div class="input-group input-group-lg">
+                                        <span class="input-group-addon">Total</span>
+                                        {!! Form::text('prize', null, ['class' => 'input-lg form-control', 'required' => '', 'placeholder' => 'total prize worth']) !!}
+                                    </div>
+                                </div>
+                                @if($errors->has('prize')) <div class="alert alert-danger"> {{ $errors->first('prize') }} </div> @endif
                             </div>
-                        </tr>
-                        <tr>
-                            <label style="margin-top:25px !important; margin-left:10px;" for="contest_banner">Contest
-                                Banner Creative*</label>
-                            <input type="file" accept="image/png, image/jpeg, image/gif" name="contest_banner"/>
-
-                        </tr>
-                    </table>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-5 col-md-offset-1">
-
-                <label for="prize">Prizes*</label>
-
-                <div>
-                    <table class="table ">
-                        <tr>
-                            <td class="col-md-1 col-sm-1"><label class="prize_label">1</label></td>
-
-                            <td class="col-md-11 col-sm-11">
-                                <input type="text"
-                                       class="form-control"
-                                       name="">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-1 col-sm-1 "><label class="prize_label">2</label></td>
-
-                            <td class="col-md-11 col-sm-11">
-                                <input type="text"
-                                       class="form-control"
-                                       name="">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-1 col-sm-1 "><label class="prize_label">3</label></td>
-
-                            <td class="col-md-11 col-sm-11">
-                                <input type="text"
-                                       class="form-control"
-                                       name="">
-                            </td>
-                        </tr>
-                    </table>
-
-                </div>
-                <button class="btn btn-primary" style="margin-bottom: 20px;">Add</button>
-
-            </div>
-
-
         </div>
-
         <div class="row">
-            <div class="col-md-5">
-                <div class="row">
-                    <div class="col-md-6">
-                        <label><input type="radio" name="review" value="peer_review_enabled">PEER BASED REVIEW</label>
-                        <select class="input-large form-control" id="peer_review_weightage"
-                                name="peer_review_weightage">
-                            <option value="" selected="selected">Select Weightage</option>
-
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <label><input type="radio" name="review" value="manual_review_enabled">MANUAL REVIEW</label>
-                        <select class="input-large form-control" id="manual_review_weightage"
-                                name="manual_review_weightage">
-                            <option value="" selected="selected">Select Weightage</option>
-
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5 col-md-offset-1">
-                <div class="row">
-                    <div class="col-md-12">
-                        <label><input type="checkbox" name="team_entry_enabled" value=true>Allow
-                            Team Entries</label>
-                        <select class="input-large form-control"
-                                name="team_size">
-                            <option value="" selected="selected">max members in a team</option>
-
-                        </select>
-                    </div>
-                </div>
+            <div class="col-xs-12">
+                @if($contest->exists)
+                    <a href="{{ route('contest.request', $contest->slug) }}" class="btn btn-huge btn-wide btn-default text-uppercase">Publish</a>
+                @endif
+                <button type="submit" class="btn btn-huge btn-wide btn-primary text-uppercase">Save</button>
             </div>
         </div>
-
-        <div class="row margin_top" style="margin-left: 15px;">
-
-            <label>Judges For Manual Review(only in case of Manual Review)*</label>
-
-            <div class="row" style="margin-left: 15px;">
-                <div class="form-group">
-                    <div class="col-md-2">
-                        <div class="row margin_right">
-                            <input type="text" class="form-control " name="judge_name" placeholder="Name of the judge">
-                        </div>
-                        <div class="row margin_right">
-                            <input type="text" class="form-control" name="judge_email" placeholder="Email of the judge">
-                        </div>
-                    </div>
-                    <div class="col-md-2 ">
-                        <div class="row margin_right">
-                            <input type="text" class="form-control " name="judge_name" placeholder="Name of the judge">
-                        </div>
-                        <div class="row margin_right">
-                            <input type="text" class="form-control" name="judge_email" placeholder="Email of the judge">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div class="row margin_top" style="margin-left: 15px;">
-            <div class="row ">
-                <button class="btn btn-primary">BACK</button>
-                <button type="submit" class="btn btn-primary">CREATE</button>
-            </div>
-        </div>
-
-
         {!! Form::close() !!}
-
-
+        <br>
     </div>
-
-
-
-
 @endsection

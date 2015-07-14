@@ -3,16 +3,26 @@
 use App\Contest;
 use App\Http\Controllers\Auth;
 use App\Http\Requests;
-use App\User;
-use App\Http\Controllers\ProfileController;
+use App\Http\Requests\CreateContestRequest;
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
+use Illuminate\Mail\Message;
+use Mail;
+use Storage;
 
+/**
+ * Class ContestController
+ *
+ * @package App\Http\Controllers
+ */
 class ContestController extends Controller
 {
-    private $user;
-
+    use ImageResponseTrait, ImageUploadTrait;
+    /**
+     * @type \App\User|null
+     */
+    protected $user;
 
     /**
      * @param Guard $auth
@@ -20,8 +30,13 @@ class ContestController extends Controller
     function __construct(Guard $auth)
     {
         $this->user = $auth->user();
-        $this->middleware('auth', ['only' => ['create', 'update', 'edit', 'storeFirstTimeContest', 'store']]);
-        $this->middleware('countView',['only' => ['show']]);
+        $this->middleware('auth', ['except' => ['show']]);
+        $this->middleware('countView', ['only' => ['show']]);
+    }
+
+    public function index()
+    {
+        return redirect()->home();
     }
 
     /**
@@ -48,46 +63,114 @@ class ContestController extends Controller
      */
     public function create()
     {
-        $user = User::find($this->user->id);
-        $types = config('contest.types');
-        $submission_types = config('contest.submission_types');
-        if ($user->is_maintainer ) {
-            return view('contest.create')->with(['contestTypes' => $types, 'submissionTypes' => $submission_types]);
+
+        /**
+         * If use is not a maintainer.
+         */
+        if (!$this->user->is_maintainer) {
+            session(['maintainer-request' => true]);
+            session(['profile_redirect_path' => 'contest/create']);
+
+            return view('contest.new', compact('user'));
+        }
+        $contest = new Contest;
+        $action = route('contest.store');
+
+        return view('contest.create')->with(compact('contest', 'action'));
+    }
+
+    public function request(Contest $contest)
+    {
+        if ($this->editable($contest)) {
+            Mail::queue('emails.publish', [
+                'contest'     => $contest->name,
+                'slug'        => $contest->slug,
+                'token'       => $contest->admin_token,
+                'description' => $contest->description,
+            ], function (Message $message) {
+                $message->from(config('app.publish.from'), 'Whizzspace');
+            });
+
+            flash('Contest queued for publishing.');
         }
 
-        session(['maintainer-request' => true]);
-        session(['profile_redirect_path' => 'contest/create']);
-        return view('contest.new', compact('user'));
+        return redirect()->route('contest.show', $contest->slug);
+    }
+
+    public function review(Contest $contest, $token)
+    {
+        if ($contest->public === true) {
+            return redirect()->route('contest.show', $contest->slug);
+        }
+
+        if ($contest->admin_token !== $token) {
+            abort(404);
+        }
+
+
+        $contest->load(['entries', 'entries.entryable']);
+
+
+        $top = $contest->entries->take(3)->sort(function ($a, $b) {
+            return $a->score > $b->score;
+        });
+
+        $editable = false;
+        $publisher = true;
+
+        return view('contest.show', compact('contest', 'top', 'editable', 'publisher'));
+    }
+
+    public function publish(Contest $contest, $token)
+    {
+        if ($contest->admin_token !== $token) {
+            abort(404);
+        }
+
+        if (!$contest->public) {
+            $contest->public = true;
+            $contest->save();
+
+            flash('Contest is public now.');
+        }
+
+        return redirect()->route('contest.show', $contest->slug);
+    }
+
+    /**
+     * @param \App\Contest $contest
+     * @param null         $width
+     * @param null         $height
+     *
+     * @return mixed
+     */
+    public function cover(Contest $contest, $width = null, $height = null)
+    {
+        $path = $contest->image;
+        $filename = $path && Storage::disk()->exists($path) ? Storage::disk()->get($path) : public_path('image/placeholder-wide.png');
+
+        return $this->sendImageResponse($width, $height, $filename,
+            Storage::disk()->exists($path) ? Storage::disk()->lastModified($path) : -86400);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param Requests\CreateContestRequest $request
+     * @param CreateContestRequest $request
      *
      * @return Response
      * @throws \Exception
      */
 
-    public function store(Requests\CreateContestRequest $request)
+    public function store(CreateContestRequest $request)
     {
-        \DB::beginTransaction();
-        try {
-            $contest = $this->createOrUpdateContest($request);
+        $contest = new Contest;
 
-            $this->user->is_maintainer = true;
+        $this->fillContest($contest, $request);
 
-            flash()->success("New Contest created successfully!!");
+        $this->user->maintaining()->save($contest);
 
-        } catch (\Exception $e) {
-            \DB::rollBack();
-            throw $e;
-        }
-
-        \DB::commit();
-
-        return redirect('contest/{type}');//not sure about return TODO
-
+        return redirect()->route('contest.show', [$contest->slug]);
     }
 
     /**
@@ -99,181 +182,231 @@ class ContestController extends Controller
      */
     public function show(Contest $contest)
     {
-
-
         $contest->load(['entries', 'entries.entryable']);
 
+        if (!$contest->public) {
+            if ($this->authorized($contest)) {
+                flash('This contest is not published.');
+            } else {
+                abort(404);
+            }
+        }
 
         $top = $contest->entries->take(3)->sort(function ($a, $b) {
             return $a->score > $b->score;
         });
 
-        return view('contest.show', compact('contest', 'top'));
+        $editable = $this->editable($contest);
+        $publisher = false;
+
+        return view('contest.show', compact('contest', 'top', 'editable', 'publisher'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param \App\Contest $contest
      *
-     * @return Response
+     * @return \App\Http\Controllers\Response
      */
-    public function edit($id)
+    public function edit(Contest $contest)
     {
-        $contest = Contest::find($id);
-        $user_id = $this->user->id();
-        $maintainer_id = $contest->maintainer_id;
-        if ($user_id == $maintainer_id) {
-            return view('contest.create', compact('contest'));
-        } else {
-            flash()->warning("Access Denied");
+        if ($this->editable($contest)) {
+            $action = route('contest.update', $contest->slug);
+            $method = 'put';
 
-            return redirect()->back();
-
+            return view('contest.create', compact('contest', 'action', 'method'));
         }
 
-
+        abort(404);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  int                          $id
-     * @param Requests\CreateContestRequest $request
+     * @param CreateContestRequest $request
      *
-     * @return Response
+     * @param \App\Contest         $contest
+     *
+     * @return \App\Http\Controllers\Response
      * @throws \Exception
      */
-    public function update($id, Requests\CreateContestRequest $request)
+    public function update(CreateContestRequest $request, Contest $contest)
     {
-        $contest = Contest::find($id);
-        $user_id = $this->user->id();
-        $maintainer_id = $contest->maintainer_id;
-        if ($user_id == $maintainer_id) {
-            \DB::beginTransaction();
-            try {
-                $this->createOrUpdateContest($request, $contest);
-            } catch (\Exception $e) {
-                \DB::rollBack();
-                throw $e;
-            }
+        if ($this->editable($contest)) {
+            $this->fillContest($contest, $request);
 
-            \DB::commit();
+            $this->user->maintaining()->save($contest);
         } else {
-            flash()->warning("Access Denied");
-
-            return redirect()->back();
-
+            flash('Contest is already published.');
         }
 
-        return redirect('contest/{type}');
+        return redirect()->route('contest.show', [$contest->slug]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param \App\Contest $contest
      *
-     * @return Response
+     * @return \App\Http\Controllers\Response
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(Contest $contest)
     {
-        $contest = Contest::find($id);
-        $user_id = $this->user->id();
-        $maintainer_id = $contest->maintainer_id;
-        if ($user_id == $maintainer_id) {
-            $contest = Contest::find($id);
-            $contest->delete();
-
-            return redirect()->home();
-        } else {
-            flash()->warning("Access Denied");
-
-            return redirect()->back();
-        }
-
-    }
-
-    public function createOrUpdateContest(Requests\CreateContestRequest $request, $contest = null)
-    {
-        if (is_null($contest)) {
-            $contest = new Contest();
-        }
-
-        $s_date = $request->get('start_contest_date');//start date from form
-        $s_time = $request->get('start_contest_time');//start time from form
-        $s_timestamp = \Carbon::createFromTimestamp($s_date . $s_time);
-        $contest->start_date = $s_timestamp;
-        $e_date = $request->get('end_contest_date');//end date from form
-        $e_time = $request->get('end_contest_time');//end time from form
-        $e_timestamp = \Carbon::createFromTimestamp($e_date . $e_time);
-        $contest->end_date = $e_timestamp;
-        $contest->name = $request->get('name');
-        $contest->description = $request->get('description');
-        $contest->rules = $request->get('rules');
-        $contest->type = $request->get('type');
-        $contest->submission_type = $request->get('submission_type');
-        $contest->max_entries = $request->get('max_entries');
-        $contest->max_iteration = $request->get('max_iteration');
-        $contest->peer_review_enabled = $request->get('peer_review_enabled');
-        if ($contest->peer_review_enabled) {
-            $contest->peer_review_weightage = $request->get('peer_review_weightage');
-        } else {
-            $contest->peer_review_weightage = null;
-        }
-
-        $contest->manual_review_enabled = $request->get('manual_review_enabled');
-
-        if ($contest->manual_review_enabled) {
-            $contest->manual_review_weightage = $request->get('manual_review_weightage');
-        } else {
-            $contest->manual_review_weightage = null;
-        }
-
-        $contest->team_entry_enabled = $request->get('team_entry_enabled');
-        $contest->maintainer_id = $this->user->id();
-        if ($request->hasFile('contest_banner')) {
-            $file = $request->file('contest_banner');
-            $extension = $file->getClientOriginalExtension();
-            $filename = $file->getFilename() . '.' . $extension;
-            Storage::disk('local')->put($filename, File::get($file));
-            $contest->image = $filename;
-        }
-        $contest->save();
-
-        $website = '';
-        foreach ($request->judges as $judge) {
-            $judge_string = str_random(128);
-            $contest_id = $contest->id;
-            if ((isset($judge['user_id']))) {
-                $user_id = $judge['user_id'];
+        if ($this->authorized($contest)) {
+            if ($contest->public) {
+                flash()->warning('Contest is published. Contact admin to unpublish it before deleting.');
             } else {
-                $user_id = null;
+                $contest->delete();
+                flash('Contest has been deleted.');
             }
-            DB::table('judges')->insert(
-                [
-                    'contest_id'   => $contest->id,
-                    'user_id'      => $user_id,
-                    'name'         => $judge['name'],
-                    'email'        => $judge['email'],
-                    'judge_string' => $judge_string
-                ]
-            );
-
-            $whole_judge_link = 'contest/' . $contest_id . '/' . $judge_string;
-            \Mail::queue('emails.judge', ['whole_judge_link' => $whole_judge_link, 'contest' => $contest->name],
-                function ($message)
-                use ($judge) {
-                    $email = $judge['email'];
-                    $message->to($email)->subject('Judgement Link');
-                });
         }
 
-
-        return $contest;
-
-
+        redirect()->home();
     }
 
+    protected function fillContest(Contest $contest, Request $request)
+    {
+        if ($request->hasFile('cover_photo')) {
+            $contest->image = $this->moveFile($request->file('cover_photo'));
+        }
+
+        if ($request->has('cover_photo_link')) {
+            $contest->image = $this->downloadFile($request->get('cover_photo_link'));
+        }
+
+        $attributes = $request->all();
+
+        $contest->fill(array_only($attributes,
+            [
+                'name',
+                'slug',
+                'contest_type',
+                'submission_type',
+                'description',
+                'rules',
+                'max_entries',
+                'max_iteration',
+                'prize_1',
+                'prize_2',
+                'prize_3',
+                'prize'
+            ]));
+        $contest->start_date = Carbon::parse(
+            array_get($attributes, 'start_date', '') . ' ' .
+            array_get($attributes, 'start_time', ''));
+        $contest->end_date = Carbon::parse(
+            array_get($attributes, 'end_date', '') . ' ' .
+            array_get($attributes, 'end_time', ''));
+        $contest->peer_review_enabled = true;
+        $contest->peer_review_weightage = 1;
+        $contest->manual_review_enabled = false;
+        $contest->manual_review_weightage = 0;
+        $contest->public = false;
+        $contest->team_entry_enabled = false;
+        $contest->team_size = 1;
+        $contest->admin_token = str_random(60);
+    }
+
+    /**
+     * @param \App\Contest $contest
+     *
+     * @return bool
+     */
+    protected function authorized(Contest $contest)
+    {
+        return $this->user && $this->user->id === $contest->maintainer_id;
+    }
+
+    /**
+     * @param \App\Contest $contest
+     *
+     * @return bool
+     */
+    protected function editable(Contest $contest)
+    {
+        return $this->authorized($contest) && !$contest->public;
+    }
+
+    /**
+     * TODO: NOTE: Maybe helpful later.
+     * public function createOrUpdateContest(Requests\CreateContestRequest $request, $contest = null)
+     * {
+     * if (is_null($contest)) {
+     * $contest = new Contest();
+     * }
+     *
+     * $s_date = $request->get('start_contest_date');//start date from form
+     * $s_time = $request->get('start_contest_time');//start time from form
+     * $s_timestamp = \Carbon::createFromTimestamp($s_date . $s_time);
+     * $contest->start_date = $s_timestamp;
+     * $e_date = $request->get('end_contest_date');//end date from form
+     * $e_time = $request->get('end_contest_time');//end time from form
+     * $e_timestamp = \Carbon::createFromTimestamp($e_date . $e_time);
+     * $contest->end_date = $e_timestamp;
+     * $contest->name = $request->get('name');
+     * $contest->description = $request->get('description');
+     * $contest->rules = $request->get('rules');
+     * $contest->type = $request->get('type');
+     * $contest->submission_type = $request->get('submission_type');
+     * $contest->max_entries = $request->get('max_entries');
+     * $contest->max_iteration = $request->get('max_iteration');
+     * $contest->peer_review_enabled = $request->get('peer_review_enabled');
+     * if ($contest->peer_review_enabled) {
+     * $contest->peer_review_weightage = $request->get('peer_review_weightage');
+     * } else {
+     * $contest->peer_review_weightage = null;
+     * }
+     *
+     * $contest->manual_review_enabled = $request->get('manual_review_enabled');
+     *
+     * if ($contest->manual_review_enabled) {
+     * $contest->manual_review_weightage = $request->get('manual_review_weightage');
+     * } else {
+     * $contest->manual_review_weightage = null;
+     * }
+     *
+     * $contest->team_entry_enabled = $request->get('team_entry_enabled');
+     * $contest->maintainer_id = $this->user->id();
+     * if ($request->hasFile('contest_banner')) {
+     * $file = $request->file('contest_banner');
+     * $extension = $file->getClientOriginalExtension();
+     * $filename = $file->getFilename() . '.' . $extension;
+     * Storage::disk('local')->put($filename, File::get($file));
+     * $contest->image = $filename;
+     * }
+     * $contest->save();
+     *
+     * $website = '';
+     * foreach ($request->judges as $judge) {
+     * $judge_string = str_random(128);
+     * $contest_id = $contest->id;
+     * if ((isset($judge['user_id']))) {
+     * $user_id = $judge['user_id'];
+     * } else {
+     * $user_id = null;
+     * }
+     * DB::table('judges')->insert(
+     * [
+     * 'contest_id'   => $contest->id,
+     * 'user_id'      => $user_id,
+     * 'name'         => $judge['name'],
+     * 'email'        => $judge['email'],
+     * 'judge_string' => $judge_string
+     * ]
+     * );
+     *
+     * $whole_judge_link = 'contest/' . $contest_id . '/' . $judge_string;
+     * \Mail::queue('emails.judge', ['whole_judge_link' => $whole_judge_link, 'contest' => $contest->name],
+     * function ($message)
+     * use ($judge) {
+     * $email = $judge['email'];
+     * $message->to($email)->subject('Judgement Link');
+     * });
+     * }
+     * return $contest;
+     * }
+     */
 
 }

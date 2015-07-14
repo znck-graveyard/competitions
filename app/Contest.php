@@ -69,9 +69,10 @@ class Contest extends \Eloquent
      * @var array
      */
     protected $fillable = [
-        'type',
         'name',
+        'slug',
         'description',
+        'contest_type',
         'submission_type',
         'rules',
         'peer_review_enabled',
@@ -81,7 +82,11 @@ class Contest extends \Eloquent
         'max_entries',
         'max_iteration',
         'team_entry_enabled',
-        'team_size'
+        'team_size',
+        'prize',
+        'prize_1',
+        'prize_2',
+        'prize_3',
     ];
 
     protected $dates = ['start_date', 'end_date'];
@@ -131,5 +136,17 @@ class Contest extends \Eloquent
     public function registeredTeams()
     {
         return $this->hasMany(Team::class);
+    }
+
+    public function getStartTimeAttribute() {
+        if ($this->start_date) {
+            return $this->start_date->format('h:i a');
+        }
+    }
+
+    public function getEndTimeAttribute() {
+        if ($this->end_date) {
+            return $this->end_date->format('h:i a');
+        }
     }
 }

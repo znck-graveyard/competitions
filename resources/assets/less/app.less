@@ -71,7 +71,7 @@ body, label, .checkbox label {
   .panel-variant(transparent, #fff, #223577, transparent);
   border: none;
   .panel-heading {
-    .background-banner(url(/image/bg-header.png));
+    .background-banner(url('/image/bg-header.png'));
   }
 }
 
@@ -101,8 +101,49 @@ img {
 }
 
 .navbar-default {
-  background-image: url("/image/bg-header.png");
+  background-image: url('/image/bg-header.png');
   background-repeat: no-repeat;
+}
+
+.row-has-2-children {
+  > .col-xs-6 {
+    &:nth-child(1) {
+      padding-right: @grid-gutter-width / 4;
+    }
+    &:nth-child(2) {
+      padding-left: @grid-gutter-width / 4;
+    }
+  }
+  @media (min-width: @screen-sm-min) {
+    > .col-sm-6 {
+      &:nth-child(1) {
+        padding-right: @grid-gutter-width / 4;
+      }
+      &:nth-child(2) {
+        padding-left: @grid-gutter-width / 4;
+      }
+    }
+  }
+  @media (min-width: @screen-md-min) {
+    > .col-md-6 {
+      &:nth-child(1) {
+        padding-right: @grid-gutter-width / 4;
+      }
+      &:nth-child(2) {
+        padding-left: @grid-gutter-width / 4;
+      }
+    }
+  }
+  @media (min-width: @screen-lg-min) {
+    > .col-lg-6 {
+      &:nth-child(1) {
+        padding-right: @grid-gutter-width / 4;
+      }
+      &:nth-child(2) {
+        padding-left: @grid-gutter-width / 4;
+      }
+    }
+  }
 }
 
 // Banner on homepage.

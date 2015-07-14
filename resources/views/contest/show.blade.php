@@ -20,11 +20,16 @@
         <div class="row">
             <div class="col-xs-12 col-md-9 col-margin-bottom">
                 <div class="cover overlay overlay-gradient"
-                    style="background-image: url('{{ $contest->image or 'https://unsplash.it/900/308/?random&' . str_random(4) }}')">
+                    style="background-image: url('{{ route('contest.cover', [$contest->slug,1200,500]) }}')">
                     <h1 class="title">{{ $contest->name }} <br/> <small>{{ ucfirst($contest->contest_type) }}</small></h1>
 
                     <div class="btn btn-transparent-border deadline text-uppercase">Ends {{ Carbon\Carbon::now()->diffForHumans($contest->end_date) }}</div>
-                    <div class="btn btn-transparent-border submit text-uppercase">Submit Entry</div>
+                    @if($editable)
+                        <a href="{{ route('contest.edit', $contest->slug) }}" class="btn btn-transparent-border submit text-uppercase">Edit Contest</a>
+                    @elseif($publisher)
+                    @else
+                        <a href="#" class="btn btn-transparent-border submit text-uppercase">Submit Entry</a>
+                    @endif
 
                 </div>
             </div>
@@ -84,15 +89,15 @@
 
                         <div class="prize-card">
                             <img src="{{ asset('image/icons/gold.png') }}"/>
-                            <div class="prize">₹ {{ rand(1000, 100000) }}</div>
+                            <div class="prize">{{ $contest->prize_1 }}</div>
                         </div><div class="prize-card">
                             <img src="{{ asset('image/icons/silver.png') }}"/>
-                            <div class="prize">₹ {{ rand(1000, 100000) }}</div>
+                            <div class="prize">{{ $contest->prize_2 }}</div>
                         </div>
 
                         <div class="prize-card">
                             <img src="{{ asset('image/icons/bronze.png') }}"/>
-                            <div class="prize">₹ {{ rand(1000, 100000) }}</div>
+                            <div class="prize">{{ $contest->prize_3 }}</div>
                         </div>
 
                     </div>

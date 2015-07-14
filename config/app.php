@@ -25,7 +25,7 @@ return [
     |
     */
 
-    'url'             => 'http://localhost',
+    'url'             => 'http://whizzspace.com',
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
@@ -140,11 +140,12 @@ return [
         'App\Providers\RouteServiceProvider',
         App\Providers\ViewServiceProvider::class,
         // Third party
-        'Laracasts\Flash\FlashServiceProvider',
+
         'Zizaco\Entrust\EntrustServiceProvider',
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
         'Laravel\Socialite\SocialiteServiceProvider',
-        Intervention\Image\ImageServiceProvider::class
+        Intervention\Image\ImageServiceProvider::class,
+        Znck\Flash\FlashServiceProvider::class
     ],
     /*
     |--------------------------------------------------------------------------
@@ -191,15 +192,13 @@ return [
         'URL'       => 'Illuminate\Support\Facades\URL',
         'Validator' => 'Illuminate\Support\Facades\Validator',
         'View'      => 'Illuminate\Support\Facades\View',
-        'Flash'     => 'Laracasts\Flash\Flash',
         'Entrust'   => 'Zizaco\Entrust\EntrustFacade',
         'Form'      => 'Illuminate\Html\FormFacade',
         'Html'      => 'Illuminate\Html\HtmlFacade',
         'Socialize' => 'Laravel\Socialite\Facades\Socialite',
         'Image'     => Intervention\Image\Facades\Image::class,
-        'Throttle' => 'GrahamCampbell\Throttle\Facades\Throttle',
-
-
+        'Throttle'  => 'GrahamCampbell\Throttle\Facades\Throttle',
+        'Flash'     => Znck\Flash\Flash::class,
     ],
 
 ];

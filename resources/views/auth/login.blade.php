@@ -30,7 +30,7 @@
                             <div class="row">
                                 <div class="col-xs-12">
                                     <div class="alert alert-danger">
-                                        <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                                        <strong>Whoops!</strong> There were some problems.<br><br>
                                         <ul>
                                             @foreach ($errors->all() as $error)
                                                 <li>{{ $error }}</li>

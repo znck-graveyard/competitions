@@ -1,33 +1,32 @@
 <?php
 
-return[
+return [
     /*
      * Types of Contests  that an be created
      */
-    'types' =>
-        ['art',
-        'dance',
-        'painting',
-        'music',
-        'singing',
-        'photography',
-        'short films',
-        'content writing',
-        'business idea'
-        ],
-
-
+    'types'            => [
+        ''                => '',
+        'art'             => 'Art',
+        'dance'           => 'Dance',
+        'painting'        => 'Painting',
+        'music'           => 'Music',
+        'singing'         => 'Singing',
+        'photography'     => 'Photography',
+        'short films'     => 'Short Films or Documentary',
+        'content writing' => 'Creative Writing',
+        'business idea'   => 'B-Plan or Business Idea'
+    ],
     /*
      * Types of files that a user can submit
      */
-    'submission_types' =>
-        [
-            'jpeg',
-            'png',
-            'mp3',
-            'mp4',
-            'doc',
-            'pdf'
-        ]
+    'submission_types' => [
+        ''         => '',
+        'image'    => 'Photo',
+        'text'     => 'Text',
+        'document' => 'Document',
+        'video'    => 'Video',
+        'audio'    => 'Audio',
+        'any'      => 'Other',
+    ]
 
 ];
