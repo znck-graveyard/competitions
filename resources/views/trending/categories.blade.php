@@ -20,7 +20,7 @@
         </div>
     </div>
 @empty
-    <div class="container text-center">
+    <div class="container text-center" style="margin-bottom: 15px">
         <div class="row">
             <div class="col-xs-12 empty-state">
                 <img src="{{ asset('image/placeholder-slim.jpg') }}"/>
