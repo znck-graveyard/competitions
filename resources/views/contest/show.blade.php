@@ -27,6 +27,7 @@
                     @if($editable)
                         <a href="{{ route('contest.edit', $contest->slug) }}" class="btn btn-transparent-border submit text-uppercase">Edit Contest</a>
                     @elseif($publisher)
+                        <a href="{{ route('contest.publish', [$contest->slug, $token]) }}" class="btn btn-transparent-border submit text-uppercase">Publish Contest</a>
                     @else
                         <a href="#" class="btn btn-transparent-border submit text-uppercase">Submit Entry</a>
                     @endif

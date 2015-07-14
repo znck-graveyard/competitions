@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.1.6 (LTS) on 2015-07-13.
+ * Generated for Laravel 5.1.6 (LTS) on 2015-07-14.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -11843,88 +11843,6 @@ namespace {
     }
 
 
-    class Flash extends \Laracasts\Flash\Flash{
-        
-        /**
-         * Flash an information message.
-         *
-         * @param string $message
-         * @static 
-         */
-        public static function info($message){
-            return \Laracasts\Flash\FlashNotifier::info($message);
-        }
-        
-        /**
-         * Flash a success message.
-         *
-         * @param string $message
-         * @return $this 
-         * @static 
-         */
-        public static function success($message){
-            return \Laracasts\Flash\FlashNotifier::success($message);
-        }
-        
-        /**
-         * Flash an error message.
-         *
-         * @param string $message
-         * @return $this 
-         * @static 
-         */
-        public static function error($message){
-            return \Laracasts\Flash\FlashNotifier::error($message);
-        }
-        
-        /**
-         * Flash a warning message.
-         *
-         * @param string $message
-         * @return $this 
-         * @static 
-         */
-        public static function warning($message){
-            return \Laracasts\Flash\FlashNotifier::warning($message);
-        }
-        
-        /**
-         * Flash an overlay modal.
-         *
-         * @param string $message
-         * @param string $title
-         * @return $this 
-         * @static 
-         */
-        public static function overlay($message, $title = 'Notice'){
-            return \Laracasts\Flash\FlashNotifier::overlay($message, $title);
-        }
-        
-        /**
-         * Flash a general message.
-         *
-         * @param string $message
-         * @param string $level
-         * @return $this 
-         * @static 
-         */
-        public static function message($message, $level = 'info'){
-            return \Laracasts\Flash\FlashNotifier::message($message, $level);
-        }
-        
-        /**
-         * Add an "important" flash to the session.
-         *
-         * @return $this 
-         * @static 
-         */
-        public static function important(){
-            return \Laracasts\Flash\FlashNotifier::important();
-        }
-        
-    }
-
-
     class Entrust extends \Zizaco\Entrust\EntrustFacade{
         
         /**
@@ -12841,6 +12759,92 @@ namespace {
          */
         public static function getTransformer(){
             return \GrahamCampbell\Throttle\Throttle::getTransformer();
+        }
+        
+    }
+
+
+    class Flash extends \Znck\Flash\Flash{
+        
+        /**
+         * Flash an information message.
+         *
+         * @param string $message
+         * @return $this 
+         * @static 
+         */
+        public static function info($message){
+            return \Znck\Flash\FlashNotifier::info($message);
+        }
+        
+        /**
+         * Flash a success message.
+         *
+         * @param string $message
+         * @return $this 
+         * @static 
+         */
+        public static function success($message){
+            return \Znck\Flash\FlashNotifier::success($message);
+        }
+        
+        /**
+         * Flash an error message.
+         *
+         * @param string $message
+         * @return $this 
+         * @static 
+         */
+        public static function error($message){
+            return \Znck\Flash\FlashNotifier::error($message);
+        }
+        
+        /**
+         * Flash a warning message.
+         *
+         * @param string $message
+         * @return $this 
+         * @static 
+         */
+        public static function warning($message){
+            return \Znck\Flash\FlashNotifier::warning($message);
+        }
+        
+        /**
+         * Flash an overlay modal.
+         *
+         * @param string $message
+         * @param string $title
+         * @param string $level
+         * @param bool $overlay
+         * @return $this 
+         * @static 
+         */
+        public static function overlay($message, $title = 'Notice', $level = 'info', $overlay = true){
+            return \Znck\Flash\FlashNotifier::overlay($message, $title, $level, $overlay);
+        }
+        
+        /**
+         * Flash a general message.
+         *
+         * @param string $message
+         * @param string $level
+         * @return $this 
+         * @static 
+         */
+        public static function message($message, $level = 'info'){
+            return \Znck\Flash\FlashNotifier::message($message, $level);
+        }
+        
+        /**
+         * 
+         *
+         * @param string $level
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */
+        public static function get($level = '*'){
+            return \Znck\Flash\FlashNotifier::get($level);
         }
         
     }

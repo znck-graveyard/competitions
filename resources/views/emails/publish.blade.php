@@ -1417,7 +1417,7 @@
                 <div class="logo-center"
                      style="font-size: 26px;font-weight: 700;letter-spacing: -0.02em;line-height: 32px;color: #41637e;font-family: sans-serif;text-align: center"
                      align="center" id="emb-email-header">
-                    <a style="text-decoration: none;transition: all .2s;color: #41637e" href="{{ route()->home() }}">
+                    <a style="text-decoration: none;transition: all .2s;color: #41637e" href="{{ route('home') }}">
                         <img style="border: 0;-ms-interpolation-mode: bicubic;display: block;Margin-left: auto;Margin-right: auto;max-width: 412px"
                              src="{{ $message->embed(public_path('image/logo.png')) }}"
                              width="275" height="73"></a>

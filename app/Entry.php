@@ -45,7 +45,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\Entry whereScore($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entry whereUpvotes($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entry whereDownvotes($value)
- * @property integer $views 
+ * @property integer $views
  * @method static \Illuminate\Database\Query\Builder|\App\Entry whereViews($value)
  */
 class Entry extends Model

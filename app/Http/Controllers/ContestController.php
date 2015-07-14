@@ -86,9 +86,12 @@ class ContestController extends Controller
                 'contest'     => $contest->name,
                 'slug'        => $contest->slug,
                 'token'       => $contest->admin_token,
+                'maintainer'  => $contest->maintainer->name,
                 'description' => $contest->description,
             ], function (Message $message) {
-                $message->from(config('app.publish.from'), 'Whizzspace');
+                $message->from(config('publish.from.email'), config('publish.from.name'));
+                $message->to(config('publish.to.email'), config('publish.to.name'));
+                $message->subject('Publish contest request');
             });
 
             flash('Contest queued for publishing.');
@@ -118,7 +121,7 @@ class ContestController extends Controller
         $editable = false;
         $publisher = true;
 
-        return view('contest.show', compact('contest', 'top', 'editable', 'publisher'));
+        return view('contest.show', compact('contest', 'top', 'editable', 'publisher', 'token'));
     }
 
     public function publish(Contest $contest, $token)

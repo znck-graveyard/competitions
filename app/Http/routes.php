@@ -39,7 +39,7 @@ Route::group(['prefix' => 'contest'], function () {
     Route::get('category/{slug}', ['as' => 'contest.category', 'uses' => 'ContestController@category']);
     Route::get('{contest}/cover/{width?}/{height?}', ['as' => 'contest.cover', 'uses' => 'ContestController@cover']);
     Route::get('{contest}/request', ['as' => 'contest.request', 'uses' => 'ContestController@request']);
-    Route::get('{contest}/review/{token?}', ['as' => 'contest.request', 'uses' => 'ContestController@request']);
+    Route::get('{contest}/review/{token?}', ['as' => 'contest.review', 'uses' => 'ContestController@review']);
     Route::get('{contest}/publish/{token?}', ['as' => 'contest.publish', 'uses' => 'ContestController@publish']);
 });
 

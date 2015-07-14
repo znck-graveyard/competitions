@@ -60,6 +60,17 @@
  * @method static \Illuminate\Database\Query\Builder|\App\Contest whereSlug($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Contest wherePublic($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Contest wherePrizeDescription($value)
+ * @property string $prize_1 
+ * @property string $prize_2 
+ * @property string $prize_3 
+ * @property string $admin_token 
+ * @property-read User $maintainer 
+ * @property-read mixed $start_time 
+ * @property-read mixed $end_time 
+ * @method static \Illuminate\Database\Query\Builder|\App\Contest wherePrize1($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Contest wherePrize2($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Contest wherePrize3($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Contest whereAdminToken($value)
  */
 class Contest extends \Eloquent
 {
@@ -101,6 +112,10 @@ class Contest extends \Eloquent
         return $this->hasMany(Constraint::class);
     }
 
+    public function maintainer()
+    {
+        return $this->belongsTo(User::class, 'maintainer_id');
+    }
 
     /**
      * Many Users can participate in a contest
@@ -138,13 +153,15 @@ class Contest extends \Eloquent
         return $this->hasMany(Team::class);
     }
 
-    public function getStartTimeAttribute() {
+    public function getStartTimeAttribute()
+    {
         if ($this->start_date) {
             return $this->start_date->format('h:i a');
         }
     }
 
-    public function getEndTimeAttribute() {
+    public function getEndTimeAttribute()
+    {
         if ($this->end_date) {
             return $this->end_date->format('h:i a');
         }

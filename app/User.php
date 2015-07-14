@@ -51,6 +51,15 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
  * @property mixed                                                         $connection_instagram
  * @property mixed                                                         $bio
  * @method static \Illuminate\Database\Query\Builder|\App\User whereRememberToken($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|Contest[] $participating 
+ * @property-read \Illuminate\Database\Eloquent\Collection|Entry[] $submissions 
+ * @property-read \Illuminate\Database\Eloquent\Collection|Contest[] $maintaining 
+ * @property-read \Illuminate\Database\Eloquent\Collection|ContestWinners[] $wins 
+ * @property-read mixed $stat_submissions 
+ * @property-read mixed $stat_views 
+ * @property-read mixed $stat_upvotes 
+ * @property-read mixed $stat_wins 
+ * @property-read mixed $stat_creations 
  */
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
