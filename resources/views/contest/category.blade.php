@@ -14,7 +14,7 @@
 
                             <div class="text-center">
                                 <a href="#contests" class="btn btn-primary" role="button">Participate</a>
-                                <a href="" class="btn btn-white" role="button">Create Contest</a>
+                                <a href="{{ route('contest.create') }}" class="btn btn-white" role="button">Create Contest</a>
                             </div>
                         </div>
                     </div>
