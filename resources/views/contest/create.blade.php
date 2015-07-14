@@ -166,7 +166,7 @@
 
                     <div class="col-xs-12 col-sm-6">
                         <div class="form-group">
-                            <label for="max_entries" class="text-uppercase required">Maximum submissions pre person</label>
+                            <label for="max_entries" class="text-uppercase required">Maximum submissions per person</label>
                             {!! Form::input('number', 'max_entries', null, ['class' => 'input-lg form-control', 'required' => '', 'min' => 1, 'placeholder' => 'max. submissions', 'id' => 'max_entries']) !!}
                         </div>
                         @if($errors->has('max_entries')) <div class="alert alert-danger"> {{ $errors->first('max_entries') }} </div> @endif

@@ -7,7 +7,7 @@
                 <div class="col-xs-12 banner-container">
                     <div class="banner-content">
                         <div>
-                            <h1 class="text-white text-center text-uppercase">{{ ucfirst($type) }}</h1>
+                            <h1 class="text-white text-center text-uppercase">{{ config('contest.types.' .$type, ucfirst($type)) }}</h1>
 
                             <h3 class="text-white text-center"
                                 style="font-weight: normal">Showcase your Work and stay inspired.</h3>

@@ -73,6 +73,9 @@ body, label, .checkbox label {
   .panel-heading {
     .background-banner(url('/image/bg-header.png'));
   }
+  .panel-body {
+    padding-bottom: 0;
+  }
 }
 
 body {
@@ -152,7 +155,14 @@ img {
 
 // Banner on homepage.
 #content-wrapper {
+  min-height: 100vh;
   min-height: ~"calc(100vh - " (@navbar-height + 75px) ~")";
+}
+
+.bars {
+  @media (min-width: @grid-float-breakpoint) {
+    display: none;
+  }
 }
 
 @import 'auth';

@@ -1,14 +1,14 @@
 <nav class="navbar navbar-default" style="background-image: none">
     <div class="container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+            <a type="button" class="bars btn collapsed pull-right" data-toggle="collapse"
+                    style="height: 80px; width: 80px; padding: 0; color: #fff !important;
+                     background: transparent; font-size: 32px; line-height: 80px"
                     data-target="#navbar-collapse">
                 <span class="sr-only">Toggle Navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="{{ url('/') }}" >
+                <i class="fa fa-bars"></i>
+            </a>
+            <a class="navbar-brand" href="{{ url('/') }}">
                 <img src="{{ asset('image/logo-alt.svg') }}" alt="Whizzspace Logo"/>
             </a>
         </div>

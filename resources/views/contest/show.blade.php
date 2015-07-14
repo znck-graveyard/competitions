@@ -31,13 +31,13 @@
                     style="background-image: url('{{ route('contest.cover', [$contest->slug,1200,500]) }}')">
                     <h1 class="title">{{ $contest->name }}<br/> <small>{{ ucfirst($contest->contest_type) }}</small></h1>
 
-                    <div class="btn btn-transparent-border deadline text-uppercase">Ends {{ Carbon\Carbon::now()->diffForHumans($contest->end_date) }}</div>
+                    <div class="btn btn-transparent-border deadline text-uppercase">{{ Carbon\Carbon::now()->gt($contest->end_date) ? 'Ended' : 'Ends' }} at <b>{{ $contest->end_date->format('h:iA M d, Y') }}</b></div>
                     @if($editable)
                         <a href="{{ route('contest.edit', $contest->slug) }}" class="btn btn-transparent-border submit text-uppercase">Edit Contest</a>
                     @elseif($publisher)
                         <a href="{{ route('contest.publish', [$contest->slug, $token]) }}" class="btn btn-transparent-border submit text-uppercase">{{ $contest->public ? 'Unpublish Contest' : 'Publish Contest' }}</a>
                     @else
-                        <a href="{{ route('contest.entry.create', $contest->slug) }}" class="btn btn-transparent-border submit text-uppercase" @if(\Carbon\Carbon::now()->gt($contest->start_date))data-toggle="tooltip" title="Submissions are not open yet."@endif>Submit Entry</a>
+                        <a href="{{ route('contest.entry.create', $contest->slug) }}" class="btn btn-transparent-border submit text-uppercase" @if(\Carbon\Carbon::now()->lt($contest->start_date))data-toggle="tooltip" title="Submission starts at {{ $contest->start_date->format('h:iA M d, Y') }}"@endif>Submit Entry</a>
                     @endif
                 </div>
             </div>

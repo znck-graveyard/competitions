@@ -14,17 +14,19 @@
   }
 }
 
-.card {
-  width: 150px;
-  height: 150px;
-
-  @media (min-width: @screen-sm-min) {
-    width: 248px;
-    height: 248px;
+.row.categories {
+  margin-left: -7.5px;
+  margin-right: -7.5px;
+  [class*=col-] {
+    padding-left: 7.5px;
+    padding-right: 7.5px;
   }
+}
 
-  margin: 8px auto 0;
-  display: inline-block;
+.card {
+  width: 100%;
+  margin: 0 auto 15px;
+  display: block;
   position: relative;
   background-position: top left;
   background-repeat: no-repeat;
@@ -110,8 +112,6 @@
 
   &.entry {
     margin: 0;
-    width: 248px;
-    height: 248px;
     .profile {
       float: left;
       margin-right: 8px;
@@ -126,12 +126,6 @@
 }
 
 // Categories
-.row.categories {
-  [class^=col-] {
-    padding: 0;
-  }
-}
-
 .prize-card, .entry-card.top {
   .clearfix();
   display: block;

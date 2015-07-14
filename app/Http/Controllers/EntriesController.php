@@ -65,11 +65,12 @@ class EntriesController extends Controller
      */
     public function create(Contest $contest)
     {
-        if (Carbon::now()->gt($contest->start_date)) {
+        if (Carbon::now()->lt($contest->start_date)) {
             abort(404);
         }
         if (Carbon::now()->gt($contest->end_date)) {
-
+            flash()->error('Submissions on this contest are closed.');
+            redirect()->back();
         }
         $user = $this->user;
         if (!$user->date_of_birth) {
@@ -79,7 +80,12 @@ class EntriesController extends Controller
             return view('entries.new', compact('user'));
         }
 
-        return view('entries.create');
+        $entry = new Entry;
+        $action = route('contest.entry.store', $contest->slug);
+        $method = 'post';
+        $submissionFormat = 'submission.image';
+
+        return view('entries.create', compact('contest', 'entry', 'action', 'method', 'submissionFormat'));
     }
 
 
