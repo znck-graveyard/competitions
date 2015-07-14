@@ -105,10 +105,6 @@ class ContestController extends Controller
 
     public function review(Contest $contest, $token)
     {
-        if ($contest->public === true) {
-            return redirect()->route('contest.show', $contest->slug);
-        }
-
         if ($contest->admin_token !== $token) {
             abort(404);
         }
@@ -133,11 +129,12 @@ class ContestController extends Controller
             abort(404);
         }
 
-        if (!$contest->public) {
-            $contest->public = true;
-            $contest->save();
-
+        $contest->public = !$contest->public;
+        $contest->save();
+        if ($contest->public) {
             flash('Contest is public now.');
+        } else {
+            flash('Contest is unpublished. If it was in trending contests, then may take 15-30 minutes to remove from trending contest.');
         }
 
         return redirect()->route('contest.show', $contest->slug);

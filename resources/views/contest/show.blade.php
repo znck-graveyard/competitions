@@ -35,7 +35,7 @@
                     @if($editable)
                         <a href="{{ route('contest.edit', $contest->slug) }}" class="btn btn-transparent-border submit text-uppercase">Edit Contest</a>
                     @elseif($publisher)
-                        <a href="{{ route('contest.publish', [$contest->slug, $token]) }}" class="btn btn-transparent-border submit text-uppercase">Publish Contest</a>
+                        <a href="{{ route('contest.publish', [$contest->slug, $token]) }}" class="btn btn-transparent-border submit text-uppercase">{{ $contest->public ? 'Unpublish Contest' : 'Publish Contest' }}</a>
                     @else
                         <a href="{{ route('contest.entry.create', $contest->slug) }}" class="btn btn-transparent-border submit text-uppercase" @if(\Carbon\Carbon::now()->gt($contest->start_date))data-toggle="tooltip" title="Submissions are not open yet."@endif>Submit Entry</a>
                     @endif

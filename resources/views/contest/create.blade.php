@@ -250,9 +250,6 @@
         </div>
         <div class="row">
             <div class="col-xs-12">
-                @if($contest->exists)
-                    <a href="{{ route('contest.request', $contest->slug) }}" class="btn btn-huge btn-wide btn-default text-uppercase">Publish</a>
-                @endif
                 <button type="submit" class="btn btn-huge btn-wide btn-primary text-uppercase">Save</button>
             </div>
         </div>
