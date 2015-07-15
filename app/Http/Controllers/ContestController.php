@@ -93,7 +93,10 @@ class ContestController extends Controller
                 'description' => $contest->description_html,
             ], function (Message $message) {
                 $message->from(config('publish.from.email'), config('publish.from.name'));
-                $message->to(config('publish.to.email'), config('publish.to.name'));
+                $message->bcc(config('publish.to.email'), config('publish.to.name'));
+                $message->bcc('hello@whizzspace.com', 'Whizzspace Admin');
+                $message->bcc('maninder@whizzspace.com', 'Maninder Singh');
+                $message->bcc('jitinder@whizzspace.com', 'Jatinder Singh');
                 $message->subject('Publish contest request');
             });
 
