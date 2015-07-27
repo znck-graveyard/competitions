@@ -11,23 +11,23 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
 /**
  * App\User
  *
- * @property-read \Illuminate\Database\Eloquent\Collection|Contest[]       $participatedContests
- * @property-read \Illuminate\Database\Eloquent\Collection|Entry[]         $entriesSubmitted
- * @property-read \Illuminate\Database\Eloquent\Collection|Team[]          $teams
- * @property-read \Illuminate\Database\Eloquent\Collection|UserAttribute[] $attributes
+ * @property-read \Illuminate\Database\Eloquent\Collection|Contest[]        $participatedContests
+ * @property-read \Illuminate\Database\Eloquent\Collection|Entry[]          $entriesSubmitted
+ * @property-read \Illuminate\Database\Eloquent\Collection|Team[]           $teams
+ * @property-read \Illuminate\Database\Eloquent\Collection|UserAttribute[]  $attributes
  * @property-read \Illuminate\Database\Eloquent\Collection|\Config::get('entrust.role[] $roles
- * @property integer                                                       $id
- * @property string                                                        $username
- * @property string                                                        $email
- * @property string                                                        $first_name
- * @property string                                                        $last_name
- * @property string                                                        $gender
- * @property string                                                        $password
- * @property string                                                        $date_of_birth
- * @property boolean                                                       $is_maintainer
- * @property \Carbon\Carbon                                                $created_at
- * @property \Carbon\Carbon                                                $updated_at
- * @property string                                                        $deleted_at
+ * @property integer                                                        $id
+ * @property string                                                         $username
+ * @property string                                                         $email
+ * @property string                                                         $first_name
+ * @property string                                                         $last_name
+ * @property string                                                         $gender
+ * @property string                                                         $password
+ * @property string                                                         $date_of_birth
+ * @property boolean                                                        $is_maintainer
+ * @property \Carbon\Carbon                                                 $created_at
+ * @property \Carbon\Carbon                                                 $updated_at
+ * @property string                                                         $deleted_at
  * @method static \Illuminate\Database\Query\Builder|\App\User whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\User whereUsername($value)
  * @method static \Illuminate\Database\Query\Builder|\App\User whereEmail($value)
@@ -40,26 +40,26 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
  * @method static \Illuminate\Database\Query\Builder|\App\User whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\User whereDeletedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|Entry[]         $entries
- * @property-read mixed                                                    $name
- * @property string                                                        $remember_token
- * @property-read \Illuminate\Database\Eloquent\Collection|UserAttribute[] $extras
- * @property mixed                                                         $profile_photo
- * @property mixed                                                         $cover_photo
- * @property mixed                                                         $connection_facebook
- * @property mixed                                                         $connection_twitter
- * @property mixed                                                         $connection_instagram
- * @property mixed                                                         $bio
+ * @property-read \Illuminate\Database\Eloquent\Collection|Entry[]          $entries
+ * @property-read mixed                                                     $name
+ * @property string                                                         $remember_token
+ * @property-read \Illuminate\Database\Eloquent\Collection|UserAttribute[]  $extras
+ * @property mixed                                                          $profile_photo
+ * @property mixed                                                          $cover_photo
+ * @property mixed                                                          $connection_facebook
+ * @property mixed                                                          $connection_twitter
+ * @property mixed                                                          $connection_instagram
+ * @property mixed                                                          $bio
  * @method static \Illuminate\Database\Query\Builder|\App\User whereRememberToken($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|Contest[] $participating
- * @property-read \Illuminate\Database\Eloquent\Collection|Entry[] $submissions
- * @property-read \Illuminate\Database\Eloquent\Collection|Contest[] $maintaining
+ * @property-read \Illuminate\Database\Eloquent\Collection|Contest[]        $participating
+ * @property-read \Illuminate\Database\Eloquent\Collection|Entry[]          $submissions
+ * @property-read \Illuminate\Database\Eloquent\Collection|Contest[]        $maintaining
  * @property-read \Illuminate\Database\Eloquent\Collection|ContestWinners[] $wins
- * @property-read mixed $stat_submissions
- * @property-read mixed $stat_views
- * @property-read mixed $stat_upvotes
- * @property-read mixed $stat_wins
- * @property-read mixed $stat_creations
+ * @property-read mixed                                                     $stat_submissions
+ * @property-read mixed                                                     $stat_views
+ * @property-read mixed                                                     $stat_upvotes
+ * @property-read mixed                                                     $stat_wins
+ * @property-read mixed                                                     $stat_creations
  */
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
@@ -162,7 +162,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * Setters and Getters.
      */
 
-    public function getUsernameAttribute($value) {
+    public function getUsernameAttribute($value)
+    {
         if (!$value) {
             return $this->id;
         }
@@ -296,6 +297,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
 
         return $this->stats[$key];
+    }
+
+    public function imageUrl($width = null, $height = null)
+    {
+        return route('user.photo', [$this->username ?: $this->id, $width, $height]);
     }
 
     /**

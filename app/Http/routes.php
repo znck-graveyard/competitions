@@ -39,8 +39,9 @@ Route::group(['prefix' => 'contest/{contest}'], function () {
     Route::get('request', ['as' => 'contest.request', 'uses' => 'ContestController@request']);
     Route::get('review/{token?}', ['as' => 'contest.review', 'uses' => 'ContestController@review']);
     Route::get('publish/{token?}', ['as' => 'contest.publish', 'uses' => 'ContestController@publish']);
-    Route::get('entry/{uuid}/upvote', 'EntriesController@upVotes');
-    Route::get('entry/{uuid}/downvote', 'EntriesController@downVotes');
+    Route::get('entry/{entry}/preview/{width?}/{height?}',
+        ['as' => 'contest.entry.photo', 'uses' => 'EntriesController@preview']);
+    Route::post('entry/vote/{entry}', ['as' => 'contest.entry.vote', 'uses' => 'EntriesController@vote']);
 });
 Route::resource('contest', 'ContestController');
 Route::bind('contest', function ($slug) {

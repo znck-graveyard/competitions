@@ -93,10 +93,16 @@ class ContestController extends Controller
                 'description' => $contest->description_html,
             ], function (Message $message) {
                 $message->from(config('publish.from.email'), config('publish.from.name'));
-                $message->bcc(config('publish.to.email'), config('publish.to.name'));
-                $message->bcc('hello@whizzspace.com', 'Whizzspace Admin');
-                $message->bcc('maninder@whizzspace.com', 'Maninder Singh');
-                $message->bcc('jitinder@whizzspace.com', 'Jatinder Singh');
+                $verifiers = config('mail.contest.request');
+                if (is_array($verifiers)) {
+                    foreach ($verifiers as $email => $name) {
+                        $message->bcc($email, $name);
+                    }
+                } elseif (is_string($verifiers)) {
+                    $message->bcc($verifiers);
+                } else {
+                    throw new \InvalidArgumentException('mail.contest.request should be string or array.');
+                }
                 $message->subject('Publish contest request');
             });
 

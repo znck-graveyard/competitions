@@ -3,6 +3,17 @@
 return [
 
     /*
+     * Contest request mails.
+     */
+
+    'contest'    => [
+        'request' => env('DEBUG_CONTEST_EMAIL', [
+            'hello@whizzspace.com'    => 'Whizzspace Admin',
+            'maninder@whizzspace.com' => 'Maninder Singh',
+            'jitinder@whizzspace.com' => 'Jatinder Singh',
+        ]),
+    ],
+    /*
     |--------------------------------------------------------------------------
     | Mail Driver
     |--------------------------------------------------------------------------

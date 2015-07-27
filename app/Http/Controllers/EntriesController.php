@@ -1,26 +1,38 @@
 <?php namespace App\Http\Controllers;
 
+/**
+ * This file belongs to competitions.
+ *
+ * Author: Rahul Kadyan, <hi@znck.me>
+ * Find license in root directory of this project.
+ */
 use App\Contest;
 use App\Entry;
 use App\Http\Controllers\Auth;
 use App\Http\Requests;
-use App\Reviewer;
 use App\Transformer\EntryTransformer;
 use Carbon\Carbon;
+use Hash;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 use League\Fractal\Manager;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use Session;
+use Storage;
 
+/**
+ * Class EntriesController
+ *
+ * @package App\Http\Controllers
+ */
 class EntriesController extends Controller
 {
+    use ImageUploadTrait, ImageResponseTrait;
 
     /**
-     * @type \App\User|null
+     * @type \App\User
      */
     protected $user;
-    protected $contest;
 
     /**
      * @param Guard $auth
@@ -30,7 +42,7 @@ class EntriesController extends Controller
         $this->user = $auth->user();
         $this->middleware('auth', ['only' => ['create', 'update', 'edit', 'store',]]);
         $this->middleware('countView', ['only' => ['show']]);
-        $this->middleware('vote', ['only' => ['upVotes', 'downVotes']]);
+        $this->middleware('vote', ['only' => ['vote']]);
     }
 
     /**
@@ -86,168 +98,155 @@ class EntriesController extends Controller
         $entry = new Entry;
         $action = route('contest.entry.store', $contest->slug);
         $method = 'post';
-        $submissionFormat = 'submission.image';
 
-        return view('entries.create', compact('contest', 'entry', 'action', 'method', 'submissionFormat'));
+        /** @type \App\Entry\AbstractEntry $view */
+        $view = app()->make(config('contest.submission.' . $contest->submission_type));
+
+        return view($view->viewCreate(), compact('contest', 'entry', 'action', 'method', 'submissionFormat'));
     }
 
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\CreateEntryRequest $request
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Contest             $contest
      *
      * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
      */
-    public function store(Requests\CreateEntryRequest $request)
+    public function store(Request $request, Contest $contest)
     {
-        \DB::beginTransaction();
-        try {
-            $entry = $this->createOrUpdateEntry($request);
-            flash('Your entry has been added.');
+        $entry = new Entry;
+        $this->fillEntryObject($request, $entry, $contest);
+        $entry->contest()->associate($contest);
+        $this->user->submissions()->save($entry);
 
-        } catch (\Exception $e) {
-            \DB::rollBack();
-            throw $e;
-        }
-
-        \DB::commit();
-
-        return redirect()->back();
+        return redirect()->route('contest.entry.show', [$entry->contest->slug, $entry->uuid]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param \App\Contest $contest
-     * @param \App\Entry   $entry
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Contest             $contest
+     * @param \App\Entry               $entry
      *
      * @return \Illuminate\View\View
+     * @throws \Symfony\Component\Debug\Exception\UndefinedMethodException
      */
-    public function show(Contest $contest, Entry $entry)
+    public function show(Request $request, Contest $contest, Entry $entry)
     {
         $one = $entry;
-        $other = $contest->entries->random();
+        $other = Entry::whereContestId($contest->id)->where('contest_id', '!=',
+            $entry->id)->orderBy(\DB::raw('random()'))->first();
 
-        return view('comparator.abstract', compact('one', 'other'));
+        if (!$other) {
+            flash('There is only one submission. Voting works requires two submissions.');
+            $other = $one;
+        }
+
+        /** @type \App\Entry\AbstractEntry $view */
+        $view = app()->make(config('contest.submission.' . $contest->submission_type));
+
+        if ($request->ajax()) {
+            return view($view->viewShow(), compact('one', 'other', 'contest'));
+        }
+
+        return view('app', ['content' => view($view->viewShow(), compact('one', 'other', 'contest'))]);
+    }
+
+    public function preview(Contest $contest, Entry $entry, $width = 1200, $height = 800)
+    {
+        $filename = $entry->filename;
+
+        return $this->sendImageResponse($width, $height, Storage::disk()->get($filename),
+            Storage::disk()->exists($filename) ? Storage::disk()->lastModified($filename) : -86400);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param \App\Entry $entry
      *
      * @return \Illuminate\View\View
+     *
      */
-    public function edit($id)
+    public function edit(Entry $entry)
     {
-        return view('entries.edit', compact('entries'));
+        return abort(404);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\CreateEntryRequest $request
-     * @param \App\Entry                            $entry
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Entry               $entry
      *
      * @return \App\Http\Controllers\Response
-     * @throws \Exception
-     *
      */
-    public function update(Requests\CreateEntryRequest $request, Entry $entry)
+    public function update(Request $request, Entry $entry)
     {
-        \DB::beginTransaction();
-        try {
-            $this->createOrUpdateEntry($request, $entry);
-            if (!$entry->abstract) {
-                flash('Your entry has been added.');
-            }
-        } catch (\Exception $e) {
-            \DB::rollBack();
-            throw $e;
-        }
-
-        \DB::commit();
-
-        return redirect()->back();
+        abort(404);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param \App\Entry $entry
      *
-     * @return Response
+     * @return \App\Http\Controllers\Response
      */
-    public function destroy($id)
+    public function destroy(Entry $entry)
     {
-        Entry::destroy($id);
-
-        return redirect()->home();
-    }
-
-    public function createOrUpdateEntry(Requests\CreateEntryRequest $request, $entry = null)
-    {
-        if (is_null($entry)) {
-            $entry = new Entry;
-        }
-
-        $entry->abstract = ucfirst($request->get('abstract'));
-        $file = $request->file('filename');
-        $entry->filename = $file->getClientOriginalName();
-        $entry->filetype = $file->getExtension();
-        $entry->file_size = $file->getMaxFilesize();
-        $entry->contest_id = $request->get('contest_id');
-        $entry->is_team_entry = $request->get('is_team_entry');
-        $entry->entryable_id = $request->get('entryable_id');
-        $entry->entryable_type = $request->get('entryable_type');
-        $entry->moderated = $request->get('moderated');
-        $entry->moderation_comment = $request->get('comment');
-        $entry->save();
-
-        return [$entry];
+        abort(404);
     }
 
     /**
-     * @param Entry $entry_up_voted
-     * @param Entry $entry_down_voted
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Entry               $entry
+     *
+     * @param \App\Contest             $contest
+     *
+     * @return array
      */
-    public function upVotes($contest_uuid, $entry_up_voted_uuid)
+    public function fillEntryObject(Request $request, Entry &$entry, Contest $contest)
     {
-        $entry_up_voted = Entry::whereUuid($entry_up_voted_uuid)->first();
-        $entry_up_voted->upvotes += 1;
-        $entry_up_voted->save();
+        /** @type \App\Entry\AbstractEntry $creator */
+        $creator = app()->make(config('contest.submission.' . $contest->submission_type));
 
+        $this->validate(
+            $request,
+            $creator->rules([
+                'title' => 'required|min:5|max:255',
+                'agree' => 'required',
+            ]),
+            $creator->messages(['agree.required' => 'You should agree to terms and conditions in order to participate.',])
+        );
 
-        $reviewer = new Reviewer();
-        if (!($this->auth->guest())) {
-            $reviewer->contest_id = $entry_up_voted->contest->id;
-            $reviewer->voted_at = Carbon::now();
-            $reviewer->entry_id = $entry_up_voted->id;
-            $reviewer->user_id = $this->user->id;
-            $reviewer->save();
+        $creator->fill($entry, $request);
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function vote(Request $request)
+    {
+        /** @type Entry $one */
+        $one = Entry::whereUuid($request->get('up'))->first();
+        $other = Entry::whereUuid($request->get('down'))->first();
+        $hash = $request->get('hash');
+
+        if (!$one || !$other || !Hash::check($one->uuid . $other->uuid, $hash)) {
+            flash()->error('Invalid voting url.');
         }
 
-        flash('Thank You for Voting!!');
+        $one->upvotes += 1;
+        $one->save();
 
-        return redirect('/contest/' . $entry_up_voted->contest->slug);
-
+        return redirect()->back();
     }
-
-    public function downVotes($contest_uuid, $entry_down_voted_uuid)
-    {
-        $entry_down_voted = Entry::whereUuid($entry_down_voted_uuid)->first();
-
-        $entry_down_voted->downvotes += 1;
-        $entry_down_voted->save();
-
-        //TODO check this not sure for downvote response
-        return redirect('/contest/' . $entry_down_voted->contest->slug);
-
-    }
-
-
 }
 
 

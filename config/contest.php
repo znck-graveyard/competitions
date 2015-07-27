@@ -12,21 +12,23 @@ return [
         'music'           => 'Music',
         'singing'         => 'Singing',
         'photography'     => 'Photography',
-        'short films'     => 'Short Films or Documentary',
+        'short films'     => 'Short Films',
         'content writing' => 'Creative Writing',
-        'business idea'   => 'B-Plan or Business Idea'
+        'business idea'   => 'Business Idea'
     ],
     /*
      * Types of files that a user can submit
      */
     'submission_types' => [
-        ''         => '',
-        'image'    => 'Photo',
-        'text'     => 'Text',
-        'document' => 'Document',
-        'video'    => 'Video',
-        'audio'    => 'Audio',
-        'any'      => 'Other',
+        ''     => '',
+//        'image'    => 'Photo',
+        'text' => 'Text',
+//        'document' => 'Document',
+//        'video'    => 'Video',
+//        'audio'    => 'Audio',
+//        'any'      => 'Other',
+    ],
+    'submission'       => [
+        'text'  => App\Entry\TextEntry::class,
     ]
-
 ];

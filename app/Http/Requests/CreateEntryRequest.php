@@ -35,9 +35,6 @@ class CreateEntryRequest extends Request
             'updated_at' => 'required|timestamp',
             'moderation_comment' => 'required_if:moderated,true',
             'manual_review_weightage' => 'required_if:manual_review_enabled,true',
-            
-
-
         ];
     }
 

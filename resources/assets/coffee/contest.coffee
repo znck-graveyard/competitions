@@ -72,5 +72,21 @@ if (window.Vue && $('#contest-entries').length)
                 page = this.currentPage
                 if this.pages.indexOf(page) == -1
                     this.fetchData(page)
+
+            openEntry: (event) ->
+                event.preventDefault()
+                href = $(event.currentTarget).attr('href')
+                resource = this.$resource(href)
+                resource.get(
+                    {},
+                    (data) ->
+                        l = $('<div>').addClass('modal-compare').html(data)
+                        $('body').append(l)
+                        $('#close-comparator').show().click((e) ->
+                            e.preventDefault()
+                            $(this).parent().parent().remove()
+                        )
+                )
+
         },
     })

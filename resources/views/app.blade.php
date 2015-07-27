@@ -36,7 +36,7 @@
 @include('notifications')
 
 <div id="content-wrapper">
-    @yield('content')
+    @if(isset($content)) {!! $content !!} @else @yield('content') @endif
 </div>
 
 @include('footer')

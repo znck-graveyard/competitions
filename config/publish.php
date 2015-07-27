@@ -11,8 +11,4 @@ return [
         'email' => 'no-reply@whizzspace.com',
         'name'  => 'Whizzspace',
     ],
-    'to'   => [
-        'email' => 'rahulkdn@gmail.com',
-        'name'  => 'Rahul Kadyan',
-    ]
 ];

@@ -35,17 +35,17 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\Entry whereModerationComment($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entry whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entry whereUpdatedAt($value)
- * @property string $uuid
- * @property string $title
- * @property float $score
- * @property integer $upvotes
- * @property integer $downvotes
+ * @property string                                                     $uuid
+ * @property string                                                     $title
+ * @property float                                                      $score
+ * @property integer                                                    $upvotes
+ * @property integer                                                    $downvotes
  * @method static \Illuminate\Database\Query\Builder|\App\Entry whereUuid($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entry whereTitle($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entry whereScore($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entry whereUpvotes($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entry whereDownvotes($value)
- * @property integer $views
+ * @property integer                                                    $views
  * @method static \Illuminate\Database\Query\Builder|\App\Entry whereViews($value)
  */
 class Entry extends Model
@@ -106,4 +106,8 @@ class Entry extends Model
         return $this->belongsToMany(Contestant::class, 'contestant_entry');
     }
 
+    public function imageUrl($width = null, $height = null)
+    {
+        return route('contest.entry.photo', [$this->contest->slug, $this->uuid, $width, $height]);
+    }
 }

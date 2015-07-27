@@ -52,7 +52,7 @@
                     <div class="panel-body">
                         @foreach($top as $entry)
                             <div class="entry-card top">
-                                <img src="{{ $entry->entryable->image or 'https://unsplash.it/64/64/?random&' . str_random(4) }}"/>
+                                <img src="{{ $entry->entryable->image or asset('image/placeholder.jpg') }}"/>
                                 <div class="title">{{ ucfirst($entry->title) }}</div>
                                 <div class="by">{{ ucfirst($entry->entryable->name) }}</div>
                             </div>
@@ -122,9 +122,9 @@
                         </h3>
                     </div>
                     <div class="panel-body" id="contest-entries">
-                        <div class="row text-center">
+                        <div class="row categories text-center">
                             <div class="col-xs-12 col-sm-6 col-md-3 text-center" v-repeat="entry: entries | paginate">
-                                <a href="{{ route('contest.entry.show', [$contest->slug, '']) }}/@{{ entry.uuid }}" title="@{{ entry.title }}">
+                                <a href="{{ route('contest.entry.show', [$contest->slug, '']) }}/@{{ entry.uuid }}" v-on="click: openEntry" title="@{{ entry.title }}">
                                     <div class="card entry overlay-caption"
                                          v-style="background-image: 'url(' + entry.image + '), url({{ asset('image/placeholder.jpg') }})'">
                                         <div class="caption text-left">

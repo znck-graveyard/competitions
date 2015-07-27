@@ -2,13 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Contracts\Auth\Guard;
 use App\Entry;
 use Closure;
-use Log;
-use App\Contest;
-use GrahamCampbell\Throttle\Facades\Throttle;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Contracts\Auth\Guard;
+use Throttle;
 
 class VoteEntries
 {
@@ -35,41 +32,22 @@ class VoteEntries
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \Closure $next
+     * @param  \Closure                 $next
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-        $time=120;
-        $client_ip=$request->getClientIp();
-        $url='/'.$request->path();
-        $throttler1=Throttle::get(Request::instance(), 1, $time);
-        $throttler2 = Throttle::get(['ip'=>$client_ip,'route'=>$url], 1, $time);
-        if (!($this->auth->guest())) {
+        $throttler = Throttle::get($request, 1, 1440);
 
-            if($throttler1->check()){
+        if ($throttler->check()) {
+            $throttler->hit();
 
-                $throttler1->hit();
-                return $next($request);
-            }
-            else
-                flash('You have Already voted for this Entry. Try again after some time');
-
-
-        }
-        else{
-            if($throttler2->check()){
-
-                $throttler2->hit();
-                return $next($request);
-            }
-            else {
-                flash('You have Already voted for this Entry. Try again after some time');
-            }
-
+            return $next($request);
         }
 
-        return redirect($url);
+        flash()->error('You have already voted for this entry.');
 
+        return redirect()->back();
     }
 }

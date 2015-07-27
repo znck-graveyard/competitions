@@ -33,30 +33,17 @@
         <div class="row">
             <div class="col-xs-12 col-md-12">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-6">
-                        <div class="form-group">
-                            <label for="title" class="text-uppercase required">Title</label>
-                            {!! Form::text('title', null, ['class' => 'form-control input-lg', 'placeholder' => 'title of the submission', 'id' => 'title']) !!}
-                        </div>
-                    </div>
-
-                    <div class="col-xs-12">
-                        <div class="form-group">
-                            <label for="abstract" class="text-uppercase required">Abstract</label>
-                            {!! Form::textarea('abstract', null, ['class' => 'form-control input-lg', 'placeholder' => 'title of the submission', 'id' => 'abstract']) !!}
-                        </div>
-                    </div>
-
-                    <div class="col-xs-12">
-                        @include($submissionFormat)
-                    </div>
+                    @yield('form')
 
                     <div class="col-xs-12">
                         <div class="form-group">
                             <label class="text-uppercase">
-                                {!! Form::checkbox('agree', null) !!} I agree <a href="{{ url('terms')  }}" target="_blank" title="open in new tab" data-toggle="tooltip">terms and conditions</a> of Wizzspace.
+                                {!! Form::checkbox('agree', null, null, ['required' => '']) !!} I agree <a href="{{ url('terms')  }}" target="_blank" title="open in new tab" data-toggle="tooltip">terms and conditions</a> of Wizzspace.
                             </label>
                         </div>
+                        @if($errors->has('agree'))
+                            <div class="alert alert-danger">{!! $errors->first('agree') !!}</div>
+                        @endif
                     </div>
 
                     <div class="col-xs-12">
