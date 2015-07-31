@@ -180,7 +180,7 @@ class ProfileController extends Controller
         }
 
         if ($request->get('profile_photo_link')) {
-            $this->updateCoverPhoto($this->downloadFile($request->get('profile_photo_link')));
+            $this->updateProfilePhoto($this->downloadFile($request->get('profile_photo_link')));
         }
 
         if ($request->get('cover_photo_link')) {
