@@ -29,7 +29,7 @@ class ContestInCategory
     {
         $self = $this;
 
-        return \Cache::remember('home.contests', 1440, function () use ($self) {
+        return \Cache::remember('home.contests', 5, function () use ($self) {
             return $self->collectContestsInCategories();
         });
     }

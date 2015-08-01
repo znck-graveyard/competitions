@@ -22,6 +22,10 @@
                             <div class="info row text-left">
                                 <div class="col-xs-12">
                                     <div class="pull-right">
+                                        <a class="visible-xs-block btn btn-white btn-huge an" href="#" data-show="both">
+                                            <span class="glyphicon glyphicon-thumbs-up"></span>
+                                        </a>
+                                        <a class="btn btn-white btn-huge text-uppercase an hidden-xs" href="#" data-show="both">Vote Now</a>
                                         <a class="btn btn-primary btn-huge text-uppercase an hidden-xs" href="#" data-show="right">Opponent's entry</a>
                                     </div>
                                     <div class="title text-uppercase">

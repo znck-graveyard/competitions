@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Entry;
+use App\Reviewer;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use Throttle;
@@ -38,13 +39,27 @@ class VoteEntries
      */
     public function handle($request, Closure $next)
     {
-        $throttler = Throttle::get($request, 1, 1440);
 
-        if ($throttler->check()) {
-            $throttler->hit();
+        if ($this->auth->check()) {
+            /** @type \App\User $user */
+            $user = $this->auth->user();
+            $entry = $request->route('entry');
+            $check = Reviewer::whereEntryId($entry->id)->whereUserId($user->id)->count();
 
-            return $next($request);
+            if (!$check) {
+                return $next($request);
+            }
+        } else {
+
+            $throttler = Throttle::get($request, 1, 1440);
+
+            if ($throttler->check()) {
+                $throttler->hit();
+
+                return $next($request);
+            }
         }
+
 
         flash()->error('You have already voted for this entry.');
 

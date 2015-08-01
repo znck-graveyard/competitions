@@ -148,6 +148,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasMany(Contest::class, 'maintainer_id');
     }
 
+    public function voted()
+    {
+        return $this->hasManyThrough(Entry::class, Reviewer::class, 'user_id', 'entryable_id');
+    }
+
     /**
      * Polymorphic relation to determine winning users of a contest
      *

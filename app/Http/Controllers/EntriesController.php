@@ -10,6 +10,7 @@ use App\Contest;
 use App\Entry;
 use App\Http\Controllers\Auth;
 use App\Http\Requests;
+use App\Reviewer;
 use App\Transformer\EntryTransformer;
 use Carbon\Carbon;
 use Hash;
@@ -17,6 +18,7 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 use League\Fractal\Manager;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
+use Rhumsaa\Uuid\Uuid;
 use Session;
 use Storage;
 
@@ -159,6 +161,22 @@ class EntriesController extends Controller
     {
         $filename = $entry->filename;
 
+        if (!$filename && $contest->submission_type == 'text') {
+            $filename = Uuid::uuid4()->toString() . '.jpg';
+
+            $image = \Image::canvas(300, 300, '#efefef')->text($entry->title, 150, 130, function ($font) {
+                $font->file(base_path('resources/fonts/Montserrat-Bold.otf'));
+                $font->size(24);
+                $font->align('center');
+                $font->valign('top');
+            });
+
+            Storage::disk()->put($filename, (string)$image->encode('jpg', 75));
+            $entry->filename = $filename;
+
+            $entry->save();
+        }
+
         return $this->sendImageResponse($width, $height, Storage::disk()->get($filename),
             Storage::disk()->exists($filename) ? Storage::disk()->lastModified($filename) : -86400);
     }
@@ -244,6 +262,17 @@ class EntriesController extends Controller
 
         $one->upvotes += 1;
         $one->save();
+
+        if ($this->user) {
+            $reviewer = new Reviewer;
+
+            $reviewer->contest_id = $one->contest_id;
+            $reviewer->entry_id = $one->id;
+            $reviewer->user_id = $this->user->id;
+            $reviewer->voted_at = Carbon::now();
+
+            $reviewer->save();
+        }
 
         return redirect()->back();
     }

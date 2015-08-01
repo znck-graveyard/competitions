@@ -16,17 +16,17 @@ class EntryTransformer extends TransformerAbstract
         return [
             'uuid'    => $entry->uuid,
             'title'   => $entry->title,
-            'image'   => $entry->image ?: asset('image/placeholder.jpg'),
+            'image'   => $entry->imageUrl(300, 300) ?: asset('image/placeholder.jpg'),
             'upvotes' => $entry->upvotes,
             'views'   => $entry->views ?: 0,
-            'link' => route('contest.entry.show', [$entry->contest->slug, $entry->uuid]),
+            'link'    => route('contest.entry.show', [$entry->contest->slug, $entry->uuid]),
             'owner'   => [
-                'image' => $entry->entryable->image ?: asset('image/placeholder.jpg'),
+                'image' => $entry->entryable->imageUrl() ?: asset('image/placeholder.jpg'),
                 'name'  => $entry->entryable->name,
                 'link'  => $entry->entryable->link,
             ],
             'contest' => [
-                'image' => $entry->contest->image ?: asset('image/placeholder.jpg'),
+                'image' => $entry->contest->imageUrl() ?: asset('image/placeholder.jpg'),
                 'name'  => $entry->contest->name,
                 'type'  => ucwords($entry->contest->contest_type),
             ]

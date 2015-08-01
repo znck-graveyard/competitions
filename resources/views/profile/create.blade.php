@@ -87,7 +87,7 @@
                 <div class="col-xs-12 col-sm-6">
                     <div class="file-input">
                         <div class="thumbnail pull-left">
-                            <img src="{{ route('user.photo', [$user->username ?: $user->id, 196]) }}"/>
+                            <img id="profile_photo_preview" src="{{ route('user.photo', [$user->username ?: $user->id, 196]) }}"/>
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
@@ -102,6 +102,24 @@
                                 <div>
                                     {!! Form::text('profile_photo_link', old('cover_link'), ['class' => 'input-lg form-control', 'placeholder' => 'enter link of the photo',]) !!}
                                 </div>
+
+                                <script>
+                                    $('[name=profile_photo]').on('change', function(ev) {
+                                        var f = ev.target.files[0];
+                                        var fr = new FileReader();
+
+                                        fr.onload = function(ev2) {
+                                            console.dir(ev2);
+                                            $('#profile_photo_preview').attr('src', ev2.target.result);
+                                        };
+
+                                        fr.readAsDataURL(f);
+                                    });
+
+                                    $('[name=profile_photo_link]').on('change', function() {
+                                        $('#profile_photo_preview').attr('src', $(this).val());
+                                    });
+                                </script>
                             </div>
                         </div>
                     </div>
@@ -115,7 +133,7 @@
                 <div class="col-xs-12 col-sm-6">
                     <div class="file-input">
                         <div class="thumbnail pull-left">
-                            <img src="{{ route('user.cover', [$user->username ?: $user->id, 196]) }}"/>
+                            <img id="cover_photo_preview" src="{{ route('user.cover', [$user->username ?: $user->id, 196]) }}"/>
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
@@ -130,6 +148,24 @@
                                 <div>
                                     {!! Form::text('cover_photo_link', old('cover_link'), ['class' => 'input-lg form-control', 'placeholder' => 'enter link of the photo',]) !!}
                                 </div>
+
+                                <script>
+                                    $('[name=cover_photo]').on('change', function(ev) {
+                                        var f = ev.target.files[0];
+                                        var fr = new FileReader();
+
+                                        fr.onload = function(ev2) {
+                                            console.dir(ev2);
+                                            $('#cover_photo_preview').attr('src', ev2.target.result);
+                                        };
+
+                                        fr.readAsDataURL(f);
+                                    });
+
+                                    $('[name=cover_photo_link]').on('change', function() {
+                                        $('#cover_photo_preview').attr('src', $(this).val());
+                                    });
+                                </script>
                             </div>
                         </div>
                     </div>

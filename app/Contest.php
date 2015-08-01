@@ -192,4 +192,9 @@ class Contest extends \Eloquent
             return $this->end_date->format('h:i a');
         }
     }
+
+    public function imageUrl($width = null, $height = null)
+    {
+        return route('contest.cover', [$this->slug, $width, $height]);
+    }
 }

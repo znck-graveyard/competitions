@@ -54,7 +54,7 @@ class TrendingContest
     {
         $self = $this;
 
-        return Cache::remember('trending.events', 60, function () use ($self) {
+        return Cache::remember('trending.events', 5, function () use ($self) {
             return $self->calculatedTrendingContests();
         });
     }

@@ -6,6 +6,7 @@ use App\User;
 use File;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
+use Image;
 use League\Fractal\Manager;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use Session;
@@ -209,6 +210,10 @@ class ProfileController extends Controller
     protected function updateProfilePhoto($filename)
     {
         $tmp = $this->user->profile_photo;
+
+        $image = Image::make(Storage::disk()->get($filename))->fit(512, 512);
+        Storage::disk()->put($filename, (string)$image->encode());
+
         $this->user->profile_photo = $filename;
         if (File::exists($tmp)) {
             Storage::disk()->delete($tmp);
