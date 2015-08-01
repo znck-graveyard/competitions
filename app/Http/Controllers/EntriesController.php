@@ -118,6 +118,13 @@ class EntriesController extends Controller
      */
     public function store(Request $request, Contest $contest)
     {
+        if (Entry::whereEntryableId($this->user->id)->whereContestId($contest->id)->count() >= $contest->max_entries) {
+            flash('Maximum ' . $contest->max_entries . ' ' . str_plural('submissions',
+                    $contest->max_entries) . ' are allowed.');
+
+            return redirect()->back();
+        }
+
         $entry = new Entry;
         $this->fillEntryObject($request, $entry, $contest);
         $entry->contest()->associate($contest);

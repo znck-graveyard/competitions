@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use App\Contest;
+use App\Entry;
 use App\Http\Controllers\Auth;
 use App\Http\Requests;
 use App\Http\Requests\CreateContestRequest;
@@ -205,9 +206,7 @@ class ContestController extends Controller
             }
         }
 
-        $top = $contest->entries->take(3)->sort(function ($a, $b) {
-            return $a->score > $b->score;
-        });
+        $top = Entry::whereContestId($contest->id)->orderBy('views')->take(3)->get();
 
         $editable = $this->editable($contest);
         $publisher = false;
