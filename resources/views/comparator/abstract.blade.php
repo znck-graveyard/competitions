@@ -32,7 +32,7 @@
                                         {{ $one->title }}
                                     </div>
                                     <div class="name">
-                                        by {{ $one->entryable->name }}
+                                        by <a href="{{ route('user.profile', $one->entryable->username ?: $one->entryable->id) }}">{{ $one->entryable->name }}</a>
                                     </div>
                                     <div class="stats">
                                         {{ $one->views }} {{ str_plural('view', $one->views) }} | {{ $one->upvotes }} {{ str_plural('upvote', $one->upvotes) }}
@@ -72,7 +72,7 @@
                                         {{ $other->title }}
                                     </div>
                                     <div class="name">
-                                        by {{ $other->entryable->name }}
+                                        by <a href="{{ route('user.profile', $other->entryable->username ?: $other->entryable->id) }}">{{ $other->entryable->name }}</a>
                                     </div>
                                     <div class="stats">
                                         {{ $other->views }} {{ str_plural('view', $other->views) }} | {{ $other->upvotes }} {{ str_plural('upvote', $other->upvotes) }}
@@ -95,7 +95,7 @@
                         <div class="col-xs-6 col-sm-4">
                             <div class="title text-uppercase">
                                 <br>
-                                {{ $one->entryable->name }}
+                                <a href="{{ route('user.profile', $one->entryable->username ?: $one->entryable->id) }}">{{ $one->entryable->name }}</a>
                             </div>
                         </div>
                         <div class="col-xs-0 col-sm-4 text-center">
@@ -103,7 +103,7 @@
                         <div class="col-xs-6 col-sm-4">
                             <div class="title text-right text-uppercase">
                                 <br>
-                                {{ $other->entryable->name }}
+                                <a href="{{ route('user.profile', $other->entryable->username ?: $other->entryable->id) }}">{{ $other->entryable->name }}</a>
                             </div>
                         </div>
                     </div>

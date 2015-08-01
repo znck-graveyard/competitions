@@ -161,10 +161,10 @@ class EntriesController extends Controller
     {
         $filename = $entry->filename;
 
-        if (!$filename && $contest->submission_type == 'text') {
+        if ( $contest->submission_type == 'text') {
             $filename = Uuid::uuid4()->toString() . '.jpg';
 
-            $image = \Image::canvas(300, 300, '#efefef')->text($entry->title, 150, 130, function ($font) {
+            $image = \Image::canvas(300, 300, '#efefef')->text(wordwrap($entry->title, 20), 150, 15, function ($font) {
                 $font->file(base_path('resources/fonts/Montserrat-Bold.otf'));
                 $font->size(24);
                 $font->align('center');
