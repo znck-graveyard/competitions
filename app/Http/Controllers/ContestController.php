@@ -206,7 +206,7 @@ class ContestController extends Controller
             }
         }
 
-        $top = Entry::whereContestId($contest->id)->orderBy('views', 'desc')->take(3)->get();
+        $top = Entry::whereContestId($contest->id)->orderBy('upvotes', 'desc')->take(3)->get();
 
         $editable = $this->editable($contest);
         $publisher = false;
