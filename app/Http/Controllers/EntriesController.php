@@ -161,7 +161,7 @@ class EntriesController extends Controller
     {
         $filename = $entry->filename;
 
-        if ( $contest->submission_type == 'text') {
+        if (!$filename && $contest->submission_type == 'text') {
             $filename = Uuid::uuid4()->toString() . '.jpg';
 
             $image = \Image::canvas(300, 300, '#efefef')->text(wordwrap($entry->title, 20), 150, 15, function ($font) {
