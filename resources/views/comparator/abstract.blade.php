@@ -32,7 +32,8 @@
                                         {{ $one->title }}
                                     </div>
                                     <div class="name">
-                                        by <a href="{{ route('user.profile', $one->entryable->username ?: $one->entryable->id) }}">{{ $one->entryable->name }}</a>
+                                        by <a href="{{ route('user.profile', $one->entryable->username ?: $one->entryable->id) }}">{{ $one->entryable->name }}</a>@if(Auth::id() == $one->contest->maintainer_id), {{ $one->entryable->email }}
+                                        @endif
                                     </div>
                                     <div class="stats">
                                         {{ $one->views }} {{ str_plural('view', $one->views) }} | {{ $one->upvotes }} {{ str_plural('upvote', $one->upvotes) }}
@@ -72,7 +73,8 @@
                                         {{ $other->title }}
                                     </div>
                                     <div class="name">
-                                        by <a href="{{ route('user.profile', $other->entryable->username ?: $other->entryable->id) }}">{{ $other->entryable->name }}</a>
+                                        by <a href="{{ route('user.profile', $other->entryable->username ?: $other->entryable->id) }}">{{ $other->entryable->name }}</a>@if(Auth::id() == $other->contest->maintainer_id), {{ $other->entryable->email }}
+                                        @endif
                                     </div>
                                     <div class="stats">
                                         {{ $other->views }} {{ str_plural('view', $other->views) }} | {{ $other->upvotes }} {{ str_plural('upvote', $other->upvotes) }}
