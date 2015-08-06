@@ -66,21 +66,26 @@
         <div id="contest-entries">
             <div class="row text-center">
                 <div class="col-xs-12 col-sm-6 col-md-3 text-center" v-repeat="entry: entries | paginate">
-                    <a href="@{{ entry.link }}" title="@{{ entry.title }}">
-                        <div class="card entry overlay-caption"
-                             v-style="background-image: 'url(' + entry.image + '), url({{ asset('image/placeholder.jpg') }})'">
-                            <div class="caption text-left">
-                                <div class="profile">
-                                    <img v-attr="src: entry.contest.image"/>
-                                </div>
-                                <div class="name" v-text="entry.contest.type"></div>
-                                <div class="stats">
-                                    <small v-text="entry.views + (entry.views === 1 ? ' view' : ' views')"></small>
-                                    <small v-text="entry.upvotes + (entry.upvotes === 1 ? ' upvote' : ' upvotes')"></small>
-                                </div>
+                    <div class="card entry overlay-caption"
+                         v-style="background-image: 'url(' + entry.image + '), url({{ asset('image/placeholder.jpg') }})'">
+                        <div class="caption text-left">
+                            <div class="profile">
+                                <img v-attr="src: entry.contest.image"/>
+                            </div>
+                            <div class="name">
+                                <a class="text-link" href="@{{ entry.link }}" v-text="entry.contest.type"></a>
+                            </div>
+                            <div class="stats">
+                                <small v-text="entry.views + (entry.views === 1 ? ' view' : ' views')"></small>
+                                <small v-text="entry.upvotes + (entry.upvotes === 1 ? ' upvote' : ' upvotes')"></small>
+                                <span class="pull-right">
+                                    <a class="text-link" href="@{{ fbShare(entry) }}" title="share on Facebook" data-toggle="tooltip" data-placement="left">
+                                        <i class="glyphicon glyphicon-share"></i>
+                                    </a>
+                                </span>
                             </div>
                         </div>
-                    </a>
+                    </div>
                 </div>
             </div>
             <div class="row text-center" v-if="$data.totalPages > 0">
@@ -111,4 +116,9 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).on('DOMSubtreeModified', function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
 @endsection

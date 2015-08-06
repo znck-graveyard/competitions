@@ -1,13 +1,5 @@
 @extends('app')
 
-@section('scripts')
-    <script>
-        $(function(){
-            $('[data-toggle=tooltip]').tooltip();
-        });
-    </script>
-@endsection
-
 @section('content')
     <div class="banner-slim underlay" style="background-image: url('{{ asset('image/banner-preferences.jpg') }}')">
         <div class="text-white text-center">

@@ -8,14 +8,6 @@
     <script src="{{ asset('javascript/vue-resource.min.js') }}"></script>
 @endsection
 
-@section('scripts')
-    <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-    </script>
-@endsection
-
 @section('meta')
     @parent
     <meta name="ws::contest" content="{{ $contest->slug }}"/>

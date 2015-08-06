@@ -1,3 +1,12 @@
+@section('meta')
+    <meta property="og:title" content="{{ $one->title }}" />
+    <meta property="og:type" content="article"/>
+    <meta property="og:image" content="{{ $one->imageUrl() }}"/>
+    <meta property="og:url" content="{{ route('contest.entry.show', [$one->contest->slug, $one->uuid]) }}"/>
+    <meta property="og:site_name" content="Whizzspace"/>
+    <meta property="og:description" content="{{ $one->abstract }}"/>
+    <meta property="og:locale" content="en_US" />
+@endsection
 
 <div class="comparator comparator-default underlay">
     <a href="#" class="close btn btn-white" role="button" id="close-comparator">&times;</a>

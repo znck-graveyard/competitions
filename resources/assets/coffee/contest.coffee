@@ -87,6 +87,7 @@ if (window.Vue && $('#contest-entries').length)
                             $(this).parent().parent().remove()
                         )
                 )
-
+            fbShare: (entry) ->
+                encodeURI('https://www.facebook.com/dialog/share_open_graph?app_id=1608489686097057&display=page&action_type=og.likes&action_properties=' + JSON.stringify({object: entry.link}) + '&redirect_uri=' + entry.link);
         },
     })

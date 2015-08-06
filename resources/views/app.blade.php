@@ -9,6 +9,32 @@
     <title>@yield('title',  'Whizzspace')</title>
 
     <meta name="csrf_token" content="{{ csrf_token() }}"/>
+
+    <meta name='copyright' content='Whizzspace'>
+    <meta name='language' content='EN'>
+    <meta name='robots' content='index,follow'>
+    <meta name='Classification' content='Business'>
+    <meta name='designer' content='Breve Labs, hello@brevelabs.com'>
+    <meta name='reply-to' content='hello@whizzspace.com'>
+    <meta name='owner' content='Whizzspace'>
+    <meta name='url' content='http://whizzspace.com'>
+    <meta name='identifier-URL' content='http://whizzspace.com'>
+    <meta name='coverage' content='Worldwide'>
+    <meta name='distribution' content='Global'>
+    <meta name='rating' content='General'>
+    <meta name='revisit-after' content='7 days'>
+    <meta name='target' content='all'>
+    <meta name='HandheldFriendly' content='True'>
+    <meta name='MobileOptimized' content='320'>
+
+    <!-- Open Graph Tags -->
+
+    <meta property="article:author" content="https://www.facebook.com/whizzspace" />
+    <meta property="article:publisher" content="https://www.facebook.com/whizzspace" />
+
+    <meta property="og:email" content="hello@whizzspace.com"/>
+    {{--<meta property="og:phone_number" content="+91-801080091"/>--}}
+
     @yield('meta')
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -58,7 +84,10 @@
     }
     catch (e) {
         window.attachEvent("onload", $buo_f)
-    }
+    };
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
 </script>
 </body>
 </html>
