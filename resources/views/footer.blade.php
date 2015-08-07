@@ -25,7 +25,7 @@
                         <img src="{{ asset('image/social/twitter.png') }}" alt="Twitter"
                              style="height: 1.8em; border-radius: 2px"/>
                     </a></li>
-                <li><a href="https://facebook.com/#" title="Like us on Facebook">
+                <li><a href="https://facebook.com/whizzspace" title="Like us on Facebook">
                         <img src="{{ asset('image/social/facebook.png') }}" alt="Facebook"
                              style="height: 1.8em; border-radius: 2px"/>
                     </a></li>
