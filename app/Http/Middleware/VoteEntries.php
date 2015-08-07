@@ -51,7 +51,7 @@ class VoteEntries
             }
         } else {
 
-            $throttler = Throttle::get($request, 1, 1440);
+            $throttler = Throttle::get($request, 1, 28800);
 
             if ($throttler->check()) {
                 $throttler->hit();
