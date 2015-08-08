@@ -221,7 +221,7 @@ class EntriesController extends Controller
      *
      * @return \App\Http\Controllers\Response
      */
-    public function destroy(Entry $entry)
+    public function destroy(Contest $contest, Entry $entry)
     {
         if ($this->user->id == $entry->contest->maintainer_id) {
             $entry->delete();
