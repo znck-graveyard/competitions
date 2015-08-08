@@ -39,6 +39,11 @@
                                     </div>
                                     <div class="title text-uppercase">
                                         {{ $one->title }}
+                                        @if(Auth::id() == $one->contest->maintainer_id)
+                                            {!! Form::open(['url' => route('contest.destroy', $one->contest->slug), 'class' => 'form-inline']) !!}
+                                            <input type="submit" value="Delete" class="btn btn-danger">
+                                            {!! Form::close() !!}
+                                        @endif
                                     </div>
                                     <div class="name">
                                         by <a href="{{ route('user.profile', $one->entryable->username ?: $one->entryable->id) }}">{{ $one->entryable->name }}</a>@if(Auth::id() == $one->contest->maintainer_id), {{ $one->entryable->email }}

@@ -223,7 +223,9 @@ class EntriesController extends Controller
      */
     public function destroy(Entry $entry)
     {
-        abort(404);
+        if ($this->user->id == $entry->contest->maintainer_id) {
+            $entry->delete();
+        }
     }
 
     /**
@@ -269,6 +271,8 @@ class EntriesController extends Controller
 
         $one->upvotes += 1;
         $one->save();
+
+        flash('Vote received.');
 
         if ($this->user) {
             $reviewer = new Reviewer;
