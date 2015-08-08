@@ -42,7 +42,7 @@ class EntriesController extends Controller
     function __construct(Guard $auth)
     {
         $this->user = $auth->user();
-        $this->middleware('auth', ['only' => ['create', 'update', 'edit', 'store',]]);
+        $this->middleware('auth', ['only' => ['create', 'update', 'edit', 'store', 'vote']]);
         $this->middleware('countView', ['only' => ['show']]);
         $this->middleware('vote', ['only' => ['vote']]);
     }
