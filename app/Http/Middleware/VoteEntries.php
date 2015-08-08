@@ -6,7 +6,6 @@ use App\Entry;
 use App\Reviewer;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
-use Throttle;
 
 class VoteEntries
 {
@@ -46,23 +45,28 @@ class VoteEntries
             $entry = $request->route('entry');
             $check = Reviewer::whereEntryId($entry->id)->whereUserId($user->id)->count();
 
-            if (!$check) {
-                return $next($request);
-            }
-        } else {
+            if ($check) {
+                flash()->error('You have already voted for this entry.');
 
-            $throttler = Throttle::get($request, 1, 28800);
-
-            if ($throttler->check()) {
-                $throttler->hit();
-
-                return $next($request);
+                return redirect()->back();
             }
         }
 
-
-        flash()->error('You have already voted for this entry.');
-
-        return redirect()->back();
+        return $next($request);
+//        else {
+//
+//            $throttler = Throttle::get($request, 1, 28800);
+//
+//            if ($throttler->check()) {
+//                $throttler->hit();
+//
+//            }
+//            return $next($request);
+//        }
+//
+//
+//        flash()->error('You have already voted for this entry.');
+//
+//        return redirect()->back();
     }
 }
