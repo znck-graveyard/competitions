@@ -40,7 +40,7 @@
                                     <div class="title text-uppercase">
                                         {{ $one->title }}
                                         @if(Auth::id() == $one->contest->maintainer_id)
-                                            {!! Form::open(['url' => route('contest.destroy', $one->contest->slug), 'class' => 'form-inline']) !!}
+                                            {!! Form::open(['url' => route('contest.destroy', $one->contest->slug), 'class' => 'form-inline', 'method' => 'delete']) !!}
                                             <input type="submit" value="Delete" class="btn btn-danger">
                                             {!! Form::close() !!}
                                         @endif

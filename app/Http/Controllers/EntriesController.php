@@ -226,6 +226,8 @@ class EntriesController extends Controller
         if ($this->user->id == $entry->contest->maintainer_id) {
             $entry->delete();
         }
+
+        return redirect()->back();
     }
 
     /**
