@@ -42,7 +42,7 @@ class EntriesController extends Controller
     function __construct(Guard $auth)
     {
         $this->user = $auth->user();
-        $this->middleware('auth', ['only' => ['create', 'update', 'edit', 'store', 'vote']]);
+        $this->middleware('auth', ['only' => ['create', 'update', 'edit', 'store']]);
         $this->middleware('countView', ['only' => ['show']]);
         $this->middleware('vote', ['only' => ['vote']]);
     }
@@ -262,8 +262,12 @@ class EntriesController extends Controller
      */
     public function vote(Request $request)
     {
-        /** @type Entry $one */
         $one = Entry::whereUuid($request->get('up'))->first();
+        if (!$this->user) {
+            $this->session->put('url.intended', route('contest.show', $one->contest->slug));
+            return redirect()->route('auth.login');
+        }
+        /** @type Entry $one */
         $other = Entry::whereUuid($request->get('down'))->first();
         $hash = $request->get('hash');
 
