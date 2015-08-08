@@ -264,7 +264,7 @@ class EntriesController extends Controller
     {
         $one = Entry::whereUuid($request->get('up'))->first();
         if (!$this->user) {
-            $this->session->put('url.intended', route('contest.show', $one->contest->slug));
+            Session::put('url.intended', route('contest.show', $one->contest->slug));
             return redirect()->route('auth.login');
         }
         /** @type Entry $one */
