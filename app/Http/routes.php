@@ -7,7 +7,9 @@ Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index']);
 Route::get('about', 'HomeController@about');
 Route::get('terms', 'HomeController@terms');
 
-Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+Route::group(['middleware' => '\App\Http\Middleware\Admin'], function () {
+    Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+});
 
 Route::group([], function () {
     /*
