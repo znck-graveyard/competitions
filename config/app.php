@@ -147,6 +147,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Znck\Flash\FlashServiceProvider::class,
         GrahamCampbell\Markdown\MarkdownServiceProvider::class,
+        Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
     ],
     /*
     |--------------------------------------------------------------------------
