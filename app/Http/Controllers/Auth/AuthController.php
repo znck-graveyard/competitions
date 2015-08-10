@@ -173,8 +173,8 @@ class AuthController extends Controller
     {
         if (empty($user)) {
             $user = User::create([
-                'first_name' => $provider->offsetGet('first_name'),
-                'last_name'  => $provider->offsetGet('last_name'),
+                'first_name' => $provider->offsetExists('first_name') ? $provider->offsetGet('first_name') : $provider->offsetGet('name'),
+                'last_name'  => $provider->offsetExists('last_name') ? $provider->offsetGet('last_name') : '  ',
                 'email'      => $provider->email,
             ]);
 
