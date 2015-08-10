@@ -27,7 +27,10 @@ class Reviewer extends Model
 
     public function contests()
     {
-        return $this->belongsToMany(Contest::class);
+        return $this->belongsTo(Contest::class);
     }
 
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }

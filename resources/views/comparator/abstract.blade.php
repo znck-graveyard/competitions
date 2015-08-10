@@ -42,6 +42,7 @@
                                         @if(Auth::id() == $one->contest->maintainer_id)
                                             {!! Form::open(['url' => route('contest.entry.destroy', [$one->contest->slug, $one->uuid]), 'class' => 'form-inline', 'method' => 'delete']) !!}
                                             <input type="submit" value="Delete" class="btn btn-danger">
+                                            <a href="{{ route('contest.entry.voters', [$one->contest->slug, $one->uuid]) }}" class="btn btn-default">Reviewers</a>
                                             {!! Form::close() !!}
                                         @endif
                                     </div>

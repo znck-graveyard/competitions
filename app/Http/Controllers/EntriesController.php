@@ -265,6 +265,7 @@ class EntriesController extends Controller
         $one = Entry::whereUuid($request->get('up'))->first();
         if (!$this->user) {
             Session::put('url.intended', route('contest.show', $one->contest->slug));
+
             return redirect()->route('auth.login');
         }
         /** @type Entry $one */
@@ -292,6 +293,17 @@ class EntriesController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function voters(Contest $contest, Entry $entry)
+    {
+        if ($this->user && ($contest->maintainer_id == $this->user->id || $this->user->email == 'rahulkdn@gmail.com')) {
+            $voters = Reviewer::whereEntryId($entry->id)->with(['user'])->get();
+
+            return view('entries.voters', compact('voters'));
+        }
+
+        abort(404);
     }
 }
 

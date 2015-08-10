@@ -45,6 +45,7 @@ Route::group(['prefix' => 'contest/{contest}'], function () {
     Route::get('publish/{token?}', ['as' => 'contest.publish', 'uses' => 'ContestController@publish']);
     Route::get('entry/{entry}/preview/{width?}/{height?}',
         ['as' => 'contest.entry.photo', 'uses' => 'EntriesController@preview']);
+    Route::get('entry/{entry}/voters', ['as' => 'contest.entry.voters', 'uses' => 'EntriesController@voters']);
     Route::post('entry/vote/{entry}', ['as' => 'contest.entry.vote', 'uses' => 'EntriesController@vote']);
 });
 Route::resource('contest', 'ContestController');
