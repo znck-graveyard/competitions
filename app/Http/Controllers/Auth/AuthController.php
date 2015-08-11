@@ -66,7 +66,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function verify($token, $email)
+    public function verify($email, $token)
     {
         $user = User::whereEmail($email)->first();
 
