@@ -79,7 +79,9 @@ class AuthController extends Controller
             }
         }
 
-        abort(404, 'Verification code expired.');
+        flash($user ? ($user->verification_code ? 'Invalid verification code.' : 'Your email is already verified.') : 'There are no users registered with ' . $email . '.');
+
+        return redirect()->home();
     }
 
     /**
