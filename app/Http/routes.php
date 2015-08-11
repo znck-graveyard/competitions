@@ -16,6 +16,7 @@ Route::group([], function () {
      * Auth routes
      */
     Route::get('login', ['as' => 'auth.login', 'uses' => 'Auth\AuthController@getLogin']);
+    Route::get('login/verify/{email}/{token}', ['as' => 'auth.email', 'uses' => 'Auth\AuthController@verify']);
     Route::get('login/facebook', ['as' => 'auth.facebook', 'uses' => 'Auth\AuthController@facebookLogin']);
     Route::get('login/facebook/callback',
         ['as' => 'auth.facebook.callback', 'uses' => 'Auth\AuthController@facebookLoginHandle']);

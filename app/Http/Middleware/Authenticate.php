@@ -42,6 +42,12 @@ class Authenticate
             }
         }
 
+        if (null != $this->auth->user()->verification_code) {
+            flash()->error('Verify your email address. A mail has been sent to ' . $this->auth->user()->email . '.');
+
+            return redirect()->home();
+        }
+
         return $next($request);
     }
 

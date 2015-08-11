@@ -96,6 +96,11 @@ class Entry extends Model
         return $this->belongsToMany(Moderator::class, 'moderator_contestant');
     }
 
+    public function reviewers()
+    {
+        return $this->hasMany(Reviewer::class);
+    }
+
     /**
      * Many contestants can own an entry
      *

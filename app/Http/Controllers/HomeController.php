@@ -12,6 +12,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        flash()->overlay('Votes received from unverified users would be removed at 9:00pm, 12 Aug 2015. Verify your email address to prevent your votes from being deleted.', 'Important Announcement');
         return view('home');
     }
 

@@ -1,1 +1,1 @@
-Click here to reset your password: {{ route('password.route', $token) }}
+Click here to verify your email address: {{ route('auth.email', ['token' => $token, 'email' => $email]) }}

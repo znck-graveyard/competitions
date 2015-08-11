@@ -45,7 +45,7 @@ class AuthController extends Controller
     {
         $this->auth = $auth;
         $this->user = $user;
-        $this->middleware('guest', ['except' => 'getLogout']);
+        $this->middleware('guest', ['except' => ['getLogout', 'verify']]);
     }
 
     /**
@@ -66,6 +66,22 @@ class AuthController extends Controller
         ]);
     }
 
+    public function verify($token, $email)
+    {
+        $user = User::whereEmail($email)->first();
+
+        if ($user) {
+            if ($user->verification_code == $token) {
+                $user->verification_code = null;
+                $user->save();
+
+                return redirect()->home();
+            }
+        }
+
+        abort(404, 'Verification code expired.');
+    }
+
     /**
      * Create a new user instance after a valid registration.
      *
@@ -75,13 +91,21 @@ class AuthController extends Controller
      */
     public function create(array $data)
     {
-        return User::create([
-            'first_name' => $data['first_name'],
-            'last_name'  => $data['last_name'],
-            'username'   => $data['username'],
-            'email'      => $data['email'],
-            'password'   => bcrypt($data['password']),
+        $user = User::create([
+            'first_name'        => $data['first_name'],
+            'last_name'         => $data['last_name'],
+            'username'          => $data['username'],
+            'email'             => $data['email'],
+            'password'          => bcrypt($data['password']),
+            'verification_code' => str_random(),
         ]);
+
+        \Mail::queue('emails.verify', ['token' => $user->verification_code, 'email' => $user->email],
+            function ($m) use ($user) {
+                $m->to($user->email, $user->name)->subject('Verify your email address.');
+            });
+
+        return $user;
     }
 
     public function facebookLogin()
@@ -118,7 +142,9 @@ class AuthController extends Controller
                 throw new InvalidStateException;
             }
         } catch (InvalidStateException $e) {
-            return redirect()->route('auth.login')->withErrors([$request->get('error', 'Failed to connect to Facebook.')]);
+            return redirect()->route('auth.login')->withErrors([
+                $request->get('error', 'Failed to connect to Facebook.')
+            ]);
         }
         $user = User::where('email', '=', $provider->email)->first();
 
