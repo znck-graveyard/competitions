@@ -1,5 +1,6 @@
 <?php namespace App;
 
+use Carbon\Carbon;
 use Closure;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -265,6 +266,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->getStat('submissions', function () {
             return $this->submissions()->count();
         });
+    }
+
+    public function setDateOfBirth($value)
+    {
+        try {
+            parent::setDateOfBirth($value);
+        } catch (\Exception $e) {
+            $this->attributes['date_of_birth'] = Carbon::parse($value);
+        }
     }
 
     public function getStatViewsAttribute()
